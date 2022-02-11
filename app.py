@@ -1,8 +1,10 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, flash, url_for, redirect
 from pymongo import MongoClient
 import hashlib
 
 app = Flask(__name__)
+app.secret_key = 'mycloset secret key'
+app.config['SESSION_TYPE'] = 'filesystem'
 
 client = MongoClient('localhost', 27017)
 db = client.mycloset
@@ -35,7 +37,8 @@ def register():
 
         db.member.insert_one(doc) #member 컬렉션에 insert
 
-        return render_template('index.html') #회원가입 완료후 index화면으로 이동
+        flash(f'{user_name} 님 회원가입 완료되었습니다')
+        return redirect(url_for('home')) #로그인 완료 후 home으로 이동
 
     elif request.method == 'GET': #ID와 닉네임 중복체크시 호출되는 API
         if request.args.get('type') == 'id': #ID중복체크시 실행
