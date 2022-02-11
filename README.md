@@ -15,6 +15,20 @@
 * JQuery
 * Flask
 * Pymongo
+<hr>
+
+## 🕺 팀원 소개
+### 🙋‍♀️ FrontEnd
+진혁 
+다슬 
+지현 
+윤진 
+
+
+### 🙋‍♂️ BackEnd
+가영
+지우
+현정
 
 <hr>
 
