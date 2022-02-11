@@ -15,3 +15,19 @@
 * JQuery
 * Flask
 * Pymongo
+
+<hr>
+
+<h2> < What's in My Closet!> 미리보기 </h2>
+  
+  
+![1](https://user-images.githubusercontent.com/88777740/153542367-59b1a6b9-87ae-40c8-b953-6d1a991c04e9.png)
+  
+![2](https://user-images.githubusercontent.com/88777740/153542370-127b17d1-5511-4934-a25f-b9801f144513.png)
+  
+![3](https://user-images.githubusercontent.com/88777740/153542373-0884751d-8532-4dc8-be62-032ecc790f14.png)
+  
+![4](https://user-images.githubusercontent.com/88777740/153542376-88c6ec36-77a8-408a-a7c3-b355b698f521.png)
+
+
+
