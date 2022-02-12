@@ -1,0 +1,126 @@
+
+.wrap{
+  max-width:600px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin:100px auto;
+  
+}
+.wrap .title{
+  font-size: 30px;
+  font-weight: 700;
+  padding:5px;
+  font-family:'Redressed','Nanum Brush Script',cursive;
+  margin-bottom: 10px;
+}
+.wrap .auth{
+  
+  letter-spacing: 2px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  
+  border-radius: 12px;
+}
+.wrap .auth .btn-wrap{
+  display: flex;
+}
+.wrap .auth .btn-wrap .btn{
+  width: 200px;
+border:none;
+}
+.wrap .auth .btn-wrap .btn {
+  border-radius: 12px 12px 0 0;
+  background-color: #fff;
+  
+}
+.wrap .auth .btn-wrap .btn.signin.show{
+  background-color:rgba(145,80,175,.9);
+  color:#fff;
+  
+}
+.wrap .auth .btn-wrap .btn.signup.show{
+
+  background-color:rgba(145,80,175,.9);;
+  color:#fff;
+  
+}
+.wrap .auth .container {
+  padding:10px;
+  box-sizing: border-box;
+  background-color: rgba(145,80,175,.9);
+  border-radius: 0 0 12px 12px;
+}
+.wrap .auth .container .form{
+  display:none;
+  width:90%;
+  margin:0 auto;
+  padding:10px;
+  
+}
+
+.wrap .auth .container .form.show{
+  display: flex;
+  flex-direction: column;
+  color:#fff;
+}
+.wrap .auth .container .form.show #same{
+  font-size: 12px;
+  display: block;
+  margin-bottom: 5px;
+
+}
+
+.wrap .auth .container input{
+  margin-bottom:10px;
+  padding:7px;
+  border-radius: 5px;
+  border:2px solid rgba(195,126,225,.5);
+  box-sizing: border-box;
+  
+}
+.wrap .auth .container .form .valid-email{
+  display: flex;
+  justify-content: space-between;
+}
+.wrap .auth .container .form .valid-email #signup-email{
+  flex:80%;
+}
+.wrap .auth .container .form .valid-email .valid{
+height:35px;
+flex: 20%;
+margin-left: 5px;
+font-size:12px;
+padding:2px;
+border:none;
+
+}
+.wrap .submit{
+  display: none;
+  width:350px;
+  font-size: 16px;
+  font-weight: 700;
+  background-color:rgba(145,80,175,.9);
+  border-radius: 10px;
+  padding:10px;
+  margin-top:20px;
+  cursor:pointer;
+  box-sizing: border-box;
+  border:none;
+}
+.wrap .submit.show{
+  display: block;
+  color:#fff;
+}
+.wrap .submit.show:hover{
+  background-color: #61237f;
+
+  
+}
+.wrap .find-pwd{
+  margin-top: 20px;
+  color:#101010;
+}
