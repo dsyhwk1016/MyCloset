@@ -1,6 +1,5 @@
-<!doctype html>
-<html lang="en">
-
+<!DOCTYPE html>
+<html lang="ko">
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -19,9 +18,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
-
     <!-- Google Font -->
-
 
     <title>What's in My Closet!</title>
 
@@ -35,14 +32,17 @@
 
     </script>
 </head>
-
 <body>
-    <h1>Hello World!</h1>
-    {% if logged %}
-        <a href="/logout">로그아웃</a>
+    {% if not google_data %}
+        <form name="f_login" method="post" enctype="multipart/form-data" action="/login">
+            ID : <input type="text" name="user_id" id="user_id">
+            PW : <input type="password" name="user_pw" id="user_pw">
+
+            <input type="submit" value="로그인하기">
+        </form>
+            <a href="/google_login"><img src="../static/google_login.png"></a>
     {% else %}
-        <a href="/login_page">로그인페이지</a>
+        안녕하세요 {{google_data.given_name}}님.
     {% endif %}
 </body>
-
 </html>
