@@ -16,12 +16,14 @@
   * JQuery
   * Flask
   * Pymongo
+
  
 <Library>
   * dotenv
   * flask-dance
   * requests
   
+ 
 <hr>
 
 ## 🕺 팀원 소개
