@@ -1,0 +1,77 @@
+body{
+    background-color: lightpink;
+}
+
+.formDiv{
+    display: grid;
+    grid-template: 1fr / 4fr 6fr;
+    grid-template-areas: "imgArea formArea";
+    grid-gap: 1rem;
+}
+
+.imgArea{
+    grid-area: imgArea;
+    width: 100%;
+    height: 100%;
+}
+
+.imgArea img{
+    width: 100%;
+    height: 100%;
+}
+
+.formArea{
+    grid-area: formArea;
+    background-color: red;
+    background-color: white;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+#uniform_style, #uniform_season, #file_box, .for_select{
+    margin-bottom: 1rem;
+}
+
+#uniform_kind, #uniform_color{
+    display: inline;
+}
+
+#file_box .upload-name {
+    display: inline-block;
+    height: 40px;
+    padding: 0 10px;
+    vertical-align: middle;
+    border: 1px solid #dddddd;
+    width: 60%;
+    color:#999999;
+}
+
+#file_box label {
+    display: inline-block;
+    padding: 10px 20px;
+    color: #fff;
+    vertical-align: middle;
+    background-color: #999999;
+    cursor: pointer;
+    height: 40px;
+    margin-left: 10px;
+    margin-bottom: 0px;
+}
+
+#file_box input[type="file"] {
+    position: absolute;
+    width: 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+}
+
+button[type="submit"]{
+    padding: 10px 20px;
+    color: #fff;
+    background-color: #999999;
+    height: 40px;
+    border: none;
+    cursor: pointer;
+}

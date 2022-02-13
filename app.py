@@ -3,30 +3,31 @@ import os
 
 from flask import Flask, render_template, request, jsonify,  url_for, redirect, session, current_app
 from pymongo import MongoClient
-from flask_dance.contrib.google import make_google_blueprint, google
-from dotenv import load_dotenv
+# from flask_dance.contrib.google import make_google_blueprint, google
+# from dotenv import load_dotenv
 
 
 #환경변수의 값 불러오기
-load_dotenv()
+# load_dotenv()
 
 #Flask App Setup
 app = Flask(__name__)
 
 #Google Setup
-client_id = os.getenv('GOOGLE_CLIENT_ID')
-client_secret = os.getenv('GOOGLE_CLIENT_SECRET')
-app.secret_key = os.getenv('secret_key')
+# client_id = os.getenv('GOOGLE_CLIENT_ID')
+# client_secret = os.getenv('GOOGLE_CLIENT_SECRET')
+# app.secret_key = os.getenv('secret_key')
 
 # http / https 환경설정
-os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
-os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
+# os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+# os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
 
 #MongoDB Setup
-client = MongoClient('localhost', 27017)
-db = client.mycloset
+# client = MongoClient('localhost', 27017)
+# db = client.mycloset
 
 #google blueprint Setup
+'''
 blueprint = make_google_blueprint(
     client_id = client_id,
     client_secret = client_secret,
@@ -34,11 +35,11 @@ blueprint = make_google_blueprint(
     scope=["profile", "email"],
 )
 app.register_blueprint(blueprint,url_prefix="/login")
-
-
+'''
 @app.route('/')
 def home():
     #로그인 상태에 따라 index 로딩시 상태변수 전달 / 로그인페이지 => 로그아웃으로 변경
+    '''
     logged = False
     if google.authorized:
         logged = True
@@ -47,15 +48,26 @@ def home():
     if "user_id" in session:
         logged = True
     return render_template('index.html', logged = logged)
+    '''
+    return render_template('index.html')
 
-
-@app.route('/upload')
+@app.route('/upload', methods = ['GET', 'POST'])
 def upload():
-    return render_template('upload.html')
+    if request.method == 'GET':
+        return render_template('upload.html')
+    else:
+        # 이미지
+        file = request.files['image']
+        # 폼데이터 : style(array), season[0](string), kind[0](string), color[0](string)
+        form = dict((key, request.form.getlist(key)) for key in request.form.keys())
+        print(file, form)
+        return 'file upload successfully'
 
+'''
 @app.route('/login_page')
 def login_page():
     return render_template('login.html')
+
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -160,6 +172,6 @@ def register():
                 return jsonify({'msg' : '이미 가입된 닉네임입니다', 'status' : False})
             else:
                 return jsonify({'msg' : '가입이 가능한 닉네임입니다', 'status' : True})
-
+'''
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
