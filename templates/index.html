@@ -23,7 +23,7 @@
     <!-- Google Font -->
 
 
-    <title>Title</title>
+    <title>코디 추천 페이지</title>
 
     <!-- CSS -->
     <style>
@@ -32,12 +32,56 @@
 
     <!-- JavaScript -->
     <script>
+        // Weather API KEY 가져옴
+        const API_KEY = "7a9876c881ab70708f327836f2ae2d7b";
+
+        function onGeoOK(position) {
+            // 위도, 경도, url 가져옴
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
+            // url을 fetch 그리고 response 받기
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const weather = document.querySelector("#weather span:first-child")
+                    const city = document.querySelector("#weather span:last-child")
+
+                    weather.innerText = `${data.weather[0].main} / ${data.main.temp}`;
+                    city.innerText = data.name;
+                    // console.log(data.name, data.weather[0].main);
+                });
+        }
+
+        function onGeoError() {
+            alert("can't find you. NO weather for you.");
+        }
+
+        navigator.geolocation.getCurrentPosition(onGeoOK, onGeoError);
+
 
     </script>
 </head>
 
 <body>
-    <h1>Hello World</h1>
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-4">Fluid jumbotron</h1>
+        <p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
+    </div>
+    <div id="weather">
+        <span></span>
+        <span></span>
+    </div>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="" aria-label="Recipient's username"
+               aria-describedby="basic-addon2">
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button">검색</button>
+        </div>
+    </div>
+
+</div>
 </body>
 
 </html>
