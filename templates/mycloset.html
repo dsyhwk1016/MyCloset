@@ -32,18 +32,22 @@
 
     <!-- JavaScript -->
     <script>
-
+        function showList(){
+            $.ajax({
+                type: "GET",
+                url: "/mylist?style=date&color=red",
+                data: {},
+                success: function (response) {
+                    alert(response);
+                }
+            })
+        }
     </script>
 </head>
 
 <body>
-    <h1>Hello World!</h1>
-    {% if logged %}
-        <a href="/logout">로그아웃</a>
-    {% else %}
-        <a href="/login_page">로그인페이지</a>
-    {% endif %}
-    <a href="/mycloset">옷장</a>
+    옷장 출력 테스트
+    <button onclick="showList()">출력!</button>
 </body>
 
 </html>
