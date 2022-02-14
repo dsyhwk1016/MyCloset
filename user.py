@@ -1,51 +1,38 @@
+from flask import Blueprint, render_template, request, jsonify, session, redirect, url_for, current_app
+from pymongo import MongoClient
+from flask_dance.contrib.google import make_google_blueprint, google
+from dotenv import load_dotenv
+
 import hashlib
 import os
 
-from flask import render_template, request, jsonify,  url_for, redirect, session, current_app, Blueprint
-from pymongo import MongoClient
-from flask_dance.contrib.google import make_google_blueprint, google
+#환경변수의 값 불러오기
+load_dotenv()
 
-loginBp = Blueprint('loginBp', __name__, url_prefix='/')
-
-#MongoDB Setup
 client = MongoClient('localhost', 27017)
 db = client.mycloset
-
-# http / https 환경설정
-os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
-os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
 
 #Google Setup
 client_id = os.getenv('GOOGLE_CLIENT_ID')
 client_secret = os.getenv('GOOGLE_CLIENT_SECRET')
-loginBp.secret_key = os.getenv('secret_key')
 
 #google blueprint Setup
+
 blueprint = make_google_blueprint(
     client_id = client_id,
     client_secret = client_secret,
     reprompt_consent= True,
     scope=["profile", "email"],
+    redirect_url='google_chk'
 )
-loginBp.register_blueprint(blueprint,url_prefix="/login")
 
-@loginBp.route('/')
-def home():
-    #로그인 상태에 따라 index 로딩시 상태변수 전달 / 로그인페이지 => 로그아웃으로 변경
-    logged = False
-    if google.authorized:
-        logged = True
-        google_chk()
+user_bp =Blueprint('login', __name__, url_prefix='user')
 
-    if "user_id" in session:
-        logged = True
-    return render_template('index.html', logged = logged)
-
-@loginBp.route('/login_page')
+@user_bp.route('/login_page')
 def login_page():
     return render_template('login.html')
 
-@loginBp.route('/login', methods=['POST'])
+@user_bp.route('/login', methods=['POST'])
 def login():
     input_user_id = request.form['user_id']
     input_user_pw = request.form['user_pw']
@@ -55,15 +42,16 @@ def login():
     db_user = list(db.member.find({'user_id' : input_user_id}, {'_id' : False}))
 
     if input_user_id != db_user[0]['user_id']: #입력한 ID가 DB에 있는지 확인
-        return render_template(url_for('login_page'), id_chk = False)
+        return jsonify({"id_chk" : False})
 
     if input_user_id == db_user[0]['user_id'] and shapw == db_user[0]['user_pw']: #아이디 / 비밀번호 체크
         session['user_id'] = input_user_id #user_id 세션에 아이디 정보 입력
-        return redirect(url_for('home'))
+        return jsonify({"msg" : "로그인 성공!"})
 
-    return redirect((url_for('login_page'))) #맞는게 없으면 다시 로그인페이지로 이동
+    else :
+        return jsonify({"pw_chk" : False})
 
-@loginBp.route('/google_check') #구글 첫로그인시 자동으로 member 컬렉션에 ID와 Name 입력
+@user_bp.route('/google/google_chk') #구글 첫로그인시 자동으로 member 컬렉션에 ID와 Name 입력
 def google_chk():
     if google.authorized:
         resp = "/oauth2/v2/userinfo"
@@ -87,11 +75,11 @@ def google_chk():
     else:
         return redirect(url_for('home'))
 
-@loginBp.route('/google_login')
-def google_login(): #구글 로그인 선택시 구글로그인 화면으로 이동
+@user_bp.route('/google_login')
+def google_login():  # 구글 로그인 선택시 구글로그인 화면으로 이동
     return redirect(url_for('google.login'))
 
-@loginBp.route('/logout', methods=['GET']) #로그아웃
+@user_bp.route('/logout', methods=['GET']) #로그아웃
 def logout():
     if google.authorized: #구글 인증된 상태
         token = current_app.blueprints["google"].token["access_token"]
@@ -108,7 +96,7 @@ def logout():
     return redirect(url_for('home'))
 
 
-@loginBp.route('/register', methods=['POST', 'GET']) #회원가입시 호출
+@user_bp.route('/register', methods=['POST', 'GET']) #회원가입시 호출
 def register():
     if request.method == 'POST': # 회원가입 Form 이 Submit 되었을시 실행(POST방식)
 
