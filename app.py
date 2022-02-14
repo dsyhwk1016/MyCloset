@@ -5,6 +5,7 @@ from pymongo import MongoClient
 from flask_dance.contrib.google import google
 
 from user import user_bp, blueprint
+import find_clothes
 
 #Flask App Setup
 app = Flask(__name__)
@@ -23,6 +24,7 @@ app.secret_key = os.urandom(24)
 #login blueprint load
 app.register_blueprint(blueprint,url_prefix="/login")
 app.register_blueprint(user_bp,url_prefix="/login")
+app.register_blueprint(find_clothes.closet)
 
 @app.route('/')
 def home():
