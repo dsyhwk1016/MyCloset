@@ -11,10 +11,19 @@
 
 ### 포함된 프레임워크/라이브러리
 
-* Bootstrap
-* JQuery
-* Flask
-* Pymongo
+[Framework]
+  * Bootstrap  
+  * JQuery
+  * Flask
+  * Pymongo
+
+ 
+[Library]
+  * dotenv
+  * flask-dance
+  * requests
+  
+ 
 <hr>
 
 ## 🕺 팀원 소개

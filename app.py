@@ -1,11 +1,10 @@
 import os
 
-from flask import Flask, render_template,session
+from flask import Flask, render_template, session
 from pymongo import MongoClient
 from flask_dance.contrib.google import google
 
 from user import user_bp, blueprint
-
 
 #Flask App Setup
 app = Flask(__name__)
@@ -39,7 +38,6 @@ def home():
 @app.route('/upload')
 def upload():
     return render_template('upload.html')
-
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
