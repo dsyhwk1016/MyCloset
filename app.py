@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template, request, jsonify,  url_for, redirect, session, current_app
+from flask import Flask, render_template,session
 from pymongo import MongoClient
 from flask_dance.contrib.google import google
 
@@ -18,11 +18,12 @@ os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
 client = MongoClient('localhost', 27017)
 db = client.mycloset
 
+#시크릿키 랜덤적용
 app.secret_key = os.urandom(24)
 
+#login blueprint load
 app.register_blueprint(blueprint,url_prefix="/login")
 app.register_blueprint(user_bp,url_prefix="/login")
-
 
 @app.route('/')
 def home():
@@ -34,7 +35,6 @@ def home():
     if "user_id" in session:
         logged = True
     return render_template('index.html', logged = logged)
-
 
 @app.route('/upload')
 def upload():
