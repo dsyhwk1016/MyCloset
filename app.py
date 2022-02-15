@@ -23,7 +23,7 @@ app.secret_key = os.urandom(24)
 
 #login blueprint load
 app.register_blueprint(blueprint,url_prefix="/login")
-app.register_blueprint(user_bp,url_prefix="/login")
+app.register_blueprint(user_bp,url_prefix="/login") #login으로 되어있어요
 
 @app.route('/')
 def home():

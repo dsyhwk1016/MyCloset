@@ -31,14 +31,14 @@
 <header>
     <div class="inner">
         <ul class="left-nav">
-            <li><a href="/index.html">홈</a></li>
+            <li><a href="/">홈</a></li>
             <li><a href="javascript:void(0)">내 옷장</a></li>
             <li><a href="javascript:void(0)">새 옷 등록</a></li>
             <li><a href="javascript:void(0)">코디 추천</a></li>
             <li><a href="javascript:void(0)">커뮤니티</a></li>
         </ul>
         <div class="right-nav">
-            <a href="/login_page">회원가입/로그인</a>
+            <a href="/login/login_page">회원가입/로그인</a>
         </div>
     </div>
 </header>
@@ -56,9 +56,9 @@
             <!-- 로그인폼 -->
             <form class="form signin show" id="sign-in">
                 <label for="userid">아이디</label>
-                <input type="email" placeholder="example@email.com">
+                <input type="email" placeholder="example@email.com" id="signin-id">
                 <label for="password">비밀번호</label>
-                <input type="password">
+                <input type="password" id="signin-pwd">
             </form>
 
             <!-- 회원가입폼 -->
@@ -81,10 +81,10 @@
         </div>
     </div>
     <!-- 버튼 -->
-    <input type="submit" class="submit submit-signin show" value="로그인" onclick="">
+    <input type="submit" class="submit submit-signin show" value="로그인" onclick="submitSignin()">
     <input type="button" class="submit submit-signup" value="회원가입" onclick="submitSignUp()">
     <!--구글과 비밀번호찾기-->
-    <a class="google show" href="/google_login"><img src="../static/google_login.png"></a>
+    <a class="google show" href="/login/google_login"><img src="../static/google_login.png"></a>
     <a class="find-pwd" href="javascript:void(0)" target="_blank">비밀번호찾기</a>
 
 <!--   {% if not google_data %}&ndash;&gt;-->

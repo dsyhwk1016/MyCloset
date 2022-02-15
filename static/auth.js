@@ -41,23 +41,26 @@ function validId() {
     if (userid.value !== '') {
         $.ajax({
             type: "GET",
-            url: '/register',
+            url: '/login/register',
             enctype: "multipart/form-data",
+            async : false,
             data: {user_id: userid.value},
             success: function (response) {
                 validid = response['status']
+
+                if (validid == true) {
+                    document.getElementById('already').innerHTML = '사용 가능한 아이디입니다.';
+                    checkid = userid.value
+                    pw.focus()
+                } else {
+                    console.log(validid)
+                    document.getElementById('already').innerHTML = '이미 존재하는 아이디 입니다.';
+                    document.getElementById('already').style.color = 'red';
+                    userid.value = null;
+                    userid.focus()
+                }
             }//ajax
         })
-        if (validid == true) {
-            document.getElementById('already').innerHTML = '사용 가능한 아이디입니다.';
-            chekid = userid.value
-            pw.focus()
-        } else {
-            document.getElementById('already').innerHTML = '이미 존재하는 아이디 입니다.';
-            document.getElementById('already').style.color = 'red';
-            userid.value = null;
-            userid.focus()
-        }
 
     } else {
         document.getElementById('already').innerHTML = '아이디를 입력해주세요';
@@ -110,7 +113,7 @@ function submitSignUp() { //수정필요해요 switch문 사용할까 고민중
         else {
             $.ajax({
                 type: "POST",
-                url: '/register',
+                url: '/login/register',
                 enctype: "multipart/form-data",
                 data: {
                     user_id: userid.value,
@@ -118,7 +121,8 @@ function submitSignUp() { //수정필요해요 switch문 사용할까 고민중
                     user_name: nickname.value
                 },
                 success: function (response) {
-                    alert('여기도 뭐 하셨겠지.. ')
+                    alert(response['msg']);
+                    window.location.href = '/'
                 }
             })
         }
@@ -147,18 +151,20 @@ const signinId = document.getElementById('signin-id');
 const signinPw = document.getElementById('signin-pwd');
 
 function submitSignin() {
-    if (id.value === '' && pwd.value === "") {
+    if (signinId.value === '' && signinPw.value === "") {
         alert('아이디 혹은 비밀번호를 입력하세요')
     } else {
         $.ajax({
             type: "POST",
-            url: '/login',
+            url: '/login/login',
             enctype: "multipart/form-data",
             data: {user_id: signinId.value,
                    user_pw: signinPw.value},
             success: function (response) {
                 if (response['status'] == false) {
-                    alert('아마 여기에..하셨을거야...')
+                    alert(response['msg'])
+                } else{
+                    window.location.href = '/'
                 }
             }
         })
