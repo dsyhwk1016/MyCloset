@@ -1,6 +1,20 @@
+from flask import Flask, render_template, redirect, request, flash
 from werkzeug import secure_filename  # 파일 업로드 위한 설정값
-from flask import Flask, render_template, request
+import os
 
+import urlib.request
+
+import app
+
+app.secret_key ="mycloset"
+
+UPLOAD_FOLDER = './static/uploads'
+app.config[UPLOAD_FOLDER] = UPLOAD_FOLDER
+
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+
+def allowed_file(file_name):
+    return '-' in filename and filename.rsplit('.', 1).lower() in ALLOWED_EXTENSIONS
 
 # 업로드 HTML 렌더링
 @app.route('/upload')
