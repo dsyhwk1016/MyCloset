@@ -26,7 +26,7 @@ blueprint = make_google_blueprint(
     redirect_url='google_chk'
 )
 
-user_bp =Blueprint('login', __name__, url_prefix='user')
+user_bp = Blueprint('login', __name__, url_prefix='user')
 
 @user_bp.route('/login_page')
 def login_page():
