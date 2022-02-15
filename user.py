@@ -73,7 +73,8 @@ def google_chk():
         else:
             doc = {
                 'user_id' : user_id,
-                'user_name' : user_name
+                'user_name' : user_name,
+                'auth': 'google'
             }
 
             db.member.insert_one(doc)
@@ -117,7 +118,8 @@ def naver_callback():
         else:
             doc = {
                 'user_id': user_id,
-                'user_name': user_name
+                'user_name': user_name,
+                'auth' : 'naver'
             }
 
             db.member.insert_one(doc)
@@ -158,7 +160,8 @@ def register():
         doc = {
             'user_id' : user_id,
             'user_pw' : shapw,
-            'user_name' : user_name
+            'user_name' : user_name,
+            'auth': 'local'
         }
 
         db.member.insert_one(doc) #member 컬렉션에 insert
