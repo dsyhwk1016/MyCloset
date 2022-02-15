@@ -19,25 +19,30 @@
 </head>
 
 <body>
-  <!-- header -->
-  <header>
+<!-- header -->
+<header>
     <div class="inner">
-     <ul class="left-nav">
-      <li><a href="/">홈</a></li>
-      <li><a href="javascript:void(0)">내 옷장</a></li>
-      <li><a href="javascript:void(0)">새 옷 등록</a></li>
-      <li><a href="javascript:void(0)">코디 추천</a></li>
-      <li><a href="javascript:void(0)">커뮤니티</a></li>
-     </ul>
-   <div class="right-nav">
-    {% if logged %}
-    <a href="/login/logout">로그아웃</a>
-    {% else %}
-    <a href="/login/login_page">회원가입/로그인</a>
-    {% endif %}
-   </div>
-  </div>
-  </header>
+        <ul class="left-nav">
+            <li><a href="/">홈</a></li>
+            <li><a href="javascript:void(0)">내 옷장</a></li>
+            <li><a href="javascript:void(0)">새 옷 등록</a></li>
+            <li><a href="javascript:void(0)">코디 추천</a></li>
+            <li><a href="javascript:void(0)">커뮤니티</a></li>
+            <li><a href="/mycloset">옷장</a></li>
+        </ul>
+        <div class="right-nav">
+            {% if logged %}
+            <a href="/login/logout">로그아웃</a>
+            {% else %}
+            <a href="/login/login_page">회원가입/로그인</a>
+            {% endif %}
+
+        </div>
+    </div>
+</header>
+
+</body>
+
 
    <!-- 메인 옷장 -->
    <section class="main-wrap">
