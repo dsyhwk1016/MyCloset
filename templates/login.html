@@ -87,8 +87,19 @@
     <a class="google show" href="/google_login"><img src="../static/google_login.png"></a>
     <a class="find-pwd" href="javascript:void(0)" target="_blank">비밀번호찾기</a>
 
+<!--   {% if not google_data %}&ndash;&gt;-->
+<!--        <form name="f_login" method="post" enctype="multipart/form-data" action="/login">-->
+<!--           ID : <input type="text" name="user_id" id="user_id">-->
+<!--           PW : <input type="password" name="user_pw" id="user_pw">-->
+<!---->
+<!--          <input type="submit" value="로그인하기">-->
+<!--        </form>-->
+<!--            <a href="/google_login"><img src="../static/google_login.png"></a>-->
+<!--    {% else %}-->
+<!--       안녕하세요 {{google_data.given_name}}님.-->
+<!--    {% endif %}-->
 </div>
-g
+
 </body>
 
 </html>

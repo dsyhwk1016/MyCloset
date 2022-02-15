@@ -1,17 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <!-- Google Font -->
+
+    <link rel="stylesheet" href="../static/upload.css">
     <title>내 옷 등록하기</title>
 </head>
 <body>
+<header>
 
-<form action="http://localhost:5000/uploader"
-      method="POST"
-      enctype="multipart/form-data">
-    <input type="file" name="file"/>
-    <input type="submit"/>
-</form>
+</header>
+<div class="container mx-auto">
+    <h1 class="text-center">
+        내 옷장에 새옷을 등록해주세요!
+    </h1>
+    <div class="formDiv mt-5">
+        <div class="imgArea">
+            <img src="../static/img/Frame.png" alt="">
+        </div>
+        <div class="formArea">
+            <form action="http://localhost:5000/upload"
+                  method="POST"
+                  enctype="multipart/form-data"
+                  onsubmit="return checkForm()"
+                  id="test"
+            >
+                <script>
+                    function checkForm(){
+                        let file, style, season, kind, color;
+                        file = document.querySelector("#file");
+                        if(!file.files.length){
+                            alert("이미지 등록 하셈");
+                            return false;
+                        }
+                        style = document.querySelectorAll('input[name="style"]:checked');
+                        if(!style.length){
+                            alert("스타일 하나 이상 선택");
+                            return false;
+                        }
+                        season = document.querySelector('input[name="season"]:checked');
+                        if(season == null){
+                            alert("계절감 선택");
+                            return false;
+                        }
+                        kind = document.querySelector('#kind_select');
+                        if(kind.options[kind.selectedIndex].value == "none"){
+                            alert("종류 선택");
+                            return false;
+                        }
+                        color = document.querySelector('#color_select');
+                        if(color.options[color.selectedIndex].value == "none"){
+                            alert("색상 선택");
+                            return false;
+                        }
+                    }
+                </script>
+                <label for="file_box">내 옷 이미지 등록</label>
+                <div id="file_box">
+                    <input class="upload-name" value="첨부파일" placeholder="첨부파일" >
+                    <label for="file">파일찾기</label>
+                    <input type="file" id="file" name="image" accept="image/*">
+                </div>
+                <script>
+                    let target = document.querySelector("#file");
+                    let control = document.querySelector(".upload-name");
+                    target.addEventListener("change", () => {
+                        control.value = target.files[0].name;
+                    })
+                </script>
+
+                <label for="uniform_style">옷스타일</label>
+                <div id="uniform_style">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="casual" name="style" value="casual">
+                        <label class="form-check-label" for="casual">캐주얼</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="date" name="style" value="date">
+                        <label class="form-check-label" for="date">데이트</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="office" name="style" value="office">
+                        <label class="form-check-label" for="office">오피스룩</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="training" name="style" value="training">
+                        <label class="form-check-label" for="training">트레이닝복</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="style_etc" name="style" value="style_etc">
+                        <label class="form-check-label" for="style_etc">기타</label>
+                    </div>
+                </div>
+
+
+                <label for="uniform_season">계절감</label>
+                <div id="uniform_season">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="season" id="spring" value="spring">
+                        <label class="form-check-label" for="spring">봄</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="season" id="summer"
+                               value="summer">
+                        <label class="form-check-label" for="summer">여름</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="season" id="fall"
+                               value="fall">
+                        <label class="form-check-label" for="fall">가을</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="season" id="winter"
+                               value="winter">
+                        <label class="form-check-label" for="winter">겨울</label>
+                    </div>
+                </div>
+                <div class="for_select">
+                    <label for="uniform_kind">옷종류</label>
+                    <div id="uniform_kind">
+                        <select id="kind_select" name="kind" required>
+                            <option value="none">선택</option>
+                            <option value="outer">아우터</option>
+                            <option value="shirt">상의</option>
+                            <option value="set">원피스/세트</option>
+                            <option value="pants">바지</option>
+                            <option value="skirt">스커트</option>
+                            <option value="etc">기타</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="for_select">
+                    <label for="uniform_color">옷색상</label>
+                    <div id="uniform_color">
+                        <select id="color_select" name="color" required>
+                            <option value="none">선택</option>
+                            <option value="red">빨강</option>
+                            <option value="orange">주황</option>
+                            <option value="yellow">노랑</option>
+                            <option value="green">초록</option>
+                            <option value="blue">파랑</option>
+                            <option value="navy">남색</option>
+                            <option value="purple">보라</option>
+                            <option value="etc">기타</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit">등록하기</button>
+            </form>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>
