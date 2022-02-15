@@ -56,7 +56,7 @@ function validId() {
                     console.log(validid)
                     document.getElementById('already').innerHTML = '이미 존재하는 아이디 입니다.';
                     document.getElementById('already').style.color = 'red';
-                    userid.value = null;
+                    userid.value = ''
                     userid.focus()
                 }
             }//ajax
@@ -76,18 +76,18 @@ function checkPw() {
     if (pw.value.length < 4 || pw.value.length > 8) {
         alert('비밀번호는 최소 4자 ~최대 8자로 설정해주세요')
         pw.value = '';
-        pw.focus;
+        pw.focus();
     }
     if (pw.value !== '' && pwCheck.value !== '') {
         if (pw.value === pwCheck.value) {
             document.getElementById('same').innerHTML = '비밀번호가 일치합니다.';
             document.getElementById('same').style.color = 'black';
-            nickname.focus;
+            nickname.focus();
         } else {
             document.getElementById('same').innerHTML = '비밀번호가 일치하지 않습니다.';
             document.getElementById('same').style.color = 'red';
             pwCheck.value = '';
-            pwCheck.focus()
+            pwCheck.focus();
         }
     }
 }
@@ -96,7 +96,7 @@ function checkPw() {
 function checkNickname() {
     if (nickname.value === '') {
         alert('닉네임을 입력해주세요')
-        nickname.focus;
+        nickname.focus();
     } else if (nickname.value < 2 || nickname.value > 8) {
         alert('닉네임은 2~8자 까지 가능합니다.')
 
@@ -161,8 +161,18 @@ function submitSignin() {
             data: {user_id: signinId.value,
                    user_pw: signinPw.value},
             success: function (response) {
+                if (response['id_chk']== false){
+                    alert('해당 아이디가 존재하지 않습니다')
+                    signinId.value=''
+                    signinPw.value=''
+                    signinId.focus()
+                }
                 if (response['status'] == false) {
                     alert(response['msg'])
+                    signinId.value=''
+                    signinPw.value=''
+                    signinId.focus()
+
                 } else{
                     window.location.href = '/'
                 }
