@@ -26,13 +26,11 @@ app.register_blueprint(blueprint,url_prefix="/login")
 app.register_blueprint(user_bp,url_prefix="/login")
 app.register_blueprint(find_clothes.closet)
 
+
 @app.route('/')
 def home():
     #로그인 상태에 따라 index 로딩시 상태변수 전달 / 로그인페이지 => 로그아웃으로 변경
     logged = False
-    if google.authorized:
-        logged = True
-
     if "user_id" in session:
         logged = True
     return render_template('index.html', logged = logged)
