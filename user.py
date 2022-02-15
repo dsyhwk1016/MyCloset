@@ -26,7 +26,7 @@ blueprint = make_google_blueprint(
     redirect_url='google_chk'
 )
 
-user_bp =Blueprint('login', __name__, url_prefix='user')
+user_bp = Blueprint('login', __name__, url_prefix='user')
 
 @user_bp.route('/login_page')
 def login_page():
@@ -46,10 +46,9 @@ def login():
 
     if input_user_id == db_user[0]['user_id'] and shapw == db_user[0]['user_pw']: #아이디 / 비밀번호 체크
         session['user_id'] = input_user_id #user_id 세션에 아이디 정보 입력
-        return jsonify({"msg" : "로그인 성공!"})
-
+        return jsonify({"msg" : "로그인 성공!", "status" : True})
     else :
-        return jsonify({"pw_chk" : False})
+        return jsonify({"msg" : "로그인 정보를 다시 확인해주세요", "status" : False})
 
 @user_bp.route('/google/google_chk') #구글 첫로그인시 자동으로 member 컬렉션에 ID와 Name 입력
 def google_chk():
@@ -113,26 +112,15 @@ def register():
         }
 
         db.member.insert_one(doc) #member 컬렉션에 insert
-
-        return redirect(url_for('home')) #로그인 완료 후 home으로 이동
+        session['user_id'] = user_id  # user_id 세션에 아이디 정보 입력
+        return jsonify({"msg" : "회원가입 성공!"})
 
     elif request.method == 'GET': #ID와 닉네임 중복체크시 호출
-        if request.args.get('type') == 'id': #ID중복체크시 실행
-            user_id = request.args.get('user_id') #GET방식으로 넘어온 파라미터를 변수에 저장
+        user_id = request.args.get('user_id') #GET방식으로 넘어온 파라미터를 변수에 저장
 
-            chk = list(db.member.find({'user_id' : user_id} , {'_id' : False})) #member 컬렉션에서 동일한 ID가 있는지 검사
+        chk = list(db.member.find({'user_id' : user_id} , {'_id' : False})) #member 컬렉션에서 동일한 ID가 있는지 검사
 
-            if(chk):
-                return jsonify({'msg' : '이미 가입된 ID입니다', 'status' : False})
-            else:
-                return jsonify({'msg' : '가입이 가능한 ID입니다', 'status' : True})
-
-        elif request.args.get('type') == 'name': #닉네임 중복체크시 실행
-            user_name = request.args.get('user_name') #GET방식으로 넘어온 파라미터를 변수에 저장
-
-            chk = list(db.member.find({'user_name' : user_name}, {'_id' : False})) #member 컬렉션에서 동일한 닉네임이 있는지 검사
-
-            if(chk):
-                return jsonify({'msg' : '이미 가입된 닉네임입니다', 'status' : False})
-            else:
-                return jsonify({'msg' : '가입이 가능한 닉네임입니다', 'status' : True})
+        if(chk):
+            return jsonify({'msg' : '이미 가입된 ID입니다', 'status' : False})
+        else:
+            return jsonify({'msg' : '가입이 가능한 ID입니다', 'status' : True})
