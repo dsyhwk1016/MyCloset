@@ -1,14 +1,19 @@
-from flask import Blueprint, render_template, request, jsonify, session, redirect, url_for, current_app
+from flask import Blueprint, render_template, request, jsonify, session, redirect, url_for, current_app, Flask
 from pymongo import MongoClient
 from flask_dance.contrib.google import make_google_blueprint, google
 from dotenv import load_dotenv
+from flask_mail import Message, Mail
 
 import hashlib
 import os
 import requests
+import string
+import random
 
 #환경변수의 값 불러오기
 load_dotenv()
+
+app = Flask(__name__)
 
 client = MongoClient('localhost', 27017)
 db = client.mycloset
@@ -20,9 +25,7 @@ naver_cliend_id = os.getenv('NAVER_CLIENT_ID')
 naver_secret = os.getenv('NAVER_CLIENT_SECRET')
 naver_callurl = 'http://localhost:5000/login/naver/callback'
 
-
 #google blueprint Setup
-
 blueprint = make_google_blueprint(
     client_id = client_id,
     client_secret = client_secret,
@@ -30,12 +33,28 @@ blueprint = make_google_blueprint(
     scope=["profile", "email"],
     redirect_url='google_chk'
 )
+
+#user_bp Setup
 user_bp = Blueprint('login', __name__, url_prefix='user')
 user_bp.secret_key = os.urandom(24)
+
+#Flask_mail Setup
+app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'inmyblue0922'
+app.config['MAIL_PASSWORD'] = 'juscqknmjdtpsvoj'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+
+mail = Mail(app)
 
 @user_bp.route('/login_page')
 def login_page():
     return render_template('login.html')
+
+@user_bp.route('/find_pw_page')
+def find_pw_page():
+    return render_template('find_pw.html')
 
 @user_bp.route('/login', methods=['POST'])
 def login():
@@ -177,3 +196,25 @@ def register():
             return jsonify({'msg' : '이미 가입된 ID입니다', 'status' : False})
         else:
             return jsonify({'msg' : '가입이 가능한 ID입니다', 'status' : True})
+
+@user_bp.route('/find_pw', methods=['GET']) #비밀번호 찾기
+def find_pw():
+    user_id = request.args.get('user_id') # GET방식으로 ID 전달받음
+
+    new_pw_len = 8  # 새 비밀번호 길이
+
+    pw_candidate = string.ascii_letters + string.digits
+
+    temp_pw = ""
+    for i in range(new_pw_len):
+        temp_pw += random.choice(pw_candidate)
+
+    sha_temp_pw = hashlib.sha256(temp_pw.encode()).hexdigest() # 임시비밀번호 암호화
+
+    db.member.update_one({'user_id': user_id}, {'$set': {'user_pw': sha_temp_pw}})
+
+    msg = Message("test mail", sender='inmyblue0922@gmail.com', recipients=[f"{user_id}"])
+    msg.body = f'Your new password is {temp_pw}'
+
+    mail.send(msg)
+    return jsonify({'msg' : '메일로 임시비밀번호가 발송되었습니다'})
