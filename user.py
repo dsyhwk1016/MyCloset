@@ -41,8 +41,8 @@ user_bp.secret_key = os.urandom(24)
 #Flask_mail Setup
 app.config['MAIL_SERVER']='smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = 'inmyblue0922'
-app.config['MAIL_PASSWORD'] = 'juscqknmjdtpsvoj'
+app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 
@@ -201,20 +201,27 @@ def register():
 def find_pw():
     user_id = request.args.get('user_id') # GET방식으로 ID 전달받음
 
-    new_pw_len = 8  # 새 비밀번호 길이
+    db_id = db.member.find_one({'user_id' : user_id}, {'_id' : False})
 
-    pw_candidate = string.ascii_letters + string.digits
+    if not db_id : #ID체크 먼저하기
+        return jsonify({'msg' : '가입된 ID가 업습니다'})
+    elif db_id and db_id['auth'] != 'local': #로컬 가입계정만 비밀번호변경
+        return jsonify({'msg' : '네이버나 구글로 가입시 비밀번호를 찾을 수 없습니다.'})
+    else:
+        new_pw_len = 8  # 새 비밀번호 길이
 
-    temp_pw = ""
-    for i in range(new_pw_len):
-        temp_pw += random.choice(pw_candidate)
+        pw_candidate = string.ascii_letters + string.digits
 
-    sha_temp_pw = hashlib.sha256(temp_pw.encode()).hexdigest() # 임시비밀번호 암호화
+        temp_pw = ""
+        for i in range(new_pw_len):
+            temp_pw += random.choice(pw_candidate)
 
-    db.member.update_one({'user_id': user_id}, {'$set': {'user_pw': sha_temp_pw}})
+        sha_temp_pw = hashlib.sha256(temp_pw.encode()).hexdigest() # 임시비밀번호 암호화
 
-    msg = Message("test mail", sender='inmyblue0922@gmail.com', recipients=[f"{user_id}"])
-    msg.body = f'Your new password is {temp_pw}'
+        db.member.update_one({'user_id': user_id}, {'$set': {'user_pw': sha_temp_pw}}) #임시 비밀번호를 DB에 업데이트
 
-    mail.send(msg)
-    return jsonify({'msg' : '메일로 임시비밀번호가 발송되었습니다'})
+        msg = Message("What's in my Closet Password Reset", sender='inmyblue0922@gmail.com', recipients=[f"{user_id}"])
+        msg.body = f'Your new password is {temp_pw}' #body에 한글입력시 인코딩 문제로 오류..
+
+        mail.send(msg)
+        return jsonify({'msg' : '메일로 임시비밀번호가 발송되었습니다'})
