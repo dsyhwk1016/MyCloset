@@ -10,7 +10,7 @@ db = client.mycloset
 # 옷장 목록 페이지 렌더링
 @closet.route('/')
 def mycloset():
-    return render_template('mycloset.html')
+    return render_template('closet.html')
 
 # 전체 옷 데이터 전송
 @closet.route('/load', methods=['GET'])
