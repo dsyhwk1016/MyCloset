@@ -1,48 +1,105 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-    <!-- Optional JavaScript -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> What's in my closet</title>
+    <!-- google+font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&family=Festive&family=Do+Hyeon&family=Nanum+Brush+Script&display=swap"
+          rel="stylesheet">
+    <!-- CSS LINK -->
+    <link rel="stylesheet" href="../static/common.css">
+    <link rel="stylesheet" href="../static/auth.css">
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-            crossorigin="anonymous"></script>
-    <!-- Google Font -->
-
-    <title>What's in My Closet!</title>
-
-    <!-- CSS -->
-    <style>
-
-    </style>
-
-    <!-- JavaScript -->
-    <script>
-
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
     </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+    </script>
+    <!-- JS  -->
+    <script defer src="../static/auth.js"></script>
 </head>
-<body>
-    {% if not google_data %}
-        <form name="f_login" method="post" enctype="multipart/form-data" action="/login">
-            ID : <input type="text" name="user_id" id="user_id">
-            PW : <input type="password" name="user_pw" id="user_pw">
 
-            <input type="submit" value="로그인하기">
-        </form>
-            <a href="/google_login"><img src="../static/google_login.png"></a>
-    {% else %}
-        안녕하세요 {{google_data.given_name}}님.
-    {% endif %}
+<body>
+<!-- HEADER -->
+<header>
+    <div class="inner">
+        <ul class="left-nav">
+            <li><a href="/">홈</a></li>
+            <li><a href="javascript:void(0)">내 옷장</a></li>
+            <li><a href="javascript:void(0)">새 옷 등록</a></li>
+            <li><a href="javascript:void(0)">코디 추천</a></li>
+            <li><a href="javascript:void(0)">커뮤니티</a></li>
+        </ul>
+        <div class="right-nav">
+            <a href="/login/login_page">회원가입/로그인</a>
+        </div>
+    </div>
+</header>
+<div class="wrap">
+    <div class="title">
+        What's in my closet
+    </div>
+    <div class="auth">
+        <div class="btn-wrap">
+
+            <button class="btn signup" >회원가입</button>
+            <button class="btn signin show" >로그인</button>
+        </div>
+        <div class="container">
+            <!-- 로그인폼 -->
+            <form class="form signin show" id="sign-in">
+                <label for="userid">아이디</label>
+                <input type="email" placeholder="example@email.com" id="signin-id">
+                <label for="password">비밀번호</label>
+                <input type="password" id="signin-pwd">
+            </form>
+
+            <!-- 회원가입폼 -->
+            <form name="signUpForm" class="form signup" id="sign-up">
+                <label for="userid">아이디</label>
+                <div class="valid-email">
+                    <input type="email" placeholder="example@email.com" name="userid" id="signup-id" required>
+                    <button class="btn valid" onclick="validId()">중복체크</button>
+                </div>
+                <span id="already"></span>
+                <label for="pwd">비밀번호</label>
+                <input type="password" name="userpwd" placeholder="영어,숫자 혼용(4~8자)" id="signup-pwd" onchange="checkPw()"
+                       minlength="4" maxlength="8" required>
+                <label for="checkpwd">비밀번호확인</label>
+                <input type="password" name="pwdcheck" id="pwd-check" onchange="" minlength="4" maxlength="8" required>
+                <span id="same"></span>
+                <label for="nickname">닉네임</label>
+                <input type="text" name="nickname" id="nickname" required>
+            </form>
+        </div>
+    </div>
+    <!-- 버튼 -->
+    <input type="submit" class="submit submit-signin show" value="로그인" onclick="submitSignin()">
+    <input type="button" class="submit submit-signup" value="회원가입" onclick="submitSignUp()">
+    <!--구글과 비밀번호찾기-->
+    <a class="google show" href="/login/google_login"><img src="../static/google_login.png"></a>
+    <a class="find-pwd" href="javascript:void(0)" target="_blank">비밀번호찾기</a>
+
+<!--   {% if not google_data %}&ndash;&gt;-->
+<!--        <form name="f_login" method="post" enctype="multipart/form-data" action="/login">-->
+<!--           ID : <input type="text" name="user_id" id="user_id">-->
+<!--           PW : <input type="password" name="user_pw" id="user_pw">-->
+<!---->
+<!--          <input type="submit" value="로그인하기">-->
+<!--        </form>-->
+<!--            <a href="/google_login"><img src="../static/google_login.png"></a>-->
+<!--    {% else %}-->
+<!--       안녕하세요 {{google_data.given_name}}님.-->
+<!--    {% endif %}-->
+</div>
+
 </body>
+
 </html>
