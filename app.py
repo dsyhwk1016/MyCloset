@@ -2,10 +2,10 @@ import os
 
 from flask import Flask, render_template, session
 from pymongo import MongoClient
-from flask_dance.contrib.google import google
 
 from user import user_bp, blueprint
-import find_clothes
+from upload import upload_bp
+from find_clothes import closet
 
 #Flask App Setup
 app = Flask(__name__)
@@ -24,8 +24,9 @@ app.secret_key = os.urandom(24)
 #login blueprint load
 app.register_blueprint(blueprint,url_prefix="/login")
 app.register_blueprint(user_bp,url_prefix="/login")
-app.register_blueprint(find_clothes.closet)
+app.register_blueprint(closet)
 
+app.register_blueprint(upload_bp, url_prefix='/upload')
 
 @app.route('/')
 def home():
@@ -35,9 +36,9 @@ def home():
         logged = True
     return render_template('index.html', logged = logged)
 
-@app.route('/upload')
-def upload():
-    return render_template('upload.html')
+# @app.route('/upload')
+# def upload():
+#     return render_template('upload.html')
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

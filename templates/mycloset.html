@@ -32,13 +32,20 @@
 
     <!-- JavaScript -->
     <script>
+        $(document).ready(function () {
+            showList()
+        });
+
         function showList(){
             $.ajax({
                 type: "GET",
-                url: "/mylist?style=date&color=red",
+                url: "/mycloset/load",
                 data: {},
                 success: function (response) {
-                    alert(response);
+                    if (response['status'] == 'SUCCESS')
+                        alert(response['user_name'])
+                    else
+                        alert(response['msg']);
                 }
             })
         }
@@ -47,7 +54,8 @@
 
 <body>
     옷장 출력 테스트
-    <button onclick="showList()">출력!</button>
+    <button>출력!</button>
+    <div class="u-name">하!</div>
 </body>
 
 </html>

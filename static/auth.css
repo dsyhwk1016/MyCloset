@@ -118,19 +118,88 @@ border:none;
 .wrap .submit.show:hover{
   background-color: #61237f;
 }
-.google{
+
+
+/*sns 로그인*/
+
+.sns-login{
  display: none;
   margin: 10px auto;
 }
-.google.show{
+.sns-login.show{
   display: block;
 }
-.google img{
-  width:200px;
-  border-radius:12px;
+.sns img{
+  width:40px;
+  margin:0 10px;
+  border-radius:50%;
+
 }  
 
 .wrap .find-pwd{
-  margin-top: 20px;
+  margin-top: 10px;
+  padding:10px;
   color:#101010;
+  cursor:pointer;
+}
+.modal-bg{
+  display: none;
+  position:fixed;
+  content:"";
+  width:100%;
+  height:calc(100% - 80px);
+  top:80px;
+  left:0;
+  background-color:rgba(0,0,0,.3);
+}
+
+
+/*비밀번호찾기 모달창*/
+
+.modal-wrap{
+  display: none;
+  position:absolute;
+  width:500px;
+  height:300px;
+  box-sizing: border-box;
+  top:150px;
+  border-radius:12px;
+  background-color: #fff;
+
+}
+.modal-wrap .xbtn-bar{
+  width:500px;
+  height:40px;
+  box-sizing: border-box;
+  background-color:rgb(145,80,175);
+  color:#fff;
+  border-radius: 12px 12px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding:10px;
+}
+.modal-wrap .xbtn-bar .material-icons{
+  cursor:pointer;
+}
+.modal-wrap .modal-findpw{
+  width:100%;
+  display: flex;
+  justify-content: center;
+
+}
+.modal-wrap .modal-findpw .findpw-form{
+  padding-top:20px;
+}
+
+.modal-wrap .modal-findpw #findpw-id{
+  margin-right:10px;
+  padding:7px;
+  border-radius: 5px;
+  border:2px solid rgba(195,126,225,.5);
+  box-sizing: border-box;
+}
+.modal-wrap .modal-findpw #findpw-btn{
+  font-size:12px;
+  display: inline;
 }

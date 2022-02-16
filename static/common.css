@@ -8,6 +8,7 @@ body{
   background-attachment:fixed;
   background-position: left 0px top 80px;
   font-family: 'Do Hyeon', sans-serif;
+
 }
 a {
   text-decoration: none;
@@ -41,8 +42,11 @@ input{
 header{
   width: 100%;
   height:80px; 
-  background-color:rgb(145,80,175);git
+  background-color:rgb(145,80,175);
+  position:fixed;
   z-index: 10;
+  top:0;
+  left:0;
 }
 header .inner{
   margin:auto;

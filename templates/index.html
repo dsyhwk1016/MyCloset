@@ -9,12 +9,12 @@
   <!-- google+font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&family=Festive&family=Do+Hyeon&family=Nanum+Brush+Script&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&family=Festive&family=Do+Hyeon&family=Nanum+Brush+Script&display=swap"
+        rel="stylesheet">
   <!-- css -->
   <link href="../static/common.css" rel="stylesheet">
   <link href="../static/main.css" rel="stylesheet">
-    <!-- JS -->
-
+  <!-- JS -->
 
 </head>
 
@@ -24,11 +24,10 @@
     <div class="inner">
         <ul class="left-nav">
             <li><a href="/">홈</a></li>
-            <li><a href="javascript:void(0)">내 옷장</a></li>
-            <li><a href="javascript:void(0)">새 옷 등록</a></li>
+            <li><a href="/mycloset">내 옷장</a></li>
+            <li><a href="/upload(0)">새 옷 등록</a></li>
             <li><a href="javascript:void(0)">코디 추천</a></li>
             <li><a href="javascript:void(0)">커뮤니티</a></li>
-            <li><a href="/mycloset">옷장</a></li>
         </ul>
         <div class="right-nav">
             {% if logged %}
@@ -39,15 +38,14 @@
 
         </div>
     </div>
+  </div>
 </header>
 
+<!-- 메인 옷장 -->
+<section class="main-wrap">
+  <a href="javascript:void(0)"><img class="main-closet" src="../static/closet_with_clothes.png" alt="closet"></a>
+<!--  옷장 크기가 제 컴퓨터에서는 정상이라 확인이 필요합니다-->
+</section>
 </body>
-
-
-   <!-- 메인 옷장 -->
-   <section class="main-wrap">
-    <a href="javascript:void(0)"><img class="main-closet" src="./static/closet_with_clothes.png" alt="closet"></a>
-   </section>
-  </body>
 
 </html>

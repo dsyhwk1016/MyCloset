@@ -38,20 +38,12 @@ def upload():
 
 @upload_bp.route('/upload_file', methods=['POST'])
 def upload_file():
-    name = request.args.get('name'),
-    style = request.args.get('style'),
-    season = request.args.get('season'),
-    kind = request.args.get('kind'),
-    color = request.args.get('color')
-
-    doc = {
-        'name': name,
-        'style': style,
-        'season': season,
-        'kind': kind,
-        'color': color
-    }
-    db.mycloset.insert_one(doc)
+    # file = request.files['file']
+    # style = request.form['uniform_style']
+    # season = request.form['uniform_season']
+    # kind = request.form['uniform_kind']
+    # color = request.form['uniform_color']
+    # filename = secure_filename(file.filename)
 
     if request.method == 'POST':
 
@@ -66,6 +58,14 @@ def upload_file():
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
+        doc = {
+            'file': file,
+            'style': style,
+            'season': season,
+            'kind': kind,
+            'color': color
+        }
+        db.mycloset.insert_one(doc)
         flash('File successfully uploaded ' + file.filename + ' to the database!')
         return redirect('/')
     else:
