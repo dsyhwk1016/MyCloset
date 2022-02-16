@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, Blueprint
 from werkzeug.utils import secure_filename
 from pymongo import MongoClient
 import os
@@ -17,6 +17,8 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
+#blueprint setup
+upload_bp = Blueprint('upload', __name__)
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -29,12 +31,12 @@ def allowed_file(filename):
 #     kind = db.StringField()
 #     color = db.StringField()
 
-@app.route('/', methods=['GET'])
+@upload_bp.route('/')
 def upload():
     return render_template('upload.html')
 
 
-@app.route('/upload', methods=['POST'])
+@upload_bp.route('/upload_file', methods=['POST'])
 def upload_file():
     # file = request.files['file']
     # style = request.form['uniform_style']
@@ -44,6 +46,7 @@ def upload_file():
     # filename = secure_filename(file.filename)
 
     if request.method == 'POST':
+
         if 'file' not in request.files:
             flash('No file part')
             return redirect(request.url)
@@ -55,17 +58,17 @@ def upload_file():
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-        # doc = {
-        #     'file': file,
-        #     'style': style,
-        #     'season': season,
-        #     'kind': kind,
-        #     'color': color
-        # }
-        # db.mycloset.insert_one(doc)
-        # flash('File successfully uploaded ' + file.filename + ' to the database!')
-        # return redirect('/')
-        else:
-            flash('Only png, jpg, jpeg, gif')
-            return redirect(request.url)
+        doc = {
+            'file': file,
+            'style': style,
+            'season': season,
+            'kind': kind,
+            'color': color
+        }
+        db.mycloset.insert_one(doc)
+        flash('File successfully uploaded ' + file.filename + ' to the database!')
+        return redirect('/')
+    else:
+        flash('Only png, jpg, jpeg, gif')
+        return render_template('login.html')
     return render_template('upload.html')
