@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 
 import hashlib
 import os
+import requests
 
 #환경변수의 값 불러오기
 load_dotenv()
@@ -12,9 +13,13 @@ load_dotenv()
 client = MongoClient('localhost', 27017)
 db = client.mycloset
 
-#Google Setup
+#ID / Secret Setup
 client_id = os.getenv('GOOGLE_CLIENT_ID')
 client_secret = os.getenv('GOOGLE_CLIENT_SECRET')
+naver_cliend_id = os.getenv('NAVER_CLIENT_ID')
+naver_secret = os.getenv('NAVER_CLIENT_SECRET')
+naver_callurl = 'http://localhost:5000/login/naver/callback'
+
 
 #google blueprint Setup
 
@@ -25,8 +30,8 @@ blueprint = make_google_blueprint(
     scope=["profile", "email"],
     redirect_url='google_chk'
 )
-
-user_bp =Blueprint('login', __name__, url_prefix='user')
+user_bp = Blueprint('login', __name__, url_prefix='user')
+user_bp.secret_key = os.urandom(24)
 
 @user_bp.route('/login_page')
 def login_page():
@@ -46,10 +51,9 @@ def login():
 
     if input_user_id == db_user[0]['user_id'] and shapw == db_user[0]['user_pw']: #아이디 / 비밀번호 체크
         session['user_id'] = input_user_id #user_id 세션에 아이디 정보 입력
-        return jsonify({"msg" : "로그인 성공!"})
-
+        return jsonify({"msg" : "로그인 성공!", "status" : True})
     else :
-        return jsonify({"pw_chk" : False})
+        return jsonify({"msg" : "로그인 정보를 다시 확인해주세요", "status" : False})
 
 @user_bp.route('/google/google_chk') #구글 첫로그인시 자동으로 member 컬렉션에 ID와 Name 입력
 def google_chk():
@@ -60,6 +64,8 @@ def google_chk():
         user_id = google_data['email']
         user_name = google_data['given_name']
 
+        session['user_id'] = user_id
+
         chk = list(db.member.find({'user_id' : user_id},{'_id' : False}))
 
         if chk:
@@ -67,7 +73,8 @@ def google_chk():
         else:
             doc = {
                 'user_id' : user_id,
-                'user_name' : user_name
+                'user_name' : user_name,
+                'auth': 'google'
             }
 
             db.member.insert_one(doc)
@@ -78,6 +85,49 @@ def google_chk():
 @user_bp.route('/google_login')
 def google_login():  # 구글 로그인 선택시 구글로그인 화면으로 이동
     return redirect(url_for('google.login'))
+
+@user_bp.route('/naver_login')
+def naver_login():
+    naver_redirect_url = f'https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id={naver_cliend_id}&state={user_bp.secret_key}&redirect_uri={naver_callurl}'
+    return redirect(naver_redirect_url)
+
+@user_bp.route('/naver/callback')
+def naver_callback():
+    code = request.args.get('code')
+
+    token_request_url = f'https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id={naver_cliend_id}&client_secret={naver_secret}&code={code}&state={user_bp.secret_key}'
+    token_response = requests.get(token_request_url)
+    token_json = token_response.json()
+    token = token_json['access_token']
+
+    user_info_request_url = "https://openapi.naver.com/v1/nid/me"
+    user_info = requests.get(user_info_request_url, headers={"Authorization": f"Bearer {token}"})
+
+    user = user_info.json()
+
+    if user['resultcode'] == '00':
+        user_id = user['response']['email']
+        user_name = user['response']['nickname']
+
+        session['user_id'] = user_id
+
+        chk = list(db.member.find({'user_id': user_id}, {'_id': False}))
+
+        if chk:
+            return redirect(url_for('home'))
+        else:
+            doc = {
+                'user_id': user_id,
+                'user_name': user_name,
+                'auth' : 'naver'
+            }
+
+            db.member.insert_one(doc)
+            return redirect(url_for('home'))  # 로그인 완료 후 home으로 이동
+    else:
+        return redirect(url_for('home'))
+
+
 
 @user_bp.route('/logout', methods=['GET']) #로그아웃
 def logout():
@@ -91,6 +141,7 @@ def logout():
             headers={"content-type" : "application/x-www-form-urlencoded"}
         )
         del blueprint.token #토큰 삭제
+        session.pop('user_id')  #  세션도 삭제
     else:
         session.pop('user_id') #구글로그인이 아닌 일반로그인의 경우 세션삭제
     return redirect(url_for('home'))
@@ -109,30 +160,20 @@ def register():
         doc = {
             'user_id' : user_id,
             'user_pw' : shapw,
-            'user_name' : user_name
+            'user_name' : user_name,
+            'auth': 'local'
         }
 
         db.member.insert_one(doc) #member 컬렉션에 insert
-
-        return redirect(url_for('home')) #로그인 완료 후 home으로 이동
+        session['user_id'] = user_id  # user_id 세션에 아이디 정보 입력
+        return jsonify({"msg" : "회원가입 성공!"})
 
     elif request.method == 'GET': #ID와 닉네임 중복체크시 호출
-        if request.args.get('type') == 'id': #ID중복체크시 실행
-            user_id = request.args.get('user_id') #GET방식으로 넘어온 파라미터를 변수에 저장
+        user_id = request.args.get('user_id') #GET방식으로 넘어온 파라미터를 변수에 저장
 
-            chk = list(db.member.find({'user_id' : user_id} , {'_id' : False})) #member 컬렉션에서 동일한 ID가 있는지 검사
+        chk = list(db.member.find({'user_id' : user_id} , {'_id' : False})) #member 컬렉션에서 동일한 ID가 있는지 검사
 
-            if(chk):
-                return jsonify({'msg' : '이미 가입된 ID입니다', 'status' : False})
-            else:
-                return jsonify({'msg' : '가입이 가능한 ID입니다', 'status' : True})
-
-        elif request.args.get('type') == 'name': #닉네임 중복체크시 실행
-            user_name = request.args.get('user_name') #GET방식으로 넘어온 파라미터를 변수에 저장
-
-            chk = list(db.member.find({'user_name' : user_name}, {'_id' : False})) #member 컬렉션에서 동일한 닉네임이 있는지 검사
-
-            if(chk):
-                return jsonify({'msg' : '이미 가입된 닉네임입니다', 'status' : False})
-            else:
-                return jsonify({'msg' : '가입이 가능한 닉네임입니다', 'status' : True})
+        if(chk):
+            return jsonify({'msg' : '이미 가입된 ID입니다', 'status' : False})
+        else:
+            return jsonify({'msg' : '가입이 가능한 ID입니다', 'status' : True})
