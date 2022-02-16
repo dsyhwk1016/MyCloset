@@ -190,7 +190,7 @@ function fPwClose(){
      document.querySelector('.modal-bg').style.display ='none';
 }
 function find_pw() {
-    let user_id = document.getElementById('findpw-id');
+    let user_id = document.getElementById('findpw-id').value;
 
             $.ajax({
                 type: "GET",

@@ -66,7 +66,7 @@ def login():
     db_user = list(db.member.find({'user_id' : input_user_id}, {'_id' : False}))
 
     if input_user_id != db_user[0]['user_id']: #입력한 ID가 DB에 있는지 확인
-        return jsonify({"id_chk" : False})
+        return jsonify({"msg" : "가입된 ID가 없습니다", "id_chk" : False})
 
     if input_user_id == db_user[0]['user_id'] and shapw == db_user[0]['user_pw']: #아이디 / 비밀번호 체크
         session['user_id'] = input_user_id #user_id 세션에 아이디 정보 입력
@@ -204,7 +204,7 @@ def find_pw():
     db_id = db.member.find_one({'user_id' : user_id}, {'_id' : False})
 
     if not db_id : #ID체크 먼저하기
-        return jsonify({'msg' : '가입된 ID가 업습니다'})
+        return jsonify({'msg' : '가입된 ID가 없습니다'})
     elif db_id and db_id['auth'] != 'local': #로컬 가입계정만 비밀번호변경
         return jsonify({'msg' : '네이버나 구글로 가입시 비밀번호를 찾을 수 없습니다.'})
     else:
