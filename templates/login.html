@@ -11,6 +11,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&family=Festive&family=Do+Hyeon&family=Nanum+Brush+Script&display=swap"
         rel="stylesheet">
+<!--  google icons-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <!-- CSS LINK -->
   <link rel="stylesheet" href="../static/common.css">
   <link rel="stylesheet" href="../static/auth.css">
@@ -80,17 +82,45 @@
       </form>
     </div>
   </div>
+
   <!-- 버튼 -->
   <input type="submit" class="submit submit-signin show" value="로그인" onclick="submitSignin()">
   <input type="button" class="submit submit-signup" value="회원가입" onclick="submitSignUp()">
-  <!--구글과 비밀번호찾기-->
-  <a class="google show" href="/login/google_login"><img src="../static/google_login.png"></a>
-<!--   <a class="naver show" href="/login/naver_login">네이버 로그인하기</a>-->
-<!--    구글 네이버버튼 아이콘스타일로 한줄에 정렬할게요-->
-  <a class="find-pwd" href="/login/find_pw_page" target="_blank">비밀번호찾기</a>
+
+  <!--sns로그인과 비밀번호찾기-->
+  <div class="sns-login show">
+    <div>
+    <a class="google sns" href="/login/google_login"><img src="../static/google_logo.png" alt="google logo"></a>
+    <a class="naver sns" href="/login/naver_login"><img src="../static/naver_logo.png" alt="naver logo"></a>
+    </div>
+  </div>
+
+  <div class="find-pwd " onclick="fPwWindow()">비밀번호찾기</div>
+
+
+  <!--  비밀번호찾기 모달-->
+
+<!--  <a class="find-pwd" href="/login/find_pw_page" target="_blank">비밀번호찾기</a>-->
+
+  <div class="modal-bg"></div>
+  <div class="modal-wrap">
+    <div class="xbtn-bar">
+      <span>비밀번호찾기</span>
+      <span class="material-icons" onclick="fPwClose()">close</span>
+    </div>
+    <div class="modal-findpw">
+      <form class="findpw-form">
+        <p>비밀번호 찾기를 누르면 메일로 임시 비밀번호가  발송됩니다. </p>
+        <label for="findpw">이메일 주소</label>
+      <input type="text" id="findpw-id"><button id="findpw-btn" class="findpw btn" onclick="find_pw()">찾기</button>
+      </form>
+    </div>
+  </div>
+
 
 
   <!--   {% if not google_data %}&ndash;&gt;-->
+
   <!--        <form name="f_login" method="post" enctype="multipart/form-data" action="/login">-->
   <!--           ID : <input type="text" name="user_id" id="user_id">-->
   <!--           PW : <input type="password" name="user_pw" id="user_pw">-->
