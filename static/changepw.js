@@ -3,7 +3,7 @@ const newPw = document.getElementById('new-pw');
 const newPwCheck = document.getElementById('pwd-check');
 
 //현재 비밀번호 확인
-function currentpw() {
+function currentPw() {
   if (curPw.value !== '') {
     $.ajax({
       type: "POST",
@@ -49,7 +49,7 @@ function comparePw() {
         }
     }
 }
-function sendnewpw(){
+function sendNewPw(){
     if (newPw.value !== '' && newPwCheck.value !== '') {
         if (newPw.value === newPwCheck.value) {
              $.ajax({
