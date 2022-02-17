@@ -1,7 +1,7 @@
 from flask import render_template, request, jsonify,  url_for, redirect, session, current_app, Blueprint, escape
 from pymongo import MongoClient
 
-closet = Blueprint('closet', __name__, url_prefix='/mycloset')
+closet = Blueprint('closet', __name__)
 
 #MongoDB Setup
 client = MongoClient('localhost', 27017)
@@ -31,7 +31,7 @@ def load():
         clothes = list(db.clothes.find({'user_id': user_id}, {'_id': False, 'user_id': False}))
         if clothes:
             empty = False
-        print(user_name)
+
         return jsonify({'status': status, 'user_name': user_name, 'clothes': clothes, 'empty': empty})
     except:
         status = 'FAIL'
