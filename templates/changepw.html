@@ -55,7 +55,7 @@
 <div>
       <form name="changePwForm" class="changepw form" id="change-pw">
         <label for="currentpw">현재비밀번호</label>
-          <input type="password"  name="currentpw" id="current-pw" minlength="4" maxlength="8" onchange="currentpw()" required>
+          <input type="password"  name="currentpw" id="current-pw" minlength="4" maxlength="8" onchange="currentPw()" required>
         <span id="checkpw-now"></span>
         <label for="newpw">새 비밀번호</label>
         <input type="password" name="newpw" placeholder="4~8자" id="new-pw" onchange="comparePw()"
@@ -64,7 +64,7 @@
         <label for="checknewpw">새 비밀번호확인</label>
         <input type="password" name="newpwcheck" id="pw-check"  minlength="4" maxlength="8" required>
         <span id="check-new"></span>
-        <button onclick="sendnewpw()">변경하기</button>
+        <button onclick="sendNewPw()">변경하기</button>
       </form>
 
 </div>
