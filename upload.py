@@ -30,12 +30,12 @@ def upload():
 
 
 @upload_bp.route('/upload_file', methods=['POST'])
-def upload_file():  # 여기에 데이터는 받아오는데 그 이후 파일 저장 코드까지 실행이안되어서요!
-    name = request.args.get('file'),
-    style = request.args.get('style'),
-    season = request.args.get('season'),
-    kind = request.args.get('kind_select'),
-    color = request.args.get('color_select'),
+def upload_file():
+    name = request.form['img_name']
+    style = request.form['style']
+    season = request.form['season']
+    kind = request.form['kind']
+    color = request.form['color']
 
     doc = {
         'name': name,
@@ -47,17 +47,15 @@ def upload_file():  # 여기에 데이터는 받아오는데 그 이후 파일 �
 
     db.clothes.insert_one(doc)
     # return jsonify({'msg': ' 성공적으로 작성되었습니다.'})
-    if 'file' not in request.files:
-        flash('No file part')
-        return redirect(request.url)
-    # file = request.files['file']
-    file = request.args.get('file')
-    if file.filename == '':
+    file = request.files['file']
+    # if file not in request.files: #일단 이 부분 오류 이 부분만 잘 고치면 될것같아요
+    #     flash('No file part')
+    #     return redirect(request.url)
+    if file.filename == '': #이 부분은 안오류
         flash('No selected file')
         return redirect(request.url)
     if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
+        filename = secure_filename(file.filename) # 요 부분은 현정님께서 쓰신 부분인데 파일이름넣고 / 업로드폴더에 세이브하는거같은데 제대로 작동
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
     return render_template('upload.html')
-# 옆에 형식대로 따오긴 했거든요..ㅠ
