@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+
+    <!-- Google Font -->
+
+
+    <title>What's in My Closet!</title>
+
+    <!-- JavaScript -->
+    <script>
+        $(document).ready(function () {
+            showList()
+        });
+
+        function showList(){
+            $.ajax({
+                type: "GET",
+                url: "/mycloset/load",
+                data: {},
+                success: function (response) {
+                    if (response['status'] == 'SUCCESS') {
+                        let user_name = response['user_name'];
+                        let empty = response['empty'];
+                        let clothes = response['clothes']
+
+                        $('.u-name').append(user_name)
+                        if(empty == true)
+                            $('.list').append('옷장이 비었습니다.')
+                        else {
+                            for (let i = 0; i < clothes.length; i++) {
+                                let style = clothes[i]['clothes_style']
+                                let season = clothes[i]['clothes_season']
+                                let color = clothes[i]['clothes_color']
+                                let kind = clothes[i]['clothes_kind']
+
+                                let temp = `<tr>
+                                                <td>${style}</td>
+                                                <td>${season}</td>
+                                                <td>${color}</td>
+                                                <td>${kind}</td>
+                                            </tr>`
+                                $('.clothes-list').append(temp)
+                            }
+                        }
+                    } else
+                        alert(response['msg']);
+                }
+            })
+        }
+
+        function find(){
+            $.ajax({
+                type: "GET",
+                url: "/mycloset/find?color=red",
+                data: {},
+                success: function (response) {
+                    if (response['status'] == 'SUCCESS') {
+                        let empty = response['empty'];
+                        let clothes = response['clothes']
+
+                        if(empty == true)
+                            $('.list').append('옷장이 비었습니다.')
+                        else {
+                            for (let i = 0; i < clothes.length; i++) {
+                                let style = clothes[i]['clothes_style']
+                                let season = clothes[i]['clothes_season']
+                                let color = clothes[i]['clothes_color']
+                                let kind = clothes[i]['clothes_kind']
+
+                                let temp = `<tr>
+                                                <td>${style}</td>
+                                                <td>${season}</td>
+                                                <td>${color}</td>
+                                                <td>${kind}</td>
+                                            </tr>`
+                                $('.clothes-list').append(temp)
+                            }
+                        }
+                    } else
+                        alert(response['msg']);
+                }
+            })
+        }
+    </script>
+</head>
+
+<body>
+    <span class="u-name"></span>의 옷장 (테스트)
+    <button onclick="find()">검색!</button>
+    <div class="clothes-list"></div>
+</body>
+
+</html>
