@@ -32,8 +32,8 @@ def upload():
 @upload_bp.route('/upload_file', methods=['POST'])
 def upload_file():
     name = request.form['img_name']
-    style = request.form['style']
-    season = request.form['season']
+    style = request.form.getlist('style')
+    season = request.form.getlist('season')
     kind = request.form['kind']
     color = request.form['color']
 

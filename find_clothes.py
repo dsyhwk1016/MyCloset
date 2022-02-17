@@ -98,8 +98,8 @@ def modify():
     try:
         # 수정 데이터 딕셔너리 생성
         doc = {
-            'clothes_style': request.form['style'],
-            'clothes_season': request.form['season'],
+            'clothes_style': request.form.getlist('style'),
+            'clothes_season': request.form.getlist('season'),
             'clothes_kind': request.form['kind'],
             'clothes_color': request.form['color']
         }
