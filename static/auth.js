@@ -198,8 +198,8 @@ function find_pw() {
                 enctype: "multipart/form-data",
                 async: false,
                 data: {},
-                success: function (response) {
-                    alert(response['msg']);
+                success: function (response) { //
+                    alert(response['msg']); //
                     fPwClose();
                 }
             })
