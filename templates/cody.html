@@ -16,7 +16,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
-
+    <!--axios cdn주소-->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <title>코디 추천 페이지</title>
 
@@ -132,24 +133,39 @@
             bottom: 0;
             background-image: linear-gradient(0deg, blue 0%, deepskyblue 25%, yellow 50%, orange 75%, #ff2525 100%);
         }
+
+        .value {
+            cursor: pointer;
+
+        }
     </style>
     <!-- JavaScript -->
     <script>
         // Weather API KEY 가져옴
-        const API_KEY = "7a9876c881ab70708f327836f2ae2d7b";
+        let API_KEY = "7a9876c881ab70708f327836f2ae2d7b";
 
         function onGeoOK(position) {
             // 위도, 경도, url 가져옴
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
-            const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&lang=kr&units=metric`
+            let lat = position.coords.latitude;
+            let lon = position.coords.longitude;
+            let url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&lang=kr&units=metric`
             // url을 fetch 그리고 response 받기
             fetch(url).then(response => response.json()).then(data => {
-                const weather = document.querySelector("#weather span:first-child");
-                const city = document.querySelector("#weather span:last-child");
+                // api 데이터(날씨, 온도, 지역) 페이지에 가져오기
+                let weather = document.querySelector("#weather span:first-child");
+                let city = document.querySelector("#weather span:last-child");
                 city.innerText = data.name;
                 weather.innerText = `${data.weather[0].main} / ${data.main.temp}`;
+                // 슬라이더에 현재 온도 할당
                 $('#slider').attr('value', data.main.temp);
+                // 슬라이더 움직일 때 value 표시
+                let slider = document.getElementById("slider");
+                let output = document.getElementById("demo");
+                output.innerHTML = `${data.main.temp}`
+                slider.oninput = function () {
+                    output.innerHTML = this.value;
+                }
+
                 // console.log(data.name, data.main.temp);
             })
         }
@@ -161,8 +177,31 @@
 
         navigator.geolocation.getCurrentPosition(onGeoOK, onGeoError);
 
-        function tempsearch() {
-        }
+        axios({
+            method: 'get',
+            url: 'https://58c0d2ff-e6d2-4ec8-b000-273473c095e2.mock.pstmn.io/lsit',
+            responseType: 'json'
+        })
+            .then(function (response) {
+                let recomend = response.data;
+                for (i=0; i<recomend.length; i++){
+                    let temperature = recomend[i]["temp"]
+                    let file = recomend[i]["file"];
+                    let style = recomend[i]["style"];
+                    let season = recomend[i]["season"];
+                    let kind = recomend[i]["kind"];
+                    let color = recomend[i]["color"];
+                    let temp_hrml = ``;
+                    if (temperature <= 40 && temperature >= 28){
+                        temp_hrml =``
+                    }else if(temperature <=27 && temperature >=23){
+
+
+                    }
+
+                }
+                console.log(recomend);
+            });
 
 
     </script>
@@ -178,13 +217,14 @@
         <span></span>
     </div>
 </div>
-<div class="wrap">
-    <div class="middle">
-        <div class="slider-container">
-            <span class="bar"><span class="fill"></span></span>
-            <input type="range" id="slider" class="slider" min="-10" max="40" value="">
-        </div>
+
+<div class="middle">
+    <div class="slider-container">
+        <span class="bar"><span class="fill"></span></span>
+        <input type="range" id="slider" class="slider" min="-10" max="40" value="">
     </div>
+</div>
+<p class="value">Value: <span id="demo"></span>℃</p>
 </div>
 <button type="button" id="slider" class="btn btn-light" value="">추천하기</button>
 </body>

@@ -5,10 +5,14 @@
       <excludeFolder url="file://$MODULE_DIR$/venv" />
     </content>
 <<<<<<< HEAD
+<<<<<<< HEAD
     <orderEntry type="inheritedJdk" />
 =======
     <orderEntry type="jdk" jdkName="Python 3.8 (MyCloset)" jdkType="Python SDK" />
 >>>>>>> origin
+=======
+    <orderEntry type="inheritedJdk" />
+>>>>>>> 4125400fe36fa3dacce73604e0d62b683c7c68e0
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
