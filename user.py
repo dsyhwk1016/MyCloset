@@ -35,7 +35,7 @@ blueprint = make_google_blueprint(
 )
 
 #user_bp Setup
-user_bp = Blueprint('login', __name__, url_prefix='user')
+user_bp = Blueprint('login', __name__)
 user_bp.secret_key = os.urandom(24)
 
 #Flask_mail Setup

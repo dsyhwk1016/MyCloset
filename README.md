@@ -19,9 +19,10 @@
 
  
 [Library]
-  * dotenv
+  * python-dotenv
   * flask-dance
   * requests
+  * flask-mail (version 0.9.0)
   
  
 <hr>
