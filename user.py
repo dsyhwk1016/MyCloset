@@ -3,6 +3,7 @@ from pymongo import MongoClient
 from flask_dance.contrib.google import make_google_blueprint, google
 from dotenv import load_dotenv
 from flask_mail import Message, Mail
+from markupsafe import escape
 
 import hashlib
 import os
@@ -229,6 +230,36 @@ def find_pw():
 def change_pw_page():
     return render_template('/changepw.html')
 
+@user_bp.route('pw_chk', methods=['POST'])
+def pw_chk():
+    if 'user_id' in session:
+        user_id = escape(session['user_id'])
+    else :
+        return jsonify({"status" : False})
+
+    current_pw = request.form['cur_pw']
+    cur_pw = hashlib.sha256(current_pw.encode()).hexdigest()
+
+    pw_chk = db.member.find_one({'user_pw' : cur_pw, 'user_id' : user_id}, {'_id' : False})
+
+    if pw_chk :
+        return jsonify({"status" : True})
+    else :
+        return jsonify({"status" : False})
+
 @user_bp.route('pw_update', methods=['POST'])
 def pw_update():
-    return
+        current_pw = request.form['cur_pw']
+        new_pw = request.form['new_pw']
+
+        cur_pw = hashlib.sha256(current_pw.encode()).hexdigest()
+        new_pwd = hashlib.sha256(new_pw.encode()).hexdigest()
+
+        if 'user_id' in session:
+            user_id = escape(session['user_id'])
+        else:
+            return jsonify({"msg" : "기존 비밀번호와 일치하지 않습니다"})
+
+        db.member.update_one({'user_id' : user_id , 'user_pw': cur_pw}, {'$set': {'user_pw': new_pwd}})  # 임시 비밀번호를 DB에 업데이트
+
+        return jsonify({"msg" : "비밀번호 변경이 완료되었습니다"})
