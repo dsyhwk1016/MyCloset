@@ -9,7 +9,6 @@
   margin:100px auto;
   
 }
-
 .title{
   font-size: 30px;
   font-weight: 700;
@@ -18,12 +17,12 @@
   margin-bottom: 10px;
 }
 .wrap .auth{
-  
+
   letter-spacing: 2px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  
+
   border-radius: 12px;
 }
 .wrap .auth .btn-wrap{
@@ -33,24 +32,18 @@
   width: 200px;
   border:none;
   border-radius: 12px 12px 0 0;
-  background-color: #fff;
+  background-color: var(--white);
 }
 
-.wrap .auth .btn-wrap .btn.signin.show{
-  background-color:rgba(145,80,175,.9);
-  color:#fff;
-  
-}
-.wrap .auth .btn-wrap .btn.signup.show{
+.wrap .auth .btn-wrap .btn.show{
+  background-color: var(--purple-rgba);
+  color:var(--white);
 
-  background-color:rgba(145,80,175,.9);;
-  color:#fff;
-  
 }
 .wrap .auth .container {
   padding:10px;
   box-sizing: border-box;
-  background-color: rgba(145,80,175,.9);
+  background-color: var(--purple-rgba);
   border-radius: 0 0 12px 12px;
 }
 .wrap .auth .container .form{
@@ -58,13 +51,13 @@
   width:90%;
   margin:0 auto;
   padding:10px;
-  
+
 }
 
 .wrap .auth .container .form.show{
   display: flex;
   flex-direction: column;
-  color:#fff;
+  color:var(--white);
 }
 .wrap .auth .container .form.show #same,
 .wrap .auth .container .form.show #already{
@@ -78,9 +71,9 @@
   margin-bottom:10px;
   padding:7px;
   border-radius: 5px;
-  border:2px solid rgba(195,126,225,.5);
+  border:2px solid var(--purple-rgba-btn);
   box-sizing: border-box;
-  
+
 }
 .wrap .auth .container .form .valid-email{
   display: flex;
@@ -93,7 +86,7 @@
 height:35px;
 flex: 20%;
 margin-left: 5px;
-font-size:12px;
+font-size:var(--font-medium);
 padding:2px;
 border:none;
 
@@ -101,7 +94,7 @@ border:none;
 .wrap .submit{
   display: none;
   width:350px;
-  font-size: 16px;
+  font-size: var(--font-large);
   font-weight: 700;
   background-color:rgba(145,80,175,.9);
   border-radius: 10px;
@@ -113,7 +106,7 @@ border:none;
 }
 .wrap .submit.show{
   display: block;
-  color:#fff;
+  color:var(--white);
 }
 .wrap .submit.show:hover{
   background-color: #61237f;
@@ -129,19 +122,35 @@ border:none;
 .sns-login.show{
   display: block;
 }
+.sns-login .sns-letter{
+  text-align: center;
+  color:var(--purple);
+}
+.sns-login .sns-buttons{
+  width: 200px;
+  padding:10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .sns img{
   width:40px;
   margin:0 10px;
   border-radius:50%;
 
-}  
+}
+/*비밀번호 찾기 버튼*/
+
 
 .wrap .find-pwd{
   margin-top: 10px;
   padding:10px;
-  color:#101010;
+  color:var(--black);
   cursor:pointer;
 }
+
+
+/*비밀번호찾기 모달창*/
 .modal-bg{
   display: none;
   position:fixed;
@@ -150,28 +159,25 @@ border:none;
   height:calc(100% - 80px);
   top:80px;
   left:0;
-  background-color:rgba(0,0,0,.3);
+  background-color:rgba(0,0,0,.5);
 }
-
-
-/*비밀번호찾기 모달창*/
 
 .modal-wrap{
   display: none;
   position:absolute;
-  width:500px;
+  width:400px;
   height:300px;
   box-sizing: border-box;
   top:150px;
   border-radius:12px;
-  background-color: #fff;
+  background-color:var(--white);
 
 }
 .modal-wrap .xbtn-bar{
-  width:500px;
+  width:100%;
   height:40px;
   box-sizing: border-box;
-  background-color:rgb(145,80,175);
+  background-color:var(--purple);
   color:#fff;
   border-radius: 12px 12px 0 0;
   display: flex;
@@ -196,10 +202,10 @@ border:none;
   margin-right:10px;
   padding:7px;
   border-radius: 5px;
-  border:2px solid rgba(195,126,225,.5);
+  border:2px solid var(--purple-rgba-btn);
   box-sizing: border-box;
 }
 .modal-wrap .modal-findpw #findpw-btn{
-  font-size:12px;
+  font-size:var(--font-medium);
   display: inline;
 }
