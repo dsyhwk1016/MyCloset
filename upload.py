@@ -1,11 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, Blueprint
+from flask import Flask, render_template, request, redirect, flash, Blueprint, jsonify
 from werkzeug.utils import secure_filename
 from pymongo import MongoClient
 import os
-import urllib.request
 
 app = Flask(__name__)
-app.secret_key = os.urandom(24)
 
 # MongoDB Setup
 client = MongoClient('localhost', 27017)
@@ -17,19 +15,14 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
-#blueprint setup
+# blueprint setup
 upload_bp = Blueprint('upload', __name__)
+
 
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-# class Mycloset(db.client): 참조 flask_mongoengine
-#     file = db.StringField()
-#     style = db.StringField()
-#     season = db.StringField()
-#     kind = db.StringField()
-#     color = db.StringField()
 
 @upload_bp.route('/')
 def upload():
@@ -38,37 +31,31 @@ def upload():
 
 @upload_bp.route('/upload_file', methods=['POST'])
 def upload_file():
-    # file = request.files['file']
-    # style = request.form['uniform_style']
-    # season = request.form['uniform_season']
-    # kind = request.form['uniform_kind']
-    # color = request.form['uniform_color']
-    # filename = secure_filename(file.filename)
+    name = request.form['img_name']
+    style = request.form['style']
+    season = request.form['season']
+    kind = request.form['kind']
+    color = request.form['color']
 
-    if request.method == 'POST':
+    doc = {
+        'name': name,
+        'style': style,
+        'season': season,
+        'kind': kind,
+        'color': color
+    }
 
-        if 'file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
-        file = request.files['file']
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    db.clothes.insert_one(doc)
+    # return jsonify({'msg': ' 성공적으로 작성되었습니다.'})
+    file = request.files['file']
+    # if file not in request.files: #일단 이 부분 오류 이 부분만 잘 고치면 될것같아요
+    #     flash('No file part')
+    #     return redirect(request.url)
+    if file.filename == '': #이 부분은 안오류
+        flash('No selected file')
+        return redirect(request.url)
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename) # 요 부분은 현정님께서 쓰신 부분인데 파일이름넣고 / 업로드폴더에 세이브하는거같은데 제대로 작동
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-        doc = {
-            'file': file,
-            'style': style,
-            'season': season,
-            'kind': kind,
-            'color': color
-        }
-        db.mycloset.insert_one(doc)
-        flash('File successfully uploaded ' + file.filename + ' to the database!')
-        return redirect('/')
-    else:
-        flash('Only png, jpg, jpeg, gif')
-        return render_template('login.html')
     return render_template('upload.html')
