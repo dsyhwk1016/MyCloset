@@ -134,10 +134,9 @@ border:none;
   align-items: center;
 }
 .sns img{
-  width:40px;
+  width:35px;
   margin:0 10px;
   border-radius:50%;
-
 }
 /*비밀번호 찾기 버튼*/
 
@@ -202,7 +201,7 @@ border:none;
   margin-right:10px;
   padding:7px;
   border-radius: 5px;
-  border:2px solid var(--purple-rgba-btn);
+  border:2px solid var(--purple-btn-border);
   box-sizing: border-box;
 }
 .modal-wrap .modal-findpw #findpw-btn{
