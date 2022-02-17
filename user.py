@@ -147,7 +147,6 @@ def naver_callback():
         return redirect(url_for('home'))
 
 
-
 @user_bp.route('/logout', methods=['GET']) #로그아웃
 def logout():
     if google.authorized: #구글 인증된 상태
@@ -225,3 +224,11 @@ def find_pw():
 
         mail.send(msg)
         return jsonify({'msg' : '메일로 임시비밀번호가 발송되었습니다'})
+
+@user_bp.route('/change_pw_page')
+def change_pw_page():
+    return render_template('/changepw.html')
+
+@user_bp.route('pw_update', methods=['POST'])
+def pw_update():
+    return
