@@ -4,7 +4,6 @@ from pymongo import MongoClient
 from markupsafe import escape
 import os
 
-
 app = Flask(__name__)
 
 # MongoDB Setup
@@ -47,11 +46,11 @@ def upload_file():
 
     doc = {
         'user_id': user_id,
-        'name': name,
-        'style': style,
-        'season': season,
-        'kind': kind,
-        'color': color
+        'image_path': '../static/uploads/' + name,   # DB에는 이미지가 저장되는 경로를 저장해주세요! - 가영
+        'clothes_style': style,
+        'clothes_season': season,
+        'clothes_kind': kind,
+        'clothes_color': color
     }
 
     db.clothes.insert_one(doc)
@@ -66,5 +65,6 @@ def upload_file():
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)  # 요 부분은 현정님께서 쓰신 부분인데 파일이름넣고 / 업로드폴더에 세이브하는거같은데 제대로 작동
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        ## 67번 줄에 filename 대신 '이름.확장자' 넣어서 돌려보니까 잘 저장 돼요! 이 점 참고하셔서 수정 진행하시면 될 것 같아요 - 가영
 
     return render_template('upload.html')
