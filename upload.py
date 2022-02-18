@@ -1,7 +1,9 @@
-from flask import Flask, render_template, request, redirect, flash, Blueprint, jsonify
+from flask import Flask, render_template, request, redirect, flash, Blueprint, session
 from werkzeug.utils import secure_filename
 from pymongo import MongoClient
+from markupsafe import escape
 import os
+
 
 app = Flask(__name__)
 
@@ -26,11 +28,17 @@ def allowed_file(filename):
 
 @upload_bp.route('/')
 def upload():
-    return render_template('upload.html')
-
+    logged = False
+    if "user_id" in session:
+        logged = True
+        return render_template('upload.html', logged=logged)
+    else:
+        return render_template('login.html', logged=logged)
 
 @upload_bp.route('/upload_file', methods=['POST'])
 def upload_file():
+
+    user_id = escape(session['user_id'])
     name = request.form['img_name']
     style = request.form.getlist('style')
     season = request.form.getlist('season')
@@ -38,6 +46,7 @@ def upload_file():
     color = request.form['color']
 
     doc = {
+        'user_id': user_id,
         'name': name,
         'style': style,
         'season': season,
@@ -51,11 +60,11 @@ def upload_file():
     # if file not in request.files: #일단 이 부분 오류 이 부분만 잘 고치면 될것같아요
     #     flash('No file part')
     #     return redirect(request.url)
-    if file.filename == '': #이 부분은 안오류
+    if file.filename == '':  # 이 부분은 안오류
         flash('No selected file')
         return redirect(request.url)
     if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename) # 요 부분은 현정님께서 쓰신 부분인데 파일이름넣고 / 업로드폴더에 세이브하는거같은데 제대로 작동
+        filename = secure_filename(file.filename)  # 요 부분은 현정님께서 쓰신 부분인데 파일이름넣고 / 업로드폴더에 세이브하는거같은데 제대로 작동
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
     return render_template('upload.html')

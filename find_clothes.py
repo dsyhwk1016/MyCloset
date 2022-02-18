@@ -1,4 +1,4 @@
-from flask import render_template, request, jsonify,  url_for, redirect, session, current_app, Blueprint, escape
+from flask import render_template, request, jsonify, session, Blueprint
 from pymongo import MongoClient
 
 closet = Blueprint('closet', __name__)
@@ -111,3 +111,6 @@ def modify():
     except:
         status = 'FAIL'
         return {'status': status, 'msg': '정보를 수정하는데 실패했습니다.'}
+
+    if __name__ == '__main__':
+        app.run('0.0.0.0', port=5000, debug=True)
