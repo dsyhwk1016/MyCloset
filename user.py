@@ -228,7 +228,10 @@ def find_pw():
 
 @user_bp.route('/change_pw_page')
 def change_pw_page():
-    return render_template('/changepw.html')
+    logged = False
+    if 'user_id' in session:
+        logged = True
+    return render_template('/changepw.html', logged = logged)
 
 @user_bp.route('pw_chk', methods=['POST'])
 def pw_chk():
