@@ -7,7 +7,7 @@ function currentPw() {
   if (curPw.value !== '') {
     $.ajax({
       type: "POST",
-      url: '/login/pw_update',
+      url: '/login/pw_chk',
       enctype: "multipart/form-data",
       data: {cur_pw: curPw.value},
       success: function (response) {
@@ -61,8 +61,8 @@ function sendNewPw(){
                      new_pw: newPw.value
                  },
                  success: function (response) {
-                 alert(response['msg'])
-                 window.location.href = '/'
+                     alert(response['msg'])
+                     window.location.href = '/'
                  }
              })
         }else {
