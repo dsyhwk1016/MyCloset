@@ -1,0 +1,91 @@
+{% include 'head.html' %}
+<link href="../static/board.css" rel="stylesheet">
+
+<script>
+    function load_closet(){
+        $.ajax({
+            type: "GET",
+            url: "/trade/load_closet",
+            data: {},
+            success: function (response) {
+                alert(response['msg'])
+                let rows = JSON.parse(response['closet_list']);
+
+                for(let i=0; i < rows.length; i++){
+                    console.log(rows[i]['user_id'])
+                }
+            }
+        })
+    }
+</script>
+<body>
+<!-- load_closet Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        <!--<img src="..." alt="..." class="img-rounded">-->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- trade main window start -->
+<div class="wrap">
+    <div class="container">
+        <div class="header">
+            <nav>
+                <ul class="nav nav-pills pull-right">
+                    <li>접속자 : <strong>{{user_id}}</strong> 님</li>
+                </ul>
+            </nav>
+            <h3 class="text-muted">판매 등록</h3>
+        </div>
+        <section>
+            <form class="form-horizontal" method="post" action="/trade/trade_submit">
+                <fieldset>
+                    <!-- Form Name -->
+                    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal"
+                    onclick="load_closet()">
+                    내 옷 불러오기</button>
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label class="col-md-12" for="txtTitle">Title</label>
+                        <div class="col-md-12">
+                            <input id="txtTitle" name="title" type="text" placeholder="제목을 입력하세요."
+                                   class="form-control input-md" , autofocus required><!--required : 공백입력시 경고-->
+                        </div>
+                    </div>
+                    <!-- Textarea -->
+                    <div class="form-group">
+                        <label class="col-md-12" for="txtPost">Post</label>
+                        <div class="col-md-12">
+                            <textarea class="form-control" id="txtPost" name="content" placeholder="내용을 입력하세요."
+                                      style="height:260px;" required></textarea>
+                        </div>
+                    </div>
+                    <!-- Button -->
+                    <div class="form-group">
+                        <label class="col-md-12 control-label" for="singlebutton"></label>
+                        <div class="col-md-12">
+                            <input id="singlebutton" name="singlebutton" class="btn btn-primary" type="submit"
+                                   value="작성하기">
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </section>
+    </div>
+</div>
+
+</body>
+</html>
