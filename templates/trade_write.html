@@ -8,22 +8,21 @@
             url: "/trade/load_closet",
             data: {},
             success: function (response) {
-                let rows = JSON.parse(response['closet_list']);
+                let rows = response['closet_list'];
                 $('#modal_body_row').empty()
 
                 for (let i = 0; i < rows.length; i++) {
-                    let img_file = rows[i]['name']
-                    //let cloth_id = img_file.split('.')[0]
-                    let style = rows[i]['style']
-                    let season = rows[i]['season']
-                    let kind = rows[i]['kind']
-                    let color = rows[i]['color']
-
+                    let img_file = rows[i]['image_path']
+                    let style = rows[i]['clothes_style']
+                    let season = rows[i]['clothes_season']
+                    let kind = rows[i]['clothes_kind']
+                    let color = rows[i]['clothes_color']
+                    let cloth_id = rows[i]['_id']
 
                     let tmp_html = `
                                   <div class="col-xs-6 col-md-3">
-                                    <a href="javascript:cloth_select('${img_file}', '${style}', '${season}', '${kind}', '${color}');" class="thumbnail">
-                                      <img src="../static/uploads/${img_file}" alt="...">
+                                    <a href="javascript:cloth_select('${img_file}', '${style}', '${season}', '${kind}', '${color}', '${cloth_id}');" class="thumbnail">
+                                      <img src="${img_file}" alt="...">
                                     </a>
                                   </div>
                                   `
@@ -33,7 +32,7 @@
         })
     }
 
-    function cloth_select(img_file, style, season, kind, color,) {
+    function cloth_select(img_file, style, season, kind, color, cloth_id) {
         switch (style) {
             case 'casual' :
                 style = '캐쥬얼';
@@ -116,8 +115,9 @@
         $('#txtKind').val(kind);
         $('#txtColor').val(color);
 
-        $('#goods_img').attr('src', '../static/uploads/' + img_file)
-        $('#file_name').val(img_file)
+        $('#goods_img').attr('src', img_file)
+        $('#img_path').val(img_file)
+        $('#cloth_id').val(cloth_id)
         $('#myModal').hide()
     }
 </script>
@@ -163,7 +163,8 @@
                                         <img src="../static/img/no_img.png" alt="..." id="goods_img"
                                              style="width:225px; height:280px;">
                                     </a>
-                                    <input type="hidden" name="file_name" id="file_name">
+                                    <input type="hidden" name="img_path" id="img_path">
+                                    <input type="hidden" name="cloth_id" id="cloth_id">
                                 </div>
                             </div>
                             <div class="load">
@@ -219,9 +220,9 @@
                             <input id="txtTitle" name="title" type="text" placeholder="제목을 입력하세요."
                                    class="form-control input-md" , autofocus required><!--required : 공백입력시 경고-->
                         </div>
-                        <label class="col-md-12 sub_title" for="txtCost">판매금액</label>
+                        <label class="col-md-12 sub_title" for="txtPrice">판매금액</label>
                         <div class="col-md-3">
-                            <input id="txtCost" name="cost" type="number" placeholder="판매금액을 입력하세요."
+                            <input id="txtPrice" name="price" type="number" placeholder="판매금액을 입력하세요."
                                    class="form-control input-md" , autofocus required>
                         </div>
                     </div>

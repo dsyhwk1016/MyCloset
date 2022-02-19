@@ -2,7 +2,6 @@ from flask import Flask, Blueprint, render_template, request, session, redirect,
 from pymongo import MongoClient
 from datetime import datetime
 from markupsafe import escape
-from bson.json_util import dumps
 from bson.objectid import ObjectId
 
 app = Flask(__name__)
@@ -13,15 +12,22 @@ db = client.mycloset
 #blueprint setup
 trade_bp = Blueprint('trade', __name__)
 
+def objectIdDecoder(list):
+  results=[]
+  for document in list:
+    document['_id'] = str(document['_id'])
+    results.append(document)
+  return results
+
 @trade_bp.route('/')
+def trade():
+    return render_template('trade_list.html')
+
+@trade_bp.route('/list', methods=['GET'])
 def trade_list():
-    logged = False
-    if "user_id" in session:
-        logged = True
+    lists = objectIdDecoder(list(db.trade.find({})))
+    return jsonify({'lists': lists})
 
-    lists = list(db.trade.find({}))
-
-    return render_template('trade_list.html', lists = lists, logged=logged)
 
 @trade_bp.route('/write')
 def trade_write():
@@ -35,47 +41,45 @@ def trade_write():
 def load_closet():
     if 'user_id' in session:
         user_id = escape(session['user_id'])
-        closet_list = list(db.clothes.find({'user_id' : user_id}))
+        closet_list = objectIdDecoder(list(db.clothes.find({'user_id' : user_id})))
 
-        json_closet = dumps(closet_list)
-
-        return jsonify({'msg' : '연결완료', 'closet_list' : json_closet})
+        return jsonify({'closet_list' : closet_list})
     else:
         return redirect(url_for('login.login_page'))
 
 @trade_bp.route('/trade_submit', methods=['POST'])
 def trade_submit():
     user_id = escape(session['user_id'])
-    file_name = request.form['file_name']
+    cloth_id = request.form['cloth_id']
+    img_path = request.form['img_path']
     status = '거래중'
     write_title = request.form['title']
-    write_cost = request.form['cost']
+    write_price = request.form['price']
     write_content = request.form['content']
     now = datetime.now()
     current_time = now.strftime("%H:%M:%S")
 
     doc = {
         'user_id' : user_id,
-        'cloth_name' : file_name,
+        'cloth_id' : cloth_id,
+        'image_path' : img_path,
         'status' : status,
         'title' : write_title,
-        'cost' : write_cost,
+        'price' : write_price,
         'content' : write_content,
-        'datetime' : current_time
+        'datetime' : current_time,
     }
-
     db.trade.insert_one(doc)
-    return redirect(url_for('trade.trade_list'))
+    return redirect(url_for('trade.trade'))
 
-@trade_bp.route('/view', methods=['GET'])
-def goods_view():
-    goods_id = request.args.get('goods_id')
-    
-    goods_info = db.trade.find_one({'_id' : ObjectId(goods_id)})
-    cloth_info = db.clothes.find_one({'name' : goods_info['cloth_name']})
-    cost = int(goods_info['cost'])
+@trade_bp.route('/view')
+def trade_view():
+    return render_template('trade_view.html')
 
-    cost_send = "{:,}".format(cost,'d')
-    print(cost_send)
+@trade_bp.route('/view/detail', methods=['GET'])
+def trade_view_detail():
+    trade_id = request.args.get('goods_id')
+    trade_info = db.trade.find_one({'_id' : ObjectId(trade_id)}, {'_id' : False})
+    print(trade_info)
 
-    return render_template('trade_view.html', goods_info = goods_info, cloth_info = cloth_info, cost = cost_send)
+    return jsonify({'msg' : '연결완료', 'trade_info' : trade_info})

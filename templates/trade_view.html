@@ -1,12 +1,44 @@
 {% include 'head.html' %}
 <link href="../static/board.css" rel="stylesheet">
 <script>
-    $(document).ready(function(){
-        $(".numbers").each(function(){
-            var x= $(this).val();
-            $(this).val(x.toString().replace(/,/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-        });
-    });
+    function getParameter(name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+            results = regex.exec(location.search);
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+
+    let goods_id = getParameter("goods_id")
+    $(document).ready(function () {
+        $.ajax({
+            type: "GET",
+            url: "/trade/view/detail?goods_id="+goods_id,
+            data: {},
+            success: function (response) {
+                let rows = response['trade_info']
+
+                let img_path = rows['image_path']
+                let title = rows['title']
+                let price = rows['price']
+                let status = rows['status']
+                let content = rows['content']
+                let price_s = parseInt(price).toLocaleString()
+
+                let tmp_html=`
+                    <div class="goods_title">${title}</div>
+                    <div class="goods_status">${status}</div>
+                    <div class="goods_cost"><span class="numbers">${price_s}</span> 원</div>
+
+                    <div class="goods_content">
+                    ${content}
+                    </div>
+                `
+                $('#goods_img').attr('src', img_path)
+                $('#goods_info').append(tmp_html)
+
+            }
+        })
+    })
 </script>
 <body>
 <div class="wrap">
@@ -18,21 +50,15 @@
                 <div class="row">
                     <div class="col-xs-12 col-md-12">
                         <a href="#" class="thumbnail">
-                            <img src="../static/uploads/{{ goods_info['cloth_name']}}" alt="..." id="goods_img"
+                            <img src="" alt="..." id="goods_img"
                                  style="width : 425px; height : 480px;">
                         </a>
                     </div>
                 </div>
             </div>
 
-            <div class = "goods_info">
-                <div class="goods_title">{{goods_info['title']}}</div>
-                <div class="goods_status">{{goods_info['status']}}</div>
-                <div class="goods_cost"><span class="numbers">{{ cost }}</span> 원</div>
+            <div class = "goods_info" id="goods_info">
 
-                <div class="goods_content">
-                    {{goods_info['content']}}
-                </div>
             </div>
         </div>
     </div>
