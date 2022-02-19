@@ -51,7 +51,10 @@ input{
   outline:none;
   color:var(--black);
   letter-spacing: 2px;
-
+}
+textarea{
+  font-family: 'Noto Sans KR', sans-serif;
+  letter-spacing: 2px;
 }
 /* header */
 header{

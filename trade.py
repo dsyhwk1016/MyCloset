@@ -3,6 +3,7 @@ from pymongo import MongoClient
 from datetime import datetime
 from markupsafe import escape
 from bson.json_util import dumps
+from bson.objectid import ObjectId
 
 app = Flask(__name__)
 
@@ -18,9 +19,9 @@ def trade_list():
     if "user_id" in session:
         logged = True
 
-    lists = list(db.trade.find({}, {'_id' : False}))
+    lists = list(db.trade.find({}))
 
-    return render_template('board_trade.html', lists = lists, logged=logged)
+    return render_template('trade_list.html', lists = lists, logged=logged)
 
 @trade_bp.route('/write')
 def trade_write():
@@ -45,17 +46,32 @@ def load_closet():
 @trade_bp.route('/trade_submit', methods=['POST'])
 def trade_submit():
     user_id = escape(session['user_id'])
+    file_name = request.form['file_name']
+    status = '거래중'
     write_title = request.form['title']
+    write_cost = request.form['cost']
     write_content = request.form['content']
     now = datetime.now()
     current_time = now.strftime("%H:%M:%S")
 
     doc = {
         'user_id' : user_id,
+        'cloth_name' : file_name,
+        'status' : status,
         'title' : write_title,
+        'cost' : write_cost,
         'content' : write_content,
         'datetime' : current_time
     }
 
     db.trade.insert_one(doc)
     return redirect(url_for('trade.trade_list'))
+
+@trade_bp.route('/view', methods=['GET'])
+def goods_view():
+    goods_id = request.args.get('goods_id')
+    
+    goods_info = db.trade.find_one({'_id' : ObjectId(goods_id)})
+    cloth_info = db.clothes.find_one({'name' : goods_info['cloth_name']})
+
+    return render_template('trade_view.html', goods_info = goods_info, cloth_info = cloth_info)
