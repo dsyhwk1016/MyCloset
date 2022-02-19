@@ -73,5 +73,9 @@ def goods_view():
     
     goods_info = db.trade.find_one({'_id' : ObjectId(goods_id)})
     cloth_info = db.clothes.find_one({'name' : goods_info['cloth_name']})
+    cost = int(goods_info['cost'])
 
-    return render_template('trade_view.html', goods_info = goods_info, cloth_info = cloth_info)
+    cost_send = "{:,}".format(cost,'d')
+    print(cost_send)
+
+    return render_template('trade_view.html', goods_info = goods_info, cloth_info = cloth_info, cost = cost_send)
