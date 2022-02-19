@@ -1,0 +1,41 @@
+{% include 'head.html' %}
+<link href="../static/board.css" rel="stylesheet">
+<script>
+    $(document).ready(function(){
+        $(".numbers").each(function(){
+            var x= $(this).val();
+            $(this).val(x.toString().replace(/,/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        });
+    });
+</script>
+<body>
+<div class="wrap">
+    <div class="container">
+        <div class="title"><h2>상품정보</h2></div>
+
+        <div class="goods_view_info">
+            <div class="goods_img">
+                <div class="row">
+                    <div class="col-xs-12 col-md-12">
+                        <a href="#" class="thumbnail">
+                            <img src="../static/uploads/{{ goods_info['cloth_name']}}" alt="..." id="goods_img"
+                                 style="width : 425px; height : 480px;">
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class = "goods_info">
+                <div class="goods_title">{{goods_info['title']}}</div>
+                <div class="goods_status">{{goods_info['status']}}</div>
+                <div class="goods_cost"><span class="numbers">{{ cost }}</span> 원</div>
+
+                <div class="goods_content">
+                    {{goods_info['content']}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
