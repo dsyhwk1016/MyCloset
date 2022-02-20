@@ -5,8 +5,9 @@ from pymongo import MongoClient
 
 from user import user_bp, blueprint
 from upload import upload_bp
-from find_clothes import closet
+from mycloset import closet
 from board import board_bp
+from ranking import ootd_rank
 
 #Flask App Setup
 app = Flask(__name__)
@@ -22,12 +23,13 @@ db = client.mycloset
 #시크릿키 랜덤적용
 app.secret_key = os.urandom(24)
 
-#login blueprint load
+#blueprints load
 app.register_blueprint(blueprint,url_prefix="/login")
 app.register_blueprint(user_bp,url_prefix="/login")
 app.register_blueprint(board_bp, url_prefix='/board')
 app.register_blueprint(closet, url_prefix='/mycloset')
 app.register_blueprint(upload_bp, url_prefix='/upload')
+app.register_blueprint(ootd_rank, url_prefix='/ootd')
 
 @app.route('/')
 def home():
@@ -36,6 +38,11 @@ def home():
     if "user_id" in session:
         logged = True
     return render_template('index.html', logged = logged)
+
+# 커뮤니티 페이지 렌더링
+@app.route('/community')
+def community():
+    return render_template('community.html')
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
