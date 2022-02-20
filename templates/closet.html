@@ -99,6 +99,42 @@
                 }
             })
         }
+
+        function find() {
+            let style = $('#style').val()
+            let season = $('#season').val()
+            let kind = $('#kind').val()
+            let color = $('#color').val()
+            $.ajax({
+                type: "GET",
+                url: "mycloset/find",
+                data: {'style': style, 'season': season, 'kind': kind, 'color': color},
+                success: function (response) {
+                    if (response['status'] == 'SUCCESS') {
+                        for (i = 0; i < clothes.length; i++) {
+                            let name = clothes[i]['name']
+                            let style = clothes[i]['style']
+                            let season = clothes[i]['season']
+                            let kind = clothes[i]['kind']
+                            let color = clothes[i]['color']
+
+                            let temp_html = `<div class="card">
+                                                 <img class="card-img-top" src="${name}"
+                                                      alt="Card image cap">
+                                                 <div class="card-body">
+                                                     <h5 class="card-title">${style}/${season}/${kind}/${color}</h5>
+                                                 </div>
+                                                 </div>`
+                            $('#card-box').append(temp_html)
+                        }
+                    }else {
+                        alert(response['msg']);
+                    }
+                }
+                }
+            )
+        }
+
     </script>
 </head>
 
@@ -145,7 +181,7 @@
         <h5 class="card-title" id="user_name"></h5>
         <p class="card-text">일상에서 더 쉽게, 더 가까이, 스마트하게 즐기는 나만의 옷장</p>
         <br>
-        <a href="#" class="btn btn-light">자세히 알아보기</a>
+        <a href="/upload" class="btn btn-light">새 옷 등록</a>
         <br>
     </div>
 </div>
@@ -159,18 +195,18 @@
                 aria-expanded="false">
             색상
         </button>
-        <div class="dropdown-menu dropdown-menu-right">
-            <button class="dropdown-item btn-sm" type="button">빨강</button>
-            <button class="dropdown-item btn-sm" type="button">주황</button>
-            <button class="dropdown-item btn-sm" type="button">노랑</button>
-            <button class="dropdown-item btn-sm" type="button">초록</button>
-            <button class="dropdown-item btn-sm" type="button">파랑</button>
-            <button class="dropdown-item btn-sm" type="button">남색</button>
-            <button class="dropdown-item btn-sm" type="button">보라</button>
-            <button class="dropdown-item btn-sm" type="button">검정</button>
-            <button class="dropdown-item btn-sm" type="button">흰색</button>
-            <button class="dropdown-item btn-sm" type="button">회색</button>
-            <button class="dropdown-item btn-sm" type="button">기타</button>
+        <div class="dropdown-menu dropdown-menu-right" id="color">
+            <button onclick="find()" class="dropdown-item btn-sm" type="button" value="red">빨강</button>
+            <button onclick="find()" class="dropdown-item btn-sm" type="button" value="orange">주황</button>
+            <button onclick="find()" class="dropdown-item btn-sm" type="button" value="yellow">노랑</button>
+            <button onclick="find()" class="dropdown-item btn-sm" type="button" value="green">초록</button>
+            <button onclick="find()" class="dropdown-item btn-sm" type="button" value="blue">파랑</button>
+            <button onclick="find()" class="dropdown-item btn-sm" type="button" value="navy">남색</button>
+            <button onclick="find()" class="dropdown-item btn-sm" type="button" value="puple">보라</button>
+            <button onclick="find()" class="dropdown-item btn-sm" type="button" value="black">검정</button>
+            <button onclick="find()" class="dropdown-item btn-sm" type="button" value="white">흰색</button>
+            <button onclick="find()" class="dropdown-item btn-sm" type="button" value="gray">회색</button>
+            <button onclick="find()" class="dropdown-item btn-sm" type="button" value="etc">기타</button>
         </div>
     </div>
 
@@ -179,12 +215,12 @@
                 aria-expanded="false">
             스타일
         </button>
-        <div class="dropdown-menu dropdown-menu-right">
-            <button class="dropdown-item btn-sm" type="button">캐주얼</button>
-            <button class="dropdown-item btn-sm" type="button">데이트</button>
-            <button class="dropdown-item btn-sm" type="button">오피스룩</button>
-            <button class="dropdown-item btn-sm" type="button">트레이닝복</button>
-            <button class="dropdown-item btn-sm" type="button">기타</button>
+        <div class="dropdown-menu dropdown-menu-right" id="style">
+            <button onclick="find()" class="dropdown-item btn-sm" type="button"  value="casual">캐주얼</button>
+            <button onclick="find()" class="dropdown-item btn-sm" type="button"  value="date">데이트</button>
+            <button onclick="find()" class="dropdown-item btn-sm" type="button"  value="office">오피스룩</button>
+            <button onclick="find()" class="dropdown-item btn-sm" type="button"  value="training">트레이닝복</button>
+            <button onclick="find()" class="dropdown-item btn-sm" type="button"  value="etc">기타</button>
         </div>
     </div>
 
@@ -193,13 +229,13 @@
                 aria-expanded="false">
             카테고리
         </button>
-        <div class="dropdown-menu dropdown-menu-right">
-            <button class="dropdown-item btn-sm" type="button">아우터</button>
-            <button class="dropdown-item btn-sm" type="button">상의</button>
-            <button class="dropdown-item btn-sm" type="button">원피스/세트</button>
-            <button class="dropdown-item btn-sm" type="button">바지</button>
-            <button class="dropdown-item btn-sm" type="button">스커트</button>
-            <button class="dropdown-item btn-sm" type="button">기타</button>
+        <div class="dropdown-menu dropdown-menu-right" id="kind">
+            <button onclick="find()" class="dropdown-item btn-sm" type="button" value="outer">아우터</button>
+            <button onclick="find()" class="dropdown-item btn-sm" type="button" value="top">상의</button>
+            <button onclick="find()" class="dropdown-item btn-sm" type="button" value="one_piece">원피스/세트</button>
+            <button onclick="find()" class="dropdown-item btn-sm" type="button" value="Pants">바지</button>
+            <button onclick="find()" class="dropdown-item btn-sm" type="button" value="skirt">스커트</button>
+            <button onclick="find()" class="dropdown-item btn-sm" type="button" value="etc">기타</button>
         </div>
     </div>
 
@@ -208,11 +244,11 @@
                 aria-expanded="false">
             계절
         </button>
-        <div class="dropdown-menu dropdown-menu-right">
-            <button class="dropdown-item btn-sm" type="button">봄</button>
-            <button class="dropdown-item btn-sm" type="button">여름</button>
-            <button class="dropdown-item btn-sm" type="button">가을</button>
-            <button class="dropdown-item btn-sm" type="button">겨울</button>
+        <div class="dropdown-menu dropdown-menu-right" id="season">
+            <button onclick="find()" class="dropdown-item btn-sm" type="button" value="spring">봄</button>
+            <button onclick="find()" class="dropdown-item btn-sm" type="button" value="summer">여름</button>
+            <button onclick="find()" class="dropdown-item btn-sm" type="button" value="autumn">가을</button>
+            <button onclick="find()" class="dropdown-item btn-sm" type="button" value="winter">겨울</button>
         </div>
     </div>
 </div>
@@ -221,7 +257,7 @@
 <br>
 
 <div class="card" id="card-box">
-    <img class="card-img-top" src=""
+    <img class="card-img-top" src="#"
          alt="Card image cap">
     <div class="card-body">
         <h5 class="card-title"></h5>
