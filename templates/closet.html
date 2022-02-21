@@ -56,9 +56,18 @@
 
     </style>
     <script>
-
+        let sel_val
         $(document).ready(function () {
             load()
+
+            $('#color button').click(function () {
+                sel_val = $(this).attr('value');
+
+                $('#color button').removeClass('active');
+                $(this).addClass('active');
+
+                find()
+            })
         });
 
         function load() {
@@ -100,40 +109,45 @@
             })
         }
 
-
         function find() {
-            let color, season, style, kind
-            color = $('#color > button').on('click', function () {
-                $('#color-group').val($(this).attr('value'));
-                // console.log($('#color-group').val())
-            })
-            season = $('#season > button').on('click', function () {
-                $('#season-group').val($(this).attr('value'));
-                // console.log($('#season-group').val())
-            })
-            style = $('#style > button').on('click', function () {
-                $('#style-group').val($(this).attr('value'));
-                // console.log($('#style-group').val())
-            })
-            kind = $('#kind > button').on('click', function () {
-                $('#kind-group').val($(this).attr('value'));
-                // console.log($('#kind-group').val())
-            })
+            // let color, season, style, kind
+            // color = $('#color > button').on('click', function () {
+            //     $('#color-group').val($(this).attr('value'));
+            //     // console.log($('#color-group').val())
+            // })
+            // season = $('#season > button').on('click', function () {
+            //     $('#season-group').val($(this).attr('value'));
+            //     // console.log($('#season-group').val())
+            // })
+            // style = $('#style > button').on('click', function () {
+            //     $('#style-group').val($(this).attr('value'));
+            //     // console.log($('#style-group').val())
+            // })
+            // kind = $('#kind > button').on('click', function () {
+            //     $('#kind-group').val($(this).attr('value'));
+            //     // console.log($('#kind-group').val())
+            // })
             $.ajax({
-                    type: "GET",
-                    url: "mycloset/find",
-                    data: {'style': style, 'season': season, 'kind': kind, 'color': color},
-                    success: function (response) {
-                        if (response['status'] == 'SUCCESS') {
+                type: "GET",
+                url: "/mycloset/find",
+                data: {"color": sel_val},
+                success: function (response) {
+                    if (response['status'] == 'SUCCESS') {
+                        $('#card-box').empty();
+                        let clothes = response['clothes']
+                        let empty = response['empty']
+                        if (empty == true) {
+                            $('#card-box').append('옷장이 비었습니다.')
+                        } else {
                             for (i = 0; i < clothes.length; i++) {
-                                let name = clothes[i]['name']
-                                let style = clothes[i]['style']
-                                let season = clothes[i]['season']
-                                let kind = clothes[i]['kind']
-                                let color = clothes[i]['color']
+                                let path = clothes[i]['image_path']
+                                let style = clothes[i]['clothes_style']
+                                let season = clothes[i]['clothes_season']
+                                let kind = clothes[i]['clothes_kind']
+                                let color = clothes[i]['clothes_color']
 
                                 let temp_html = `<div class="card">
-                                                 <img class="card-img-top" src="${name}"
+                                                 <img class="card-img-top" src="${path}"
                                                       alt="Card image cap">
                                                  <div class="card-body">
                                                      <h5 class="card-title">${style}/${season}/${kind}/${color}</h5>
@@ -141,16 +155,12 @@
                                                  </div>`
                                 $('#card-box').append(temp_html)
                             }
-                        } else {
-                            alert(response['msg']);
                         }
+                    } else {
+                        alert(response['msg']);
                     }
                 }
-            )
-        }
-
-        function find(){
-
+            })
         }
 
     </script>
@@ -213,7 +223,7 @@
                 aria-expanded="false">
             색상
         </button>
-        <div onclick="find()" class="dropdown-menu dropdown-menu-right" id="color">
+        <div class="dropdown-menu dropdown-menu-right" id="color">
             <button class="dropdown-item btn-sm" type="button" value="red">빨강</button>
             <button class="dropdown-item btn-sm" type="button" value="orange">주황</button>
             <button class="dropdown-item btn-sm" type="button" value="yellow">노랑</button>
