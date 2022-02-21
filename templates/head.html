@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> What's in my closet</title>
+    <!-- google+font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&family=Festive&family=Do+Hyeon&family=Nanum+Brush+Script&display=swap"
+          rel="stylesheet">
+    <!-- css -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+    <link href="../static/common.css" rel="stylesheet">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <!-- Bootstrap -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+    <header>
+        <div class="inner">
+            <ul class="left-nav">
+                <li><a href="/">홈</a></li>
+                <li><a href="/mycloset">내 옷장</a></li>
+                <li><a href="/upload">새 옷 등록</a></li>
+                <li><a href="javascript:void(0)">코디 추천</a></li>
+                <li><a href="/trade">커뮤니티</a></li>
+            </ul>
+            <div class="right-nav">
+                {% if logged %}
+                <a href="/login/change_pw_page">비밀번호변경</a>
+                <a href="/login/logout">로그아웃</a>
+                {% else %}
+                <a href="/login/login_page">회원가입/로그인</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+</head>
