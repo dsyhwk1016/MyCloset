@@ -6,7 +6,7 @@ from pymongo import MongoClient
 from user import user_bp, blueprint
 from upload import upload_bp
 from mycloset import closet
-from board import board_bp
+from trade import trade_bp
 from ranking import ootd_rank
 
 #Flask App Setup
@@ -23,10 +23,10 @@ db = client.mycloset
 #시크릿키 랜덤적용
 app.secret_key = os.urandom(24)
 
-#blueprints load
+#blueprint load
 app.register_blueprint(blueprint,url_prefix="/login")
 app.register_blueprint(user_bp,url_prefix="/login")
-app.register_blueprint(board_bp, url_prefix='/board')
+app.register_blueprint(trade_bp, url_prefix='/trade')
 app.register_blueprint(closet, url_prefix='/mycloset')
 app.register_blueprint(upload_bp, url_prefix='/upload')
 app.register_blueprint(ootd_rank, url_prefix='/ootd')
