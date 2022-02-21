@@ -80,7 +80,7 @@ def trade_view():
 def trade_view_detail():
     trade_id = request.args.get('goods_id')
     trade_info = db.trade.find_one({'_id' : ObjectId(trade_id)}, {'_id' : False})
-    comment_info = objectIdDecoder(list(db.trade_comment.find({})))
+    comment_info = objectIdDecoder(list(db.trade_comment.find({'trade_id' : trade_id})))
 
     return jsonify({'msg' : '연결완료', 'trade_info' : trade_info, 'comment_info' : comment_info})
 

@@ -11,11 +11,19 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&family=Festive&family=Do+Hyeon&family=Nanum+Brush+Script&display=swap"
         rel="stylesheet">
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+          integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+  </script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+          integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+  </script>
   <!-- css -->
   <link href="../static/common.css" rel="stylesheet">
   <link href="../static/main.css" rel="stylesheet">
   <!-- JS -->
-
+  <script defer src="../static/main.js"></script>
 </head>
 
 <body>
@@ -43,7 +51,10 @@
 
 <!-- 메인 옷장 -->
 <section class="main-wrap">
-  <a href="javascript:void(0)"><img class="main-closet" src="../static/closet_with_clothes.png" alt="closet"></a>
+  <div class="wrap-closet">
+  <img id="main-closet" src="../static/closet_with_clothes.png" alt="closet" >
+  <button id="opencloset" onclick="location.href='/closet.html'">OPEN</button>
+  </div>
 <!--  옷장 크기가 제 컴퓨터에서는 정상이라 확인이 필요합니다-->
 </section>
 </body>

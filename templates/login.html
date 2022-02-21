@@ -58,7 +58,7 @@
       <!-- 로그인폼 -->
       <form class="form signin show" id="sign-in">
         <label for="userid">아이디</label>
-        <input type="email" placeholder="example@email.com" id="signin-id">
+        <input type="email" placeholder="example@email.com" id="signin-id" autofocus>
         <label for="password">비밀번호</label>
         <input type="password" id="signin-pwd">
       </form>
@@ -67,7 +67,7 @@
       <form name="signUpForm" class="form signup" id="sign-up">
         <label for="userid">아이디</label>
         <div class="valid-email">
-          <input type="email" placeholder="example@email.com" name="userid" id="signup-id" required>
+          <input type="email" placeholder="example@email.com" name="userid" id="signup-id" required autofocus>
           <button class="btn valid" onclick="validId()">중복체크</button>
         </div>
         <span id="already"></span>
@@ -84,7 +84,7 @@
   </div>
 
   <!-- 버튼 -->
-  <input type="submit" class="submit submit-signin show" value="로그인" onclick="submitSignin()">
+  <input type="submit" class="submit submit-signin show" value="로그인" onclick="submitSignin()" >
   <input type="button" class="submit submit-signup" value="회원가입" onclick="submitSignUp()">
 
   <!--sns로그인과 비밀번호찾기-->
@@ -115,7 +115,7 @@
       <form class="findpw-form">
         <p>비밀번호 찾기를 누르면 메일로 임시 비밀번호가  발송됩니다. </p>
         <label for="findpw">이메일 주소</label>
-      <input type="text" id="findpw-id"><button id="findpw-btn" class="findpw btn" onclick="find_pw()">찾기</button>
+      <input type="text" id="findpw-id" required><button id="findpw-btn" class="findpw btn" onclick="find_pw()">찾기</button>
       </form>
     </div>
   </div>

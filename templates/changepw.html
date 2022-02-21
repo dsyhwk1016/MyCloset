@@ -52,10 +52,12 @@
 </header>
 
  <!-- 비밀번호 변경 폼 -->
-<div>
-      <form name="changePwForm" class="changepw form" id="change-pw" method="post" action="javascript:sendNewPw()">
+<div class="wrap">
+  <h2>비밀번호 변경</h2>
+   <div class="container">
+      <form name="changePwForm" class="changepw form" id="change-pw" method="post" action="javascript:sendNewPw()" >
         <label for="currentpw">현재비밀번호</label>
-          <input type="password"  name="currentpw" id="current-pw" minlength="4" maxlength="8" onchange="currentPw()" required>
+          <input type="password"  name="currentpw" id="current-pw" minlength="4" maxlength="8" onchange="currentPw()" autofocus required>
         <span id="checkpw-now"></span>
         <label for="newpw">새 비밀번호</label>
         <input type="password" name="newpw" placeholder="4~8자" id="new-pw" onchange="comparePw()"
@@ -65,7 +67,8 @@
         <input type="password" name="newpwcheck" id="pwd-check"  minlength="4" maxlength="8" required>
         <span id="check-new"></span>
         <!--<button onclick="sendNewPw()">변경하기</button>-->
-        <input type="submit" value="변경하기    ">
       </form>
+     </div>
+      <input type="submit" value="변경하기" form="change-pw" class="changepw-btn">
 
 </div>
