@@ -100,7 +100,7 @@
             })
         }
 
-
+//카테고리별로 버튼을 클릭했을때 value는 console에 잘찍힘 근데 출력이 안되는 이유를 모르겠음.
         function find() {
             let color, season, style, kind
             color = $('#color > button').on('click', function () {
@@ -119,6 +119,7 @@
                 $('#kind-group').val($(this).attr('value'));
                 console.log($('#kind-group').val())
             })
+            //여기까지는 console에 value가 잘찍힘 밑에 ajax 콜하는 부분이 잘못된것같은데 어디서 어떻게 잘못된건지 모르겠다.
             $.ajax({
                 type: "GET",
                 url: "mycloset/find",
