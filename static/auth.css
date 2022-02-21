@@ -1,7 +1,6 @@
 
 .wrap{
   max-width:600px;
-  border-radius: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;

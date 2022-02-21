@@ -1,7 +1,31 @@
-.changepw.form{
+.wrap{
+  max-width:600px;
+  border-radius: 10px;
+  margin:200px auto 0;
+  background-color: var(--purple);
+}
+
+
+.wrap .container{
+    width: 400px;
+    padding: 10px;
+    letter-spacing: 2px;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    position:absolute;
-    top:300px;
-    left: 500px;
+
+    border-radius: 12px;
+    background-color: var(--purple-rgba);
+}
+.wrap .container .form{
+    display: flex;
+    flex-direction: column;
+
+}
+.changepw input{
+  margin-bottom:10px;
+  padding:7px;
+  border-radius: 5px;
+  border:2px solid var(--purple-rgba-btn);
+  box-sizing: border-box;
 }
