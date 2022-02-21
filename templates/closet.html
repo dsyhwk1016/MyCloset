@@ -105,26 +105,31 @@
             let color, season, style, kind
             color = $('#color > button').on('click', function () {
                 $('#color-group').val($(this).attr('value'));
-                // console.log($('#color-group').val())
+                console.log($('#color-group').val())
             })
             season = $('#season > button').on('click', function () {
                 $('#season-group').val($(this).attr('value'));
-                // console.log($('#season-group').val())
+                console.log($('#season-group').val())
             })
             style = $('#style > button').on('click', function () {
                 $('#style-group').val($(this).attr('value'));
-                // console.log($('#style-group').val())
+                console.log($('#style-group').val())
             })
             kind = $('#kind > button').on('click', function () {
                 $('#kind-group').val($(this).attr('value'));
-                // console.log($('#kind-group').val())
+                console.log($('#kind-group').val())
             })
             $.ajax({
-                    type: "GET",
-                    url: "mycloset/find",
-                    data: {'style': style, 'season': season, 'kind': kind, 'color': color},
-                    success: function (response) {
-                        if (response['status'] == 'SUCCESS') {
+                type: "GET",
+                url: "mycloset/find",
+                data: {'style': style, 'season': season, 'kind': kind, 'color': color},
+                success: function (response) {
+                    if (response['status'] == 'SUCCESS') {
+                        let clothes = response['clothes'];
+                        let empty = response['empty'];
+                        if (empty == true) {
+                            $('#card-box').append('옷장이 비었습니다.')
+                        } else {
                             for (i = 0; i < clothes.length; i++) {
                                 let name = clothes[i]['name']
                                 let style = clothes[i]['style']
@@ -141,18 +146,24 @@
                                                  </div>`
                                 $('#card-box').append(temp_html)
                             }
-                        } else {
-                            alert(response['msg']);
                         }
+                    } else {
+                        alert(response['msg']);
                     }
                 }
-            )
+            }
+        )
         }
+        function update(){
+            $.ajax({
+                type: "GET",
+                url: "mycloset/update",
+                data: {'style': style, 'season': season, 'kind': kind, 'color': color},
+                success: function (response) {
 
-        function find(){
-
+                }
+            })
         }
-
     </script>
 </head>
 
@@ -209,7 +220,7 @@
 <div class="btn btn-light float-right btn-sm" style="margin:0 100px 0 0">
 
     <div class="btn-group">
-        <button type="button"  id="color-group" class="btn btn-light btn-sm" data-toggle="dropdown" aria-haspopup="true"
+        <button type="button" id="color-group" class="btn btn-light btn-sm" data-toggle="dropdown" aria-haspopup="true"
                 aria-expanded="false">
             색상
         </button>
@@ -248,7 +259,7 @@
             카테고리
         </button>
         <div onclick="find()" class="dropdown-menu dropdown-menu-right" id="kind">
-            <button  class="dropdown-item btn-sm" type="button"  value="outer">아우터</button>
+            <button class="dropdown-item btn-sm" type="button" value="outer">아우터</button>
             <button class="dropdown-item btn-sm" type="button" value="top">상의</button>
             <button class="dropdown-item btn-sm" type="button" value="one_piece">원피스/세트</button>
             <button class="dropdown-item btn-sm" type="button" value="Pants">바지</button>
@@ -263,7 +274,7 @@
             계절
         </button>
         <div onclick="find()" class="dropdown-menu dropdown-menu-right" id="season">
-            <button  class="dropdown-item btn-sm" type="button" value="spring">봄</button>
+            <button class="dropdown-item btn-sm" type="button" value="spring">봄</button>
             <button class="dropdown-item btn-sm" type="button" value="summer">여름</button>
             <button class="dropdown-item btn-sm" type="button" value="autumn">가을</button>
             <button class="dropdown-item btn-sm" type="button" value="winter">겨울</button>
@@ -278,7 +289,7 @@
     <img class="card-img-top" src="#"
          alt="Card image cap">
     <div class="card-body">
-        <h5 class="card-title">casual,date/spring,summer/skirt/purple</h5>
+        <h5 class="card-title"></h5>
         <p class="card-text"></p>
     </div>
 </div>
