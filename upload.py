@@ -4,6 +4,7 @@ from pymongo import MongoClient
 from markupsafe import escape
 from datetime import datetime
 import os
+import hashlib
 
 app = Flask(__name__)
 
@@ -55,10 +56,11 @@ def upload_file():
     if file and allowed_file(file.filename):
         today = datetime.now()
         file_time = today.strftime('%Y-%m-%d-%H-%M-%S')
-        filename = f'{user_id}_{file_time}'
-        extension = file.filename.split('.')[-1]
+        filename = f'{user_id}_{file_time}' #파일이름 규칙 정하기
+        extension = file.filename.split('.')[-1] #기존 파일명에서 확장자만 빼서 저장
+        file_name = hashlib.sha256(filename.encode()).hexdigest() #파일명 암호화
         # filename = secure_filename(file.filename)
-        save_to = f'{filename}.{extension}'
+        save_to = f'{file_name}.{extension}'
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], save_to))
         ## 67번 줄에 filename 대신 '이름.확장자' 넣어서 돌려보니까 잘 저장 돼요! 이 점 참고하셔서 수정 진행하시면 될 것 같아요 - 가영
 
