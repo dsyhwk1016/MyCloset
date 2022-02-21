@@ -184,6 +184,7 @@ function submitSignin() {
 function fPwWindow(){
      document.querySelector('.modal-wrap').style.display ='block';
      document.querySelector('.modal-bg').style.display ='block';
+     document.getElementById('findpw-id').focus()
 }
 function fPwClose(){
      document.querySelector('.modal-wrap').style.display ='none';
