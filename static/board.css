@@ -152,3 +152,29 @@ input[type="text"]:disabled{
     margin-top : 30px;
     font-size : 20px;
 }
+
+.comment_view{
+    border : 2px solid darkgrey;
+    padding : 10px;
+}
+
+.comment_out{
+    border-bottom : 1px solid grey;
+    padding : 15px 0px 15px 0px;
+}
+
+.com_username{
+    padding-bottom: 15px;
+}
+.comment_input{
+    display: flex;
+    flex-direction: row;
+}
+
+.comment_text{
+    width : 90%;
+}
+
+.comment_btn{
+    margin-left : 20px;
+}

@@ -57,7 +57,7 @@ def trade_submit():
     write_price = request.form['price']
     write_content = request.form['content']
     now = datetime.now()
-    current_time = now.strftime("%H:%M:%S")
+    current_time = now.strftime("%Y-%M-%D %H:%M:%S")
 
     doc = {
         'user_id' : user_id,
@@ -80,6 +80,29 @@ def trade_view():
 def trade_view_detail():
     trade_id = request.args.get('goods_id')
     trade_info = db.trade.find_one({'_id' : ObjectId(trade_id)}, {'_id' : False})
-    print(trade_info)
+    comment_info = objectIdDecoder(list(db.trade_comment.find({})))
 
-    return jsonify({'msg' : '연결완료', 'trade_info' : trade_info})
+    return jsonify({'msg' : '연결완료', 'trade_info' : trade_info, 'comment_info' : comment_info})
+
+@trade_bp.route('/view/comment_write', methods=['POST'])
+def comment_write():
+    user_id = escape(session['user_id'])
+    user_info = db.member.find_one({'user_id' : user_id}, {'_id' : False})
+    user_name = user_info['user_name']
+    now = datetime.now()
+    current_time = now.strftime("%Y-%m-%d %H:%M:%S")
+
+    trade_id = request.form['trade_id']
+    contents = request.form['contents']
+
+    doc = {
+        'user_id' : user_id,
+        'user_name' : user_name,
+        'trade_id' : trade_id,
+        'contents' : contents,
+        'datetime' : current_time
+    }
+
+    db.trade_comment.insert_one(doc)
+
+    return jsonify({'msg' : '댓글이 등록되었습니다'})
