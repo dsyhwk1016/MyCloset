@@ -7,9 +7,9 @@
 }
 .main-wrap .main-closet{
   display: block;
-  min-width:400px;
+  max-width:22vw;
   margin:auto;
   position:absolute; 
   bottom: 5vh;
-  left:calc(50% - 200px);
+  left:calc(50% - 11vw);
 }

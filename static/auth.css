@@ -5,7 +5,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin:100px auto;
+  margin:100px auto 0;
   
 }
 .title{
@@ -70,7 +70,7 @@
   margin-bottom:10px;
   padding:7px;
   border-radius: 5px;
-  border:2px solid var(--purple-rgba-btn);
+  border:2px solid var(--purple-btn-border);
   box-sizing: border-box;
 
 }
@@ -82,12 +82,12 @@
   flex:80%;
 }
 .wrap .auth .container .form .valid-email .valid{
-height:35px;
-flex: 20%;
-margin-left: 5px;
-font-size:var(--font-medium);
-padding:2px;
-border:none;
+  height:35px;
+  flex: 20%;
+  margin-left: 5px;
+  font-size:var(--font-medium);
+  padding:2px;
+  border:none;
 
 }
 .wrap .submit{
@@ -108,7 +108,7 @@ border:none;
   color:var(--white);
 }
 .wrap .submit.show:hover{
-  background-color: #61237f;
+  background-color: var(--purple-emp);
 }
 
 
