@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, redirect, flash, Blueprint, session, url_for
-from werkzeug.utils import secure_filename
 from pymongo import MongoClient
 from markupsafe import escape
 from datetime import datetime
@@ -36,37 +35,32 @@ def upload():
     else:
         return render_template('login.html', logged=logged)
 
-@upload_bp.route('/upload_file', methods=['POST'])
-def upload_file():
 
+@upload_bp.route('/closet', methods=['POST'])
+def upload_file():
     user_id = escape(session['user_id'])
-    # name = request.form['img_name']
     style = request.form.getlist('style')
     season = request.form.getlist('season')
     kind = request.form['kind']
     color = request.form['color']
 
     file = request.files['file']
-    # if file not in request.files: #일단 이 부분 오류 이 부분만 잘 고치면 될것같아요
-    #     flash('No file part')
-    #     return redirect(request.url)
-    if file.filename == '':  # 이 부분은 안오류
+
+    if file.filename == '':
         flash('No selected file')
         return redirect(request.url)
     if file and allowed_file(file.filename):
         today = datetime.now()
         file_time = today.strftime('%Y-%m-%d-%H-%M-%S')
-        filename = f'{user_id}_{file_time}' #파일이름 규칙 정하기
-        extension = file.filename.split('.')[-1] #기존 파일명에서 확장자만 빼서 저장
-        file_name = hashlib.sha256(filename.encode()).hexdigest() #파일명 암호화
-        # filename = secure_filename(file.filename)
+        filename = f'{user_id}_{file_time}'  # 파일이름 규칙 : user_id +저장시간
+        extension = file.filename.split('.')[-1]  # 기존 파일명에서 확장자만 빼서 저장
+        file_name = hashlib.sha256(filename.encode()).hexdigest()  # 파일명 암호화 저장
         save_to = f'{file_name}.{extension}'
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], save_to))
-        ## 67번 줄에 filename 대신 '이름.확장자' 넣어서 돌려보니까 잘 저장 돼요! 이 점 참고하셔서 수정 진행하시면 될 것 같아요 - 가영
 
     doc = {
         'user_id': user_id,
-        'image_path': '../static/uploads/' + save_to,   # DB에는 이미지가 저장되는 경로를 저장해주세요! - 가영
+        'image_path': '../static/uploads/' + save_to,
         'clothes_style': style,
         'clothes_season': season,
         'clothes_kind': kind,
