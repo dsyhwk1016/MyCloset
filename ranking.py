@@ -44,7 +44,7 @@ def upload():
 
         s3 = s3_connection()
         s3.upload_file(
-            Filename=save_path,  # 업로드할 파일의 경로
+            Filename=ootd_img.filename, # 업로드 할 파일
             Bucket=BUCKET_NAME,
             Key='ootd/' + save_to,  # 파일명
             ExtraArgs={"ContentType": 'image/jpg', "ACL": 'public-read'}

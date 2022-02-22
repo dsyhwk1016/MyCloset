@@ -30,7 +30,7 @@ def upload_file():
     kind = request.form['kind']
     color = request.form['color']
 
-    file = request.files['file']
+    file = request.files['image']
 
     if file.filename == '':
         flash('No selected file')
@@ -44,13 +44,21 @@ def upload_file():
         save_to = f'{file_name}.{extension}'
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], save_to))
 
-    s3 = s3_connection()
-    s3.upload_file(
-        Filename = os.path.join(app.config['UPLOAD_FOLDER'], save_to),  # 업로드할 파일의 경로
-        Bucket = BUCKET_NAME,
-        Key = 'clothes/' + save_to,  # 파일명
-        ExtraArgs={"ContentType": 'image/jpg', "ACL": 'public-read'}
+    # s3 = s3_connection()
+    # s3.upload_file(
+    #     Filename = os.path.join(app.config['UPLOAD_FOLDER'], save_to),  # 업로드할 파일의 경로
+    #     Bucket = BUCKET_NAME,
+    #     Key = 'clothes/' + save_to,  # 파일명
+    #     ExtraArgs={"ContentType": 'image/jpg', "ACL": 'public-read'}
+    # )
+    """
+    s3.put_object(
+        ACL='public-read',
+        Body=save_to,
+        Bucket=BUCKET_NAME,
+        Key='clothes/'+save_to
     )
+    """
 
     s3_path = f'https://whatisinmycloset.s3.ap-northeast-2.amazonaws.com/clothes/{save_to}'
     doc = {
