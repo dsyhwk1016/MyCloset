@@ -42,17 +42,18 @@ def upload():
         else:
             return {'status': 'FAIL', 'msg': '파일 확인에 실패했습니다.'}
 
-        ### aws s3 업로드 오류 ###
-        # s3 = s3_connection()
-        # s3.put_object(
-        #     Bucket = BUCKET_NAME,
-        #     Body = ootd_img,
-        #     Key = save_path,
-        #     ContentType = ootd_img.content_type)
+        s3 = s3_connection()
+        s3.upload_file(
+            Filename=save_path,  # 업로드할 파일의 경로
+            Bucket=BUCKET_NAME,
+            Key='ootd/' + save_to,  # 파일명
+            ExtraArgs={"ContentType": 'image/jpg', "ACL": 'public-read'}
+        )
 
+        s3_path = f'https://whatisinmycloset.s3.ap-northeast-2.amazonaws.com/ootd/{save_to}'
         doc = {
             'user_name': user_name,
-            'image_path': '../static/uploads/' + save_to,
+            'image_path': s3_path,
             'upload_date': date,
             'likes': 0
         }

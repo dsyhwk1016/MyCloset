@@ -5,6 +5,7 @@ from markupsafe import escape
 from datetime import datetime
 import os
 import hashlib
+from img_set import *
 
 app = Flask(__name__)
 
@@ -64,9 +65,18 @@ def upload_file():
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], save_to))
         ## 67번 줄에 filename 대신 '이름.확장자' 넣어서 돌려보니까 잘 저장 돼요! 이 점 참고하셔서 수정 진행하시면 될 것 같아요 - 가영
 
+    s3 = s3_connection()
+    s3.upload_file(
+        Filename = os.path.join(app.config['UPLOAD_FOLDER'], save_to),  # 업로드할 파일의 경로
+        Bucket = BUCKET_NAME,
+        Key = 'clothes/' + save_to,  # 파일명
+        ExtraArgs={"ContentType": 'image/jpg', "ACL": 'public-read'}
+    )
+
+    s3_path = f'https://whatisinmycloset.s3.ap-northeast-2.amazonaws.com/clothes/{save_to}'
     doc = {
         'user_id': user_id,
-        'image_path': '../static/uploads/' + save_to,   # DB에는 이미지가 저장되는 경로를 저장해주세요! - 가영
+        'image_path': s3_path,
         'clothes_style': style,
         'clothes_season': season,
         'clothes_kind': kind,

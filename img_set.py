@@ -4,9 +4,9 @@ import boto3
 app = Flask(__name__)
 
 # AWS S3 Key Set
-AWS_ACCESS_KEY = "AKIASHQEP7CQPMBH525U"
-AWS_SECRET_KEY = "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"
-BUCKET_NAME = "sowhatcoding"
+AWS_ACCESS_KEY = "AWS_ACCESS_KEY"
+AWS_SECRET_KEY = "AWS_SECRET_KEY"
+BUCKET_NAME = "whatisinmycloset"
 
 # Image Setup
 UPLOAD_FOLDER = 'static/uploads/'
