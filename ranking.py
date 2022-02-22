@@ -4,7 +4,7 @@ from bson.objectid import ObjectId
 from datetime import datetime
 import hashlib
 import os
-from img_set import *
+# from img_set import *
 
 ootd_rank = Blueprint('ootd_rank', __name__)
 

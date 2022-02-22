@@ -1,5 +1,5 @@
 from flask import Flask
-import boto3
+# import boto3
 
 app = Flask(__name__)
 
