@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, redirect, flash, Blueprint, jsonify
+from flask import Flask, render_template, request, redirect, flash, Blueprint, session
 from werkzeug.utils import secure_filename
 from pymongo import MongoClient
+from markupsafe import escape
 import os
 
 app = Flask(__name__)
@@ -26,26 +27,34 @@ def allowed_file(filename):
 
 @upload_bp.route('/')
 def upload():
-    return render_template('upload.html')
-
+    logged = False
+    if "user_id" in session:
+        logged = True
+        return render_template('upload.html', logged=logged)
+    else:
+        return render_template('login.html', logged=logged)
 
 @upload_bp.route('/upload_file', methods=['POST'])
 def upload_file():
+
+    user_id = escape(session['user_id'])
     name = request.form['img_name']
-    style = request.form['style']
-    season = request.form['season']
+    style = request.form.getlist('style')
+    season = request.form.getlist('season')
     kind = request.form['kind']
     color = request.form['color']
 
     doc = {
-        'name': name,
-        'style': style,
-        'season': season,
-        'kind': kind,
-        'color': color
+        'user_id': user_id,
+        'image_path': '../static/uploads/' + name,
+        'clothes_style': style,
+        'clothes_season': season,
+        'clothes_kind': kind,
+        'clothes_color': color
     }
 
     db.clothes.insert_one(doc)
+    # return jsonify({'msg': ' 성공적으로 작성되었습니다.'})
     file = request.files['file']
 
     if file.filename == '':
