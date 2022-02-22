@@ -1,180 +1,235 @@
 @font-face {
-    font-family: 'Pretendard-Regular';
-    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
-    font-weight: 400;
-    font-style: normal;
+  font-family: 'Pretendard-Regular';
+  src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
 }
 
-body{
-    font-family: Pretendard-Regular;
+/*common*/
+body {
+  font-family: Pretendard-Regular;
+}
+a{
+    list-style: none;
+}
+input[type="text"]:disabled {
+  background-color: white;
 }
 
-input[type="text"]:disabled{
-    background-color : white;
+.container {
+  background-color: #ffebfd;
+  background-color: rgba(255, 255, 255, 0.6);
+  margin: 120px auto;
+  padding: 20px;
+  box-sizing: border-box;
+
 }
 
-.wrap{
-    background-color : white;
-    width : 100%;
-    margin : auto;
+/*nav bar*/
 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+.container .nav {
+  padding: 10px;
 }
 
-.container{
-    background-color : white;
-    width : 80%;
-    height : 80vh;
-    overflow-y : scroll;
-
-    border-radius : 20px;
-
-    padding : 20px;
-    display : block;
-
-    position : fixed;
-    top : 100px;
+.container .nav .nav-link {
+  color: #b081c5;
+  font-size: 18px;
+  padding: 5px 10px;
 }
 
-.new_trade{
-    text-align: right;
+.container .nav a.active {
+  color: #61237f;
+  font-weight: bold;
+  background-color: var(--purple-emp);
+  border-radius: 12px;
+  color: var(--white);
 }
 
-.title{
-    display: flex;
-    flex-direction: column;
 
-    border-bottom : 2px solid gray;
+/*trade list*/
+
+
+.container .trade_list {
+  padding: 10px;
 }
 
-.load_btn{
-    color : white;
-    font-family: Pretendard-Regular;
+.container .trade_list .newtrade_wrap {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
 }
 
-.cloth_load{
-    display: flex;
-    flex-direction: row;
-    margin-top : 30px;
-    flex : 1;
+.container .trade_list .new_trade {
+  display: block;
+  font-size: var(--font-large);
+  padding: 5px;
+  border-radius: 12px;
+  border: none;
+  background-color: transparent;
+  transition: background-color .5s,
+  color .5s;
 }
 
-.cloth_info_container{
-    display: flex;
-    flex-direction: column;
-    flex : 1;
-    height : auto;
-    padding : 0px 10px 0px 10px;
+.container .trade_list .new_trade:hover {
+  background-color: var(--purple-emp);
+  color: var(--white);
 }
 
-.rows{
-    margin-top : 20px;
+.container .trade_list #list_card .thumbnail {
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, .7);
+  transition: transform .5s,
+  background-color .5s;
+
 }
 
-.label_title{
-    font-size : 20px;
-    color : black;
-    margin-left : 0px;
-    text-align: right;
-    width : 20%;
+.container .trade_list #list_card .thumbnail:hover {
+  transform: scale(1.05);
+  background-color: var(--white);
+
 }
 
-.cloth_info{
-    font-family: 'Pretendard-Regular';
-    text-align : left;
-    border : 0px;
-    font-size : 15px;
-}
-.panel-heading{
-    vertical-align: center;
-}
-.panel-body{
-    padding : 0px;
-    height : 5vh;
+/*몰라 어딘가임*/
+.title {
+  display: flex;
+  flex-direction: column;
+
+  border-bottom: 2px solid gray;
 }
 
-.sub_title{
-    margin-top : 20px;
-    font-size : 20px;
+.load_btn {
+  color: white;
+  font-family: Pretendard-Regular;
 }
 
-.list_cost{
-    font-size : 15px;
-    text-align : right;
+.cloth_load {
+  display: flex;
+  flex-direction: row;
+  margin-top: 30px;
+  flex: 1;
 }
 
-.list_status{
-    text-align : right;
-    font-size : 15px;
+.cloth_info_container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: auto;
+  padding: 0px 10px 0px 10px;
 }
 
-.goods_view_info{
-    display: flex;
-    flex-direction: row;
-
-    margin-top : 30px;
+.rows {
+  margin-top: 20px;
 }
 
-.goods_img{
-    flex : 2;
-    min-width : 300px;
+.label_title {
+  font-size: 20px;
+  color: black;
+  margin-left: 0px;
+  text-align: right;
+  width: 20%;
 }
 
-.goods_info{
-    flex : 2;
-    display: flex;
-    flex-direction: column;
-
-    margin-left : 30px;
-    padding : 20px;
+.cloth_info {
+  font-family: 'Pretendard-Regular';
+  text-align: left;
+  border: 0px;
+  font-size: 15px;
 }
 
-.goods_title{
-    font-size : 40px;
+.panel-heading {
+  vertical-align: center;
 }
 
-.goods_status{
-    text-align: right;
-    font-size : 25px;
+.panel-body {
+  padding: 0px;
+  height: 5vh;
 }
 
-.goods_cost{
-    font-size : 60px;
-    margin-top : 30px;
-    border-bottom : 2px solid gray;
-    text-align: right;
+.sub_title {
+  margin-top: 20px;
+  font-size: 20px;
 }
 
-.goods_content{
-    margin-top : 30px;
-    font-size : 20px;
+/*trade_view*/
+.container .product_info {
+  display: flex;
+  justify-content: space-between;
+  padding:20px;
 }
 
-.comment_view{
-    border : 2px solid darkgrey;
-    padding : 10px;
+.container #goods_img {
+  flex: 1 1 30%;
+  width: 350px;
+  height: 350px;
+
 }
 
-.comment_out{
-    border-bottom : 1px solid grey;
-    padding : 15px 0px 15px 0px;
+.container .info_all {
+  flex: 1 1 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: var(--font-large);
+  padding: 80px;
+  box-sizing: border-box;
+
+}
+.container .info_all li{
+    padding-top:15px;
+}
+.container .info_all .title{
+    font-size: 30px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    box-sizing: border-box;
+    flex:20%;
+
+}
+.container .info_all .status{
+    font-size: var(--font-large);
+    font-weight: bold;
+    flex:15%;
+
+}
+.container .info_all .price{
+    font-size: var(--font-large);
+    font-weight:bold;
+    flex:15%;
+
+
+}
+.container .info_all .desc{
+    font-size: var(--font-large);
+    flex:50%;
+
+
 }
 
-.com_username{
-    padding-bottom: 15px;
-}
-.comment_input{
-    display: flex;
-    flex-direction: row;
+
+
+.comment_view {
+  border: 2px solid darkgrey;
+  padding: 10px;
 }
 
-.comment_text{
-    width : 90%;
+.comment_out {
+  border-bottom: 1px solid grey;
+  padding: 15px 0px 15px 0px;
 }
 
-.comment_btn{
-    margin-left : 20px;
+.com_username {
+  padding-bottom: 15px;
+}
+
+.comment_input {
+  display: flex;
+  flex-direction: row;
+}
+
+.comment_text {
+  width: 90%;
+}
+
+.comment_btn {
+  margin-left: 20px;
 }

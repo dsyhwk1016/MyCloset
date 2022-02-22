@@ -40,14 +40,10 @@
                 }
 
 
-                let tmp_html=`
-                    <div class="goods_title">${title}</div>
-                    <div class="goods_status">${status}</div>
-                    <div class="goods_cost"><span class="numbers">${price_s}</span> 원</div>
-
-                    <div class="goods_content">
-                    ${content}
-                    </div>
+                let tmp_html=`<li class="title">${title}</li>
+                              <li class ="status">${status}</li>
+                               <li class ="price">${price_s}</li>
+                              <li class = "desc"> ${content}</li>
                 `
 
 
@@ -77,27 +73,13 @@
     }
 </script>
 <body>
-<div class="wrap">
     <div class="container">
-        <div class="title"><h2>상품정보</h2></div>
+      <div class="product_info">
+      <img id="goods_img" src="" alt=""  style="width : 425px; height : 480px">
+      <ul class="info_all" id="goods_info">
 
-        <div class="goods_view_info">
-            <div class="goods_img">
-                <div class="row">
-                    <div class="col-xs-12 col-md-12">
-                        <a href="#" class="thumbnail">
-                            <img src="" alt="..." id="goods_img"
-                                 style="width : 425px; height : 480px;">
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class = "goods_info" id="goods_info">
-
-            </div>
-        </div>
-
+      </ul>
+      </div>
         <div class="comment_view" id="comment_view">
         </div>
         <div class="comment_write">
@@ -109,7 +91,6 @@
                 </div>
             </form>
         </div>
-    </div>
 </div>
 </body>
 </html>

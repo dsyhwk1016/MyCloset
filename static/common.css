@@ -1,3 +1,9 @@
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
 :root{
 --white:#f6f6f6;
 --purple:#9150AF;
@@ -8,6 +14,7 @@
 --font-medium:12px;
 --font-small:10px;
 --font-large:16px;
+--font-default: 'Pretendard-Regular', sans-serif;
 
 }
 
@@ -22,10 +29,11 @@ body{
   background-size:cover;
   background-attachment:fixed;
   background-position: left -20px top 35px;
-  font-family: 'Do Hyeon', sans-serif;
+  font-family: var(--font-default);
+  font-size:var(--font-medium);
 
 }
-a {
+a{
   text-decoration: none;
   color:var(--white);
 }
@@ -33,7 +41,7 @@ li{
   list-style: none;
 }
 .btn{
-  font-family: 'Do Hyeon', sans-serif;
+  font-family: var(--font-default);
   letter-spacing: 3px;
   color:var(--black);
   padding:10px;
@@ -65,6 +73,7 @@ header{
   z-index: 10;
   top:0;
   left:0;
+  font-size: var(--font-large);
 }
 header .inner{
   margin:auto;
@@ -95,10 +104,13 @@ header .inner .left-nav li {
 
 
 header .inner .right-nav{
-  margin-right: 20px;
+  margin-right: 10px;
   display: flex;
   align-items: center;
 
+}
+header .inner .right-nav a{
+  padding: 0 10px;
 }
 header .inner a:hover{
   color: var(--black);
