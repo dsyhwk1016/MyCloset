@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, flash, Blueprint, session
+from flask import Flask, render_template, request, redirect, flash, Blueprint, session, url_for
 from werkzeug.utils import secure_filename
 from pymongo import MongoClient
 from markupsafe import escape
@@ -75,4 +75,4 @@ def upload_file():
 
     db.clothes.insert_one(doc)
 
-    return render_template('upload.html')
+    return redirect(url_for('closet.mycloset'))

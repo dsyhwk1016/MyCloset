@@ -21,7 +21,11 @@ def objectIdDecoder(list):
 
 @trade_bp.route('/')
 def trade():
-    return render_template('trade_list.html')
+    logged = False
+
+    if 'user_id' in session:
+        logged = True
+    return render_template('trade_list.html', logged = logged)
 
 @trade_bp.route('/list', methods=['GET'])
 def trade_list():
@@ -31,9 +35,10 @@ def trade_list():
 
 @trade_bp.route('/write')
 def trade_write():
+    logged = False
     if 'user_id' in session:
         user_id = escape(session['user_id'])
-        return render_template('trade_write.html', user_id=user_id)
+        return render_template('trade_write.html', user_id=user_id, logged=logged)
     else :
         return redirect(url_for('login.login_page'))
 
@@ -74,7 +79,11 @@ def trade_submit():
 
 @trade_bp.route('/view')
 def trade_view():
-    return render_template('trade_view.html')
+    logged = False
+
+    if 'user_id' in session:
+        logged = True
+    return render_template('trade_view.html', logged=logged)
 
 @trade_bp.route('/view/detail', methods=['GET'])
 def trade_view_detail():

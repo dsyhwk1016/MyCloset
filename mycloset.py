@@ -89,6 +89,7 @@ def find():
         if clothes:
             empty = False
 
+        print(clothes)
         return jsonify({'status': status, 'clothes': clothes, 'empty': empty})
     except:
         status = 'FAIL'
