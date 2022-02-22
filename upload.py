@@ -1,30 +1,17 @@
-from flask import Flask, render_template, request, redirect, flash, Blueprint, session, url_for
+from flask import render_template, request, redirect, flash, Blueprint, session, url_for
 from pymongo import MongoClient
 from markupsafe import escape
 from datetime import datetime
 import os
 import hashlib
-
-app = Flask(__name__)
+from img_set import *
 
 # MongoDB Setup
 client = MongoClient('localhost', 27017)
 db = client.mycloset
 
-UPLOAD_FOLDER = 'static/uploads/'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
-
-ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
-
 # blueprint setup
 upload_bp = Blueprint('upload', __name__)
-
-
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
 
 @upload_bp.route('/')
 def upload():
@@ -34,7 +21,6 @@ def upload():
         return render_template('upload.html', logged=logged)
     else:
         return render_template('login.html', logged=logged)
-
 
 @upload_bp.route('/closet', methods=['POST'])
 def upload_file():
@@ -58,9 +44,18 @@ def upload_file():
         save_to = f'{file_name}.{extension}'
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], save_to))
 
+    s3 = s3_connection()
+    s3.upload_file(
+        Filename = os.path.join(app.config['UPLOAD_FOLDER'], save_to),  # 업로드할 파일의 경로
+        Bucket = BUCKET_NAME,
+        Key = 'clothes/' + save_to,  # 파일명
+        ExtraArgs={"ContentType": 'image/jpg', "ACL": 'public-read'}
+    )
+
+    s3_path = f'https://whatisinmycloset.s3.ap-northeast-2.amazonaws.com/clothes/{save_to}'
     doc = {
         'user_id': user_id,
-        'image_path': '../static/uploads/' + save_to,
+        'image_path': s3_path,
         'clothes_style': style,
         'clothes_season': season,
         'clothes_kind': kind,
