@@ -184,6 +184,7 @@ function submitSignin() {
 function fPwWindow(){
      document.querySelector('.modal-wrap').style.display ='block';
      document.querySelector('.modal-bg').style.display ='block';
+     document.getElementById('findpw-id').focus()
 }
 function fPwClose(){
      document.querySelector('.modal-wrap').style.display ='none';
@@ -198,8 +199,8 @@ function find_pw() {
                 enctype: "multipart/form-data",
                 async: false,
                 data: {},
-                success: function (response) {
-                    alert(response['msg']);
+                success: function (response) { //
+                    alert(response['msg']); //
                     fPwClose();
                 }
             })

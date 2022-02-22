@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <!--axios cdn주소-->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <title>코디 추천 페이지</title>
+
+    <!-- 온도 슬라이더 CSS -->
+    <style>
+        .slider-container {
+            margin-top: 100px;
+            margin-left: 30px;
+            margin-bottom: 70px;
+            position: relative;
+            width: 100px;
+            height: 300px;
+
+        }
+
+        .slider-container .slider {
+            position: absolute;
+            z-index: 3;
+            left: 50%;
+            top: 50%;
+            -webkit-appearance: none;
+            margin: auto;
+            width: 300px;
+            height: 100px;
+            outline: none;
+            transform: rotate(-90deg) translate(-50%, -50%);
+            transform-origin: 0 0;
+            background-color: transparent;
+        }
+
+        .slider-container .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 100px;
+            height: 100px;
+            border: 8px solid #3e3e3e;
+            border-radius: 100px;
+            background-color: rgba(0, 0, 0, 0.01);
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.9);
+            cursor: pointer;
+            transition: 0.2s ease-in-out;
+        }
+
+        .slider-container .slider::-webkit-slider-thumb:hover {
+            border-color: #eeeeee;
+        }
+
+        .slider-container .slider::-webkit-slider-thumb:active {
+            box-shadow: 0 0 0 30px rgba(255, 255, 255, 0.1);
+        }
+
+        .slider-container .bar,
+        .slider-container .fill {
+            position: absolute;
+            left: 0;
+            right: 0;
+        }
+
+        .slider-container .bar {
+            z-index: 1;
+            top: 2px;
+            bottom: -2px;
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+
+        .slider-container .bar::before,
+        .slider-container .bar::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 10px;
+        }
+
+        .slider-container .bar::before {
+            bottom: 100%;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .slider-container .bar::after {
+            width: 100px;
+            height: 50px;
+            top: 100%;
+            background-color: blue;
+            border-bottom-left-radius: 500px;
+            border-bottom-right-radius: 500px;
+        }
+
+        .slider-container .bar::before {
+            margin-top: 100px;
+            width: 100px;
+            height: 50px;
+            bottom: 100%;
+            background-color: rgba(255, 37, 37, 100);
+            border-top-left-radius: 500px;
+            border-top-right-radius: 500px;
+        }
+
+        .slider-container .fill {
+            z-index: 2;
+            bottom: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .slider-container .fill::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 300px;
+            bottom: 0;
+            background-image: linear-gradient(0deg, blue 0%, deepskyblue 25%, yellow 50%, orange 75%, #ff2525 100%);
+        }
+
+        .value {
+            cursor: pointer;
+
+        }
+    </style>
+    <!-- JavaScript -->
+    <script>
+        // Weather API KEY 가져옴
+        let API_KEY = "7a9876c881ab70708f327836f2ae2d7b";
+
+        function onGeoOK(position) {
+            // 위도, 경도, url 가져옴
+            let lat = position.coords.latitude;
+            let lon = position.coords.longitude;
+            let url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&lang=kr&units=metric`
+            // url을 fetch 그리고 response 받기
+            fetch(url).then(response => response.json()).then(data => {
+                // api 데이터(날씨, 온도, 지역) 페이지에 가져오기
+                let weather = document.querySelector("#weather span:first-child");
+                let city = document.querySelector("#weather span:last-child");
+                city.innerText = data.name;
+                weather.innerText = `${data.weather[0].main} / ${data.main.temp}`;
+                // 슬라이더에 현재 온도 할당
+                $('#slider').attr('value', data.main.temp);
+                // 슬라이더 움직일 때 value 표시
+                let slider = document.getElementById("slider");
+                let output = document.getElementById("demo");
+                output.innerHTML = `${data.main.temp}`
+                slider.oninput = function () {
+                    output.innerHTML = this.value;
+                }
+
+                // console.log(data.name, data.main.temp);
+            })
+        }
+
+        // error 메세지 alert
+        function onGeoError() {
+            alert("can't find you. No weather for you.");
+        }
+
+        navigator.geolocation.getCurrentPosition(onGeoOK, onGeoError);
+
+        axios({
+            method: 'get',
+            url: 'https://58c0d2ff-e6d2-4ec8-b000-273473c095e2.mock.pstmn.io/lsit',
+            responseType: 'json'
+        })
+            .then(function (response) {
+                let recomend = response.data;
+                for (i=0; i<recomend.length; i++){
+                    let temperature = recomend[i]["temp"]
+                    let file = recomend[i]["file"];
+                    let style = recomend[i]["style"];
+                    let season = recomend[i]["season"];
+                    let kind = recomend[i]["kind"];
+                    let color = recomend[i]["color"];
+                    let temp_hrml = ``;
+                    if (temperature <= 40 && temperature >= 28){
+                        temp_hrml =``
+                    }else if(temperature <=27 && temperature
+
+                    }
+
+                }
+                console.log(recomend);
+            });
+
+
+    </script>
+</head>
+<body>
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-4">코디 추천 페이지</h1>
+        <p class="lead">날씨에 맞는 옷차림을 추천해줍니다.</p>
+    </div>
+    <div id="weather">
+        <span></span>
+        <span></span>
+    </div>
+</div>
+
+<div class="middle">
+    <div class="slider-container">
+        <span class="bar"><span class="fill"></span></span>
+        <input type="range" id="slider" class="slider" min="-10" max="40" value="">
+    </div>
+</div>
+<p class="value">Value: <span id="demo"></span>℃</p>
+</div>
+<button type="button" id="slider" class="btn btn-light" value="">추천하기</button>
+</body>
+
+</html>

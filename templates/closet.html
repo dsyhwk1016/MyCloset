@@ -12,17 +12,17 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
 
     <title>MY CLOSET | 옷장 살펴보기</title>
 
@@ -49,38 +49,148 @@
             border-radius: 40px;
         }
 
-        .pagination{
+        .pagination {
             margin: auto;
             display: inline-block;
         }
 
     </style>
+    <script>
+        let sel_val
+        $(document).ready(function () {
+            load()
+
+            $('#color button').click(function () {
+                sel_val = $(this).attr('value');
+
+                $('#color button').removeClass('active');
+                $(this).addClass('active');
+
+                find()
+            })
+        });
+
+        function load() {
+            $.ajax({
+                type: "GET",
+                url: "/mycloset/load",
+                data: {},
+                success: function (response) {
+                    if (response['status'] == 'SUCCESS') {
+                        let user = response['user_name'];
+                        let clothes = response['clothes']
+                        let empty = response['empty']
+                        let temp_user = `<h5 class="card-title">'${user}'님 반갑습니다</h5>`
+                        $('#user_name').append(temp_user)
+                        if (empty == true) {
+                            $('#card-box').append('옷장이 비었습니다.')
+                        } else {
+                            for (i = 0; i < clothes.length; i++) {
+                                let path = clothes[i]['image_path']
+                                let style = clothes[i]['clothes_style']
+                                let season = clothes[i]['clothes_season']
+                                let kind = clothes[i]['clothes_kind']
+                                let color = clothes[i]['clothes_color']
+
+                                let temp_html = `<div class="card">
+                                                 <img class="card-img-top" src="${path}"
+                                                      alt="Card image cap">
+                                                 <div class="card-body">
+                                                     <h5 class="card-title">${style}/${season}/${kind}/${color}</h5>
+                                                 </div>
+                                                 </div>`
+                                $('#card-box').append(temp_html)
+                            }
+                        }
+                    } else {
+                        alert(response['msg']);
+                    }
+                }
+            })
+        }
+
+        function find() {
+            // let color, season, style, kind
+            // color = $('#color > button').on('click', function () {
+            //     $('#color-group').val($(this).attr('value'));
+            //     // console.log($('#color-group').val())
+            // })
+            // season = $('#season > button').on('click', function () {
+            //     $('#season-group').val($(this).attr('value'));
+            //     // console.log($('#season-group').val())
+            // })
+            // style = $('#style > button').on('click', function () {
+            //     $('#style-group').val($(this).attr('value'));
+            //     // console.log($('#style-group').val())
+            // })
+            // kind = $('#kind > button').on('click', function () {
+            //     $('#kind-group').val($(this).attr('value'));
+            //     // console.log($('#kind-group').val())
+            // })
+            $.ajax({
+                type: "GET",
+                url: "/mycloset/find",
+                data: {"color": sel_val},
+                success: function (response) {
+                    if (response['status'] == 'SUCCESS') {
+                        $('#card-box').empty();
+                        let clothes = response['clothes']
+                        let empty = response['empty']
+                        if (empty == true) {
+                            $('#card-box').append('옷장이 비었습니다.')
+                        } else {
+                            for (i = 0; i < clothes.length; i++) {
+                                let path = clothes[i]['image_path']
+                                let style = clothes[i]['clothes_style']
+                                let season = clothes[i]['clothes_season']
+                                let kind = clothes[i]['clothes_kind']
+                                let color = clothes[i]['clothes_color']
+
+                                let temp_html = `<div class="card">
+                                                 <img class="card-img-top" src="${path}"
+                                                      alt="Card image cap">
+                                                 <div class="card-body">
+                                                     <h5 class="card-title">${style}/${season}/${kind}/${color}</h5>
+                                                 </div>
+                                                 </div>`
+                                $('#card-box').append(temp_html)
+                            }
+                        }
+                    } else {
+                        alert(response['msg']);
+                    }
+                }
+            })
+        }
+
+    </script>
 </head>
 
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar navbar-light" style="background-color: #f3e8f8;">
-        <a class="navbar-brand" href="/">MY Closet</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav mr-auto menu-all">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/mycloset">내 옷장 <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/upload">새옷등록</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">코디추천</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">커뮤니티</a>
-                </li>
+<nav class="navbar navbar-expand-lg navbar navbar-light" style="background-color: #f3e8f8;">
+    <a class="navbar-brand" href="/">MY Closet</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto menu-all">
+            <li class="nav-item active">
+                <a class="nav-link" href="/mycloset">내 옷장 <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/upload">새옷등록</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">코디추천</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/community">커뮤니티</a>
+            </li>
 
-            </ul>
-            <span class="navbar-text">
+        </ul>
+        <span class="navbar-text">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="#">마이페이지</a>
@@ -90,134 +200,98 @@
                     </li>
                 </ul>
             </span>
-        </div>
-    </nav>
+    </div>
+</nav>
 
-    <div class="card text-center">
-        <div class="card-body">
-            <br>
-            <h5 class="card-title">'작은별'님 반갑습니다</h5>
-            <p class="card-text">일상에서 더 쉽게, 더 가까이, 스마트하게 즐기는 나만의 옷장</p>
-            <br>
-            <a href="#" class="btn btn-light">자세히 알아보기</a>
-            <br>
+<div class="card text-center">
+    <div class="card-body">
+        <br>
+        <h5 class="card-title" id="user_name"></h5>
+        <p class="card-text">일상에서 더 쉽게, 더 가까이, 스마트하게 즐기는 나만의 옷장</p>
+        <br>
+        <a href="/upload" class="btn btn-light">새 옷 등록</a>
+        <br>
+    </div>
+</div>
+
+<br>
+
+<div class="btn btn-light float-right btn-sm" style="margin:0 100px 0 0">
+
+    <div class="btn-group">
+        <button type="button"  id="color-group" class="btn btn-light btn-sm" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+            색상
+        </button>
+        <div class="dropdown-menu dropdown-menu-right" id="color">
+            <button class="dropdown-item btn-sm" type="button" value="red">빨강</button>
+            <button class="dropdown-item btn-sm" type="button" value="orange">주황</button>
+            <button class="dropdown-item btn-sm" type="button" value="yellow">노랑</button>
+            <button class="dropdown-item btn-sm" type="button" value="green">초록</button>
+            <button class="dropdown-item btn-sm" type="button" value="blue">파랑</button>
+            <button class="dropdown-item btn-sm" type="button" value="navy">남색</button>
+            <button class="dropdown-item btn-sm" type="button" value="puple">보라</button>
+            <button class="dropdown-item btn-sm" type="button" value="black">검정</button>
+            <button class="dropdown-item btn-sm" type="button" value="white">흰색</button>
+            <button class="dropdown-item btn-sm" type="button" value="gray">회색</button>
+            <button class="dropdown-item btn-sm" type="button" value="etc">기타</button>
         </div>
     </div>
 
-    <br>
-
-    <div class="btn btn-light float-right btn-sm" style="margin:0 100px 0 0">
-
-        <div class="btn-group">
-            <button type="button" class="btn btn-light btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                색상
-            </button>
-            <div class="dropdown-menu dropdown-menu-right">
-                <button class="dropdown-item btn-sm" type="button">빨강</button>
-                <button class="dropdown-item btn-sm" type="button">주황</button>
-                <button class="dropdown-item btn-sm" type="button">노랑</button>
-                <button class="dropdown-item btn-sm" type="button">초록</button>
-                <button class="dropdown-item btn-sm" type="button">파랑</button>
-                <button class="dropdown-item btn-sm" type="button">남색</button>
-                <button class="dropdown-item btn-sm" type="button">보라</button>
-                <button class="dropdown-item btn-sm" type="button">검정</button>
-                <button class="dropdown-item btn-sm" type="button">흰색</button>
-                <button class="dropdown-item btn-sm" type="button">회색</button>
-                <button class="dropdown-item btn-sm" type="button">기타</button>
-            </div>
-        </div>
-
-        <div class="btn-group">
-            <button type="button" class="btn btn-light btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                스타일
-            </button>
-            <div class="dropdown-menu dropdown-menu-right">
-                <button class="dropdown-item btn-sm" type="button">캐주얼</button>
-                <button class="dropdown-item btn-sm" type="button">데이트</button>
-                <button class="dropdown-item btn-sm" type="button">오피스룩</button>
-                <button class="dropdown-item btn-sm" type="button">트레이닝복</button>
-                <button class="dropdown-item btn-sm" type="button">기타</button>
-            </div>
-        </div>
-
-        <div class="btn-group">
-            <button type="button" class="btn btn-light btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                카테고리
-            </button>
-            <div class="dropdown-menu dropdown-menu-right">
-                <button class="dropdown-item btn-sm" type="button">아우터</button>
-                <button class="dropdown-item btn-sm" type="button">상의</button>
-                <button class="dropdown-item btn-sm" type="button">원피스/세트</button>
-                <button class="dropdown-item btn-sm" type="button">바지</button>
-                <button class="dropdown-item btn-sm" type="button">스커트</button>
-                <button class="dropdown-item btn-sm" type="button">기타</button>
-            </div>
-        </div>
-
-        <div class="btn-group">
-            <button type="button" class="btn btn-light btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                계절
-            </button>
-            <div class="dropdown-menu dropdown-menu-right">
-                <button class="dropdown-item btn-sm" type="button">봄</button>
-                <button class="dropdown-item btn-sm" type="button">여름</button>
-                <button class="dropdown-item btn-sm" type="button">가을</button>
-                <button class="dropdown-item btn-sm" type="button">겨울</button>
-            </div>
+    <div class="btn-group">
+        <button type="button" id="style-group" class="btn btn-light btn-sm" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+            스타일
+        </button>
+        <div onclick="find()" class="dropdown-menu dropdown-menu-right" id="style">
+            <button class="dropdown-item btn-sm" type="button" value="casual">캐주얼</button>
+            <button class="dropdown-item btn-sm" type="button" value="date">데이트</button>
+            <button class="dropdown-item btn-sm" type="button" value="office">오피스룩</button>
+            <button class="dropdown-item btn-sm" type="button" value="training">트레이닝복</button>
+            <button class="dropdown-item btn-sm" type="button" value="etc">기타</button>
         </div>
     </div>
 
-    <br>
-    <br>
-
-    <div class="card-columns">
-        <div class="card">
-            <img class="card-img-top" src="https://image.msscdn.net/images/goods_img/20220126/2330090/2330090_1_500.jpg" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">캐쥬얼 / 기타</h5>
-                <p class="card-text">옷과 관련한 간단한 코멘트를 적는 칸입니다...</p>
-            </div>
+    <div class="btn-group">
+        <button type="button" id="kind-group" class="btn btn-light btn-sm" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+            카테고리
+        </button>
+        <div onclick="find()" class="dropdown-menu dropdown-menu-right" id="kind">
+            <button  class="dropdown-item btn-sm" type="button"  value="outer">아우터</button>
+            <button class="dropdown-item btn-sm" type="button" value="top">상의</button>
+            <button class="dropdown-item btn-sm" type="button" value="one_piece">원피스/세트</button>
+            <button class="dropdown-item btn-sm" type="button" value="Pants">바지</button>
+            <button class="dropdown-item btn-sm" type="button" value="skirt">스커트</button>
+            <button class="dropdown-item btn-sm" type="button" value="etc">기타</button>
         </div>
-
-        <div class="card">
-            <img class="card-img-top" src="https://image.msscdn.net/images/goods_img/20210819/2071212/2071212_1_500.jpg" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">캐쥬얼 / 상의</h5>
-                <p class="card-text">옷과 관련한 간단한 코멘트를 적는 칸입니다...</p>
-            </div>
-        </div>
-        <div class="card">
-            <img class="card-img-top" src="https://image.msscdn.net/images/goods_img/20210111/1742448/1742448_3_500.jpg" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">캐쥬얼 / 아우터</h5>
-                <p class="card-text">옷과 관련한 간단한 코멘트를 적는 칸입니다...</p>
-            </div>
-        </div>
-        <div class="card">
-            <img class="card-img-top" src="https://image.msscdn.net/images/goods_img/20190827/1130307/1130307_1_500.jpg" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">캐쥬얼 / 기타</h5>
-                <p class="card-text">옷과 관련한 간단한 코멘트를 적는 칸입니다...</p>
-            </div>
-        </div>
-        <div class="card">
-            <img class="card-img-top" src="https://image.msscdn.net/images/goods_img/20210111/1742448/1742448_3_500.jpg" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">캐쥬얼 / 아우터</h5>
-                <p class="card-text">옷과 관련한 간단한 코멘트를 적는 칸입니다...</p>
-            </div>
-        </div>
-        <div class="card">
-            <img class="card-img-top" src="https://image.msscdn.net/images/goods_img/20220126/2330090/2330090_1_500.jpg" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">캐쥬얼 / 기타</h5>
-                <p class="card-text">옷과 관련한 간단한 코멘트를 적는 칸입니다...</p>
-            </div>
-        </div>
- 
-
     </div>
 
+    <div class="btn-group">
+        <button type="button" id="season-group" class="btn btn-light btn-sm" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+            계절
+        </button>
+        <div onclick="find()" class="dropdown-menu dropdown-menu-right" id="season">
+            <button  class="dropdown-item btn-sm" type="button" value="spring">봄</button>
+            <button class="dropdown-item btn-sm" type="button" value="summer">여름</button>
+            <button class="dropdown-item btn-sm" type="button" value="autumn">가을</button>
+            <button class="dropdown-item btn-sm" type="button" value="winter">겨울</button>
+        </div>
+    </div>
+</div>
+
+<br>
+<br>
+
+<div class="card" id="card-box">
+    <img class="card-img-top" src="#"
+         alt="Card image cap">
+    <div class="card-body">
+        <h5 class="card-title">casual,date/spring,summer/skirt/purple</h5>
+        <p class="card-text"></p>
+    </div>
+</div>
 
 
 </body>

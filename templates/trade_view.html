@@ -1,0 +1,115 @@
+{% include 'head.html' %}
+<link href="../static/board.css" rel="stylesheet">
+<script>
+    function getParameter(name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+            results = regex.exec(location.search);
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+
+    const goods_id = getParameter("goods_id")
+    $(document).ready(function () {
+        $.ajax({
+            type: "GET",
+            url: "/trade/view/detail?goods_id="+goods_id,
+            data: {},
+            success: function (response) {
+                let rows = response['trade_info']
+                let com_rows = response['comment_info']
+                let img_path = rows['image_path']
+                let title = rows['title']
+                let price = rows['price']
+                let status = rows['status']
+                let content = rows['content']
+                let price_s = parseInt(price).toLocaleString()
+
+                for(let i=0; i < com_rows.length; i++){
+                    let comment_userName = com_rows[i]['user_name']
+                    let comment_contents = com_rows[i]['contents']
+                    let comment_datetime = com_rows[i]['datetime']
+
+                    let com_html =`
+                    <div class = "comment_out">
+                        <div class = "com_username">${comment_userName}  ${comment_datetime}</div>
+                        <div class = "com_contents">${comment_contents}</div>
+                    </div>
+                    `
+
+                    $('#comment_view').append(com_html)
+                }
+
+
+                let tmp_html=`
+                    <div class="goods_title">${title}</div>
+                    <div class="goods_status">${status}</div>
+                    <div class="goods_cost"><span class="numbers">${price_s}</span> 원</div>
+
+                    <div class="goods_content">
+                    ${content}
+                    </div>
+                `
+
+
+                $('#goods_img').attr('src', img_path)
+                $('#goods_info').append(tmp_html)
+
+
+
+            }
+        })
+    });
+
+    function comment_write(){
+        let contents = $('#contents').val()
+        $.ajax({
+            type : "POST",
+            url : "/trade/view/comment_write",
+            data : {
+                contents : contents,
+                trade_id : goods_id
+            },
+            success: function(response){
+                alert(response['msg'])
+                location.reload()
+            }
+        })
+    }
+</script>
+<body>
+<div class="wrap">
+    <div class="container">
+        <div class="title"><h2>상품정보</h2></div>
+
+        <div class="goods_view_info">
+            <div class="goods_img">
+                <div class="row">
+                    <div class="col-xs-12 col-md-12">
+                        <a href="#" class="thumbnail">
+                            <img src="" alt="..." id="goods_img"
+                                 style="width : 425px; height : 480px;">
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class = "goods_info" id="goods_info">
+
+            </div>
+        </div>
+
+        <div class="comment_view" id="comment_view">
+        </div>
+        <div class="comment_write">
+            <h5>댓글 입력하기</h5>
+            <form name="comment_write" method="POST" action="javascript:comment_write()">
+                <div class="comment_input">
+                    <textarea class="form-control comment_text" rows="3" name="contents" id="contents"></textarea>
+                    <input type="submit" class="comment_btn" value="등록하기">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
