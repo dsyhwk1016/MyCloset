@@ -120,3 +120,5 @@ def update():
     except:
         status = 'FAIL'
         return {'status': status, 'msg': '정보를 수정하는데 실패했습니다.'}
+
+

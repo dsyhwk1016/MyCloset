@@ -23,10 +23,180 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <title>MY CLOSET | 옷장 살펴보기</title>
 
     <style>
+        /*<!--card box css-->*/
+        /*.card{*/
+        /*    width: 900px;*/
+        /*    margin: auto;*/
+        /*}*/
+
+        div.card-list {
+            width: 100%;
+            float: right;
+            display: flex;
+            justify-content: space-between;
+            margin: auto;
+            margin-left: 300px;
+            position: center;
+            flex-wrap: wrap;
+
+        {
+            #float: left
+        ;
+            #
+        }
+        }
+        .card-img-top {
+            width: 300px;
+            height: 300px;
+            margin: auto;
+        }
+
+        .card-title {
+
+            font-size: 15px;
+            line-height: 4px;
+        }
+
+        /*<!--온도슬라이더 css-->*/
+        div.middle {
+            width: 30px;
+            float: left;
+        }
+
+        p.temp_value {
+            width: 100px;
+            margin: 0, 0, 0, 100px;
+            float: left;
+        }
+
+        .#slider.btn.btn-light {
+            margin: 0, 0, 100;
+        }
+
+        .slider-container {
+            float: left;
+            margin-top: 100px;
+            margin-left: 30px;
+            margin-right: 800px;
+            margin-bottom: 70px;
+            position: relative;
+            width: 100px;
+            height: 300px;
+
+        }
+
+        .slider-container .slider {
+            position: absolute;
+            z-index: 3;
+            left: 50%;
+            top: 50%;
+            -webkit-appearance: none;
+            margin: auto;
+            width: 300px;
+            height: 100px;
+            outline: none;
+            transform: rotate(-90deg) translate(-50%, -50%);
+            transform-origin: 0 0;
+            background-color: transparent;
+        }
+
+        .slider-container .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 100px;
+            height: 100px;
+            border: 8px solid #3e3e3e;
+            border-radius: 100px;
+            background-color: rgba(0, 0, 0, 0.01);
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.9);
+            cursor: pointer;
+            transition: 0.2s ease-in-out;
+        }
+
+        .slider-container .slider::-webkit-slider-thumb:hover {
+            border-color: #eeeeee;
+        }
+
+        .slider-container .slider::-webkit-slider-thumb:active {
+            box-shadow: 0 0 0 30px rgba(255, 255, 255, 0.1);
+        }
+
+        .slider-container .bar,
+        .slider-container .fill {
+            position: absolute;
+            left: 0;
+            right: 0;
+        }
+
+        .slider-container .bar {
+            z-index: 1;
+            top: 2px;
+            bottom: -2px;
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+
+        .slider-container .bar::before,
+        .slider-container .bar::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 10px;
+        }
+
+        .slider-container .bar::before {
+            bottom: 100%;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .slider-container .bar::after {
+            width: 100px;
+            height: 50px;
+            top: 100%;
+            background-color: blue;
+            border-bottom-left-radius: 500px;
+            border-bottom-right-radius: 500px;
+        }
+
+        .slider-container .bar::before {
+            margin-top: 100px;
+            width: 100px;
+            height: 50px;
+            bottom: 100%;
+            background-color: rgba(255, 37, 37, 100);
+            border-top-left-radius: 500px;
+            border-top-right-radius: 500px;
+        }
+
+        .slider-container .fill {
+            z-index: 2;
+            bottom: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .slider-container .fill::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 300px;
+            bottom: 0;
+            background-image: linear-gradient(0deg, blue 0%, deepskyblue 25%, yellow 50%, orange 75%, #ff2525 100%);
+        }
+
+        .value {
+            cursor: pointer;
+
+        }
+
+        /*modal css*/
         * {
             font-family: 'Noto Sans KR', sans-serif;
         }
@@ -149,6 +319,7 @@
         }
     </style>
     <script>
+        //            내 옷장 script
         let style_val, season_val, kind_val, color_val
         $(document).ready(function () {
             load()
@@ -182,6 +353,7 @@
 
         function load() {
             $('#user_name').empty();
+            $('#card-box').empty();
             $.ajax({
                 type: "GET",
                 url: "/mycloset/load",
@@ -207,7 +379,10 @@
                                                  <img class="card-img-top" src="${path}"
                                                       alt="Card image cap">
                                                  <div class="card-body">
-                                                     <h5 class="card-title">${style}/${season}/${kind}/${color}</h5>
+                                                     <h5 class="card-title">${style}</h5>
+                                                     <h5 class="card-title">${kind}</h5>
+                                                     <h5 class="card-title">${season}</h5>
+                                                     <h5 class="card-title">${color}</h5>
                                                  </div>
                                                  </div>`
                                 $('#card-box').append(temp_html)
@@ -245,8 +420,14 @@
                                                  <img class="card-img-top" src="${path}"
                                                       alt="Card image cap">
                                                  <div class="card-body">
-                                                     <h5 class="card-title">${style}/${season}/${kind}/${color}</h5>
+                                                     <h5 class="card-title">${style}</h5>
+                                                     <h5 class="card-title">${kind}</h5>
+                                                     <h5 class="card-title">${season}</h5>
+                                                     <h5 class="card-title">${color}</h5>
                                                  </div>
+                                                 <footer class="card-footer">
+                                                    <div class="update"><a onclick="update()" href="#" style="color : black;">수정하기</a></div>
+
                                                  </div>`
                                 $('#card-box').append(temp_html)
                             }
@@ -258,6 +439,87 @@
             })
 
         }
+        function update(){
+            $.ajax({
+                type: "POST",
+                url: "/mycloset//update",
+                data: {},
+                success: function (response) {
+                    if (response['status'] == 'SUCCESS') {
+                        $('#card-box').empty();
+                        let clothes = response['clothes']
+                        let empty = response['empty']
+                        if (empty == true) {
+                            $('#card-box').append('옷장이 비었습니다.')
+                        } else {
+                            for (i = 0; i < clothes.length; i++) {
+                                let path = clothes[i]['image_path']
+                                let style = clothes[i]['clothes_style']
+                                let season = clothes[i]['clothes_season']
+                                let kind = clothes[i]['clothes_kind']
+                                let color = clothes[i]['clothes_color']
+
+                                let temp_html = `<div class="card">
+                                                 <img class="card-img-top" src="${path}"
+                                                      alt="Card image cap">
+                                                 <div class="card-body">
+                                                     <h5 class="card-title">${style}</h5>
+                                                     <h5 class="card-title">${kind}</h5>
+                                                     <h5 class="card-title">${season}</h5>
+                                                     <h5 class="card-title">${color}</h5>
+                                                 </div>
+                                                 <footer class="card-footer">
+                                                    <div class="update"><a onclick="update()" href="#" style="color : black;">수정하기</a></div>
+
+                                                 </div>`
+                                $('#card-box').append(temp_html)
+                            }
+                        }
+                    } else {
+                        alert(response['msg']);
+                    }
+                }
+            })
+
+        }
+        }
+
+        // Weather API KEY 가져옴
+        let API_KEY = "7a9876c881ab70708f327836f2ae2d7b";
+
+        function onGeoOK(position) {
+            // 위도, 경도, url 가져옴
+            let lat = position.coords.latitude;
+            let lon = position.coords.longitude;
+            let url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&lang=kr&units=metric`
+
+            // url을 fetch 그리고 response 받기
+            fetch(url).then(response => response.json()).then(data => {
+                // api 데이터(날씨, 온도, 지역) 페이지에 가져오기
+                let weather = document.querySelector("#weather span:first-child");
+                let city = document.querySelector("#weather span:last-child");
+                city.innerText = data.name;
+                weather.innerText = `${data.weather[0].main} / ${data.main.temp}`;
+                // 슬라이더에 현재 온도 할당
+                $('#slider').attr('value', data.main.temp);
+                // 슬라이더 움직일 때 value 표시
+                let slider = document.getElementById("slider");
+                let output = document.getElementById("demo");
+                output.innerHTML = `${data.main.temp}`
+                slider.oninput = function () {
+                    output.innerHTML = this.value;
+                }
+                console.log(data.name, data.main.temp);
+            })
+        }
+
+        // error 메세지 alert
+        function onGeoError() {
+            alert("can't find you. No weather for you.");
+        }
+
+        navigator.geolocation.getCurrentPosition(onGeoOK, onGeoError);
+
 
     </script>
 </head>
@@ -279,7 +541,7 @@
                 <a class="nav-link" href="/upload">새옷등록</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">코디추천</a>
+                <a class="nav-link" href="/cody">코디추천</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/community">커뮤니티</a>
@@ -304,6 +566,10 @@
         <br>
         <h5 class="card-title" id="user_name"></h5>
         <p class="card-text">일상에서 더 쉽게, 더 가까이, 스마트하게 즐기는 나만의 옷장</p>
+        <div id="weather">
+            <span></span>
+            <span></span>
+        </div>
         <br>
         <button id="upload" class="btn btn-light">새 옷 등록</button>
         <script>
@@ -389,15 +655,18 @@
 
 <br>
 <br>
-
-<div class="card" id="card-box">
-    <img class="card-img-top" src="#"
-         alt="Card image cap">
-    <div class="card-body">
-        <h5 class="card-title"></h5>
-        <p class="card-text"></p>
+<div class="middle">
+    <div class="slider-container">
+        <span class="bar"><span class="fill"></span></span>
+        <input type="range" id="slider" class="slider" min="-10" max="40" value="">
     </div>
 </div>
+<p class="temp_value">기온: <span id="demo"></span>℃</p>
+<button onclick="cody()" type="button" id="slider" class="btn btn-light" value="">추천하기</button>
+<div class="card-list" id="card-box">
+</div>
+
+
 <div id="bg">
     <div id="modal">
         <div class="formDiv mt-5">
