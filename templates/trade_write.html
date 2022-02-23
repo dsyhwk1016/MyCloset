@@ -33,6 +33,7 @@
   }
 
   function cloth_select(img_file, style, season, kind, color, cloth_id) {
+    let colorShow =color;
     switch (style) {
       case 'casual' :
         style = '캐쥬얼';
@@ -110,15 +111,21 @@
         color = '기타';
         break;
     }
-    $('#txtStyle').val(style);
-    $('#txtSeason').val(season);
-    $('#txtKind').val(kind);
-    $('#txtColor').val(color);
+    document.getElementById('colorShow').style.backgroundColor = colorShow;
+    document.getElementById('txtStyle').innerHTML=style;
+    document.getElementById('txtSeason').innerHTML=season;
+    document.getElementById('txtKind').innerHTML=kind;
+    document.getElementById('txtColor').innerHTML=color;
+
+    {#$('#txtStyle').val(style);#}
+    {#$('#txtSeason').val(season);#}
+    {#$('#txtKind').val(kind);#}
+    {#$('#txtColor').val(color);#}
 
     $('#goods_img').attr('src', img_file)
     $('#img_path').val(img_file)
     $('#cloth_id').val(cloth_id)
-    document.getElementById('myModal').style.display = 'none'
+    $('#myModal').hide()
   }
 </script>
 <body>
@@ -148,40 +155,44 @@
 <!-- trade main window start -->
 <div class="container">
   <h2 class="write_title">판매등록</h2>
-  <form action="" class="sell_form">
+  <form method="post" action="/trade/trade_submit" class="sell_form">
     <div class="info_clothes">
       <div class="clothes_pic">
-        <img src="" alt="불러온 옷 이미지">
-        <button>내 옷 불러오기</button>
+        <div class="pic_wrap">
+        <img src="" alt="불러온 옷 이미지" id="goods_img" style="width:300px; height:300px;">
+        </div>
+        <button type="button" data-toggle="modal" data-target="#myModal"  onclick="load_closet()" >내 옷 불러오기</button>
+        <input type="hidden" name="img_path" id="img_path">
+        <input type="hidden" name="cloth_id" id="cloth_id">
       </div>
       <div class="info_detail">
         <div class="detail 1">
           <span>스타일</span>
-          <span> ddd</span>
+          <span id="txtStyle"></span>
         </div>
         <div class="detail 2">
           <span>계절감</span>
-          <span> ddd</span>
+          <span id="txtSeason"></span>
         </div>
         <div class="detail 3">
           <span>옷종류</span>
-          <span> ddd</span>
+          <span id="txtKind"></span>
         </div>
         <div class="detail 4">
           <span>색상</span>
-          <span> ddd</span>
+          <div class="color-wrap"><div id="colorShow"></div><div id="txtColor"></div></div>
         </div>
 
       </div>
     </div>
   <div class="sell_details">
     <label for="title" >제목</label>
-    <input type="text" placeholder="제목을 입력하세요." required>
+    <input input id="txtTitle" name="title" type="text" placeholder="제목을 입력하세요." required>
     <label for="pric" >판매금액</label>
-    <input type="number" placeholder="판매금액을 입력하세요." required>
+    <input id="txtPrice" name="price" type="number" placeholder="판매금액을 입력하세요." required>
     <label for="contents" >상세내용</label>
-    <textarea placeholder="내용을 입력하세요." required></textarea>
-    <input type="submit">
+    <textarea id="txtPost" name="content" placeholder="내용을 입력하세요." required></textarea>
+    <input  id="singlebutton" name="singlebutton"  type="submit" value="작성하기">
 
 
   </div>
