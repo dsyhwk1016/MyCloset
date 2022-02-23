@@ -408,3 +408,4 @@ $RECYCLE.BIN/
 .flaskenv
 
 .idea/misc.xml
+.static/uploads/

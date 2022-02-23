@@ -7,7 +7,7 @@ from user import user_bp, blueprint
 from upload import upload_bp
 from mycloset import closet
 from trade import trade_bp
-# from ranking import ootd_rank
+from ranking import ootd_rank
 
 #Flask App Setup
 app = Flask(__name__)
@@ -29,7 +29,7 @@ app.register_blueprint(user_bp,url_prefix="/login")
 app.register_blueprint(trade_bp, url_prefix='/trade')
 app.register_blueprint(closet, url_prefix='/mycloset')
 app.register_blueprint(upload_bp, url_prefix='/upload')
-# app.register_blueprint(ootd_rank, url_prefix='/ootd')
+app.register_blueprint(ootd_rank, url_prefix='/ootd')
 
 @app.route('/')
 def home():
