@@ -33,11 +33,17 @@
     <link href="../static/main.css" rel="stylesheet">
     <style>
         .container{
+
             background-color: #ffebfd;
             background-color: rgba(255, 255, 255, 0.6);
-            margin-top: 100px;
-        }
+            margin: 120px auto;
+            padding:20px;
+          box-sizing: border-box;
 
+        }
+        .nav{
+             padding:10px;
+        }
         .nav .nav-link{
             color: #b081c5;
             font-size: 18px;
@@ -46,7 +52,10 @@
 
         .nav a.active{
             color: #61237f;
-            font-weight: bolder;
+            font-weight: bold;
+            background-color: var(--purple-emp);
+            border-radius: 12px;
+            color:var(--white);
         }
 
         .tab-pane{
@@ -136,7 +145,7 @@
 <div class="container">
     <nav class="nav">
         <a class="nav-link active" target-content="rank-content" href="#">코디 랭킹</a>
-        <a class="nav-link" target-content="transaction-content" href="/trade">중고 거래</a>
+        <a class="nav-link"  href="/trade">중고 거래</a>
     </nav>
     <div class="tab-content">
         <div class="tab-pane active" id="rank-content">
@@ -259,7 +268,7 @@
                 </ul>
             </nav>
         </div>
-        <div class="tab-pane" id="transaction-content">중고 거래 게시판</div>
+
     </div>
 </div>
 </body>
