@@ -2,7 +2,6 @@ from flask import render_template, request, redirect, flash, Blueprint, session,
 from pymongo import MongoClient
 from markupsafe import escape
 from datetime import datetime
-import os
 import hashlib
 from img_set import *
 
@@ -42,25 +41,19 @@ def upload_file():
         extension = file.filename.split('.')[-1]  # 기존 파일명에서 확장자만 빼서 저장
         file_name = hashlib.sha256(filename.encode()).hexdigest()  # 파일명 암호화 저장
         save_to = f'{file_name}.{extension}'
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], save_to))
+        save_path = os.path.join(app.config['UPLOAD_FOLDER'], save_to)
+        file.save(save_path)
 
-    # s3 = s3_connection()
-    # s3.upload_file(
-    #     Filename = os.path.join(app.config['UPLOAD_FOLDER'], save_to),  # 업로드할 파일의 경로
-    #     Bucket = BUCKET_NAME,
-    #     Key = 'clothes/' + save_to,  # 파일명
-    #     ExtraArgs={"ContentType": 'image/jpg', "ACL": 'public-read'}
-    # )
-    """
-    s3.put_object(
-        ACL='public-read',
-        Body=save_to,
+    s3 = s3_connection()
+    s3.upload_file(
+        Filename=save_path,  # 업로드할 파일의 경로
         Bucket=BUCKET_NAME,
-        Key='clothes/'+save_to
+        Key=f'clothes/{save_to}',  # 파일명
+        ExtraArgs={"ContentType": 'image/jpg', "ACL": 'public-read'}
     )
-    """
-
     s3_path = f'https://whatisinmycloset.s3.ap-northeast-2.amazonaws.com/clothes/{save_to}'
+    os.remove(save_path)
+
     doc = {
         'user_id': user_id,
         'image_path': s3_path,

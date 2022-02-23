@@ -5,7 +5,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin:100px auto 0;
+  margin:150px auto 0;
   
 }
 .title{
@@ -166,7 +166,7 @@
   width:400px;
   height:300px;
   box-sizing: border-box;
-  top:150px;
+  top:200px;
   border-radius:12px;
   background-color:var(--white);
 
