@@ -23,8 +23,20 @@ input[type="text"]:disabled {
   padding: 20px;
   box-sizing: border-box;
 
+
 }
 
+/*write쪽*/
+/*.container{*/
+/*  width:80%;*/
+/*  height:80vh;*/
+/*  */
+/*  border-radius: 20px;*/
+/*  padding:20px;*/
+/*  display: block;*/
+/*  position:fixed;*/
+/*  top:100px;*/
+/*}*/
 /*nav bar*/
 
 .container .nav {
@@ -90,6 +102,10 @@ input[type="text"]:disabled {
 }
 
 /*몰라 어딘가임*/
+.container .wrap{
+  overflow-y:scroll ;
+
+}
 .title {
   display: flex;
   flex-direction: column;
@@ -151,6 +167,8 @@ input[type="text"]:disabled {
 }
 
 /*trade_view*/
+
+/*trade_view의 content*/
 .container .product_info {
   display: flex;
   justify-content: space-between;
@@ -201,14 +219,18 @@ input[type="text"]:disabled {
 .container .info_all .desc{
     font-size: var(--font-large);
     flex:50%;
-
-
 }
 
-
-
+/*trade_view의 comments*/
+.comment_wrap{
+  padding: 10px;
+  margin: 10px auto;
+}
+.comment_write{
+  padding:10px;
+}
 .comment_view {
-  border: 2px solid darkgrey;
+
   padding: 10px;
 }
 
@@ -227,9 +249,19 @@ input[type="text"]:disabled {
 }
 
 .comment_text {
-  width: 90%;
+outline:none;
 }
 
 .comment_btn {
   margin-left: 20px;
+  padding:10px;
+  background-color: var(--purple-btn-border);
+  border:none;
+  border-radius: 5px;
+  font-weight: 700;
+  transition: background-color .3s, color .3s;
+}
+.comment_btn:hover{
+  background-color: var(--purple-emp);
+  color:var(--white);
 }
