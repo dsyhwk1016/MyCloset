@@ -6,14 +6,20 @@
 }
 :root{
 --white:#f6f6f6;
+--light-purple:#ee98fb;
 --purple:#9150AF;
 --purple-emp: #61237f;
 --purple-rgba: rgba(145,80,175,.9);
 --purple-btn-border:rgba(195,126,225,.5);
+--light-gray:#e0e0e0;
+--gray:#aeaeae;
 --black:#101010;
---font-medium:12px;
 --font-small:10px;
+--font-medium:12px;
+--font-medium-large:14px;
 --font-large:16px;
+--font-xlarge:24px;
+--font-xxlarge:30px;
 --font-default: 'Pretendard-Regular', sans-serif;
 
 }
@@ -30,7 +36,7 @@ body{
   background-attachment:fixed;
   background-position: left -20px top 35px;
   font-family: var(--font-default);
-  font-size:var(--font-medium);
+  font-size:var(--font-medium-large);
 
 }
 a{
