@@ -4,9 +4,10 @@ from bson.objectid import ObjectId
 
 closet = Blueprint('closet', __name__)
 
-#MongoDB Setup
+# MongoDB Setup
 client = MongoClient('localhost', 27017)
 db = client.mycloset
+
 
 def objectIDtoStr(list):
     result = []
@@ -14,6 +15,7 @@ def objectIDtoStr(list):
         document['_id'] = str(document['_id'])
         result.append(document)
     return result
+
 
 # 옷장 목록 페이지 렌더링
 @closet.route('/')
@@ -32,13 +34,13 @@ def load():
     try:
         # 현재 로그인한 사용자의 id와 닉네임 가져오기
         user_id = session['user_id']
-        user_name = db.member.find_one({'user_id':user_id})['user_name']
+        user_name = db.member.find_one({'user_id': user_id})['user_name']
     except:
         status = 'FAIL'
         return {'status': status, 'msg': '사용자 정보를 확인하는데 실패했습니다.'}
 
     try:
-        empty = True   # 옷장 비었는지 여부
+        empty = True  # 옷장 비었는지 여부
 
         # 해당 사용자의 옷들을 가져오고, 데이터가 있다면 empty를 False로 설정
         clothes = objectIDtoStr(list(db.clothes.find({'user_id': user_id}, {'user_id': False})))
@@ -56,13 +58,13 @@ def load():
 def find():
     status = 'SUCCESS'
     try:
-        user_id = session['user_id']    # 현재 로그인한 사용자 정보
+        user_id = session['user_id']  # 현재 로그인한 사용자 정보
     except:
         status = 'FAIL'
         return {'status': status, 'msg': '사용자 정보를 확인하는데 실패했습니다.'}
 
     try:
-        empty = True   # 옷장 비었는지 여부
+        empty = True  # 옷장 비었는지 여부
 
         # 검색 조건 딕셔너리 생성
         conditions = {
@@ -81,7 +83,7 @@ def find():
             if temp is not None:
                 if type(temp) is list:  # 중복 선택이 가능한(리스트로 저장된) 카테고리
                     query.append({key: {'$in': temp}})
-                else:   # 단일 값을 가지는 카테고리
+                else:  # 단일 값을 가지는 카테고리
                     query.append({key: temp})
 
         # 해당 사용자의 옷들을 가져오고, 데이터가 있다면 empty를 False로 설정
@@ -89,17 +91,19 @@ def find():
         if clothes:
             empty = False
 
+        print(clothes)
         return jsonify({'status': status, 'clothes': clothes, 'empty': empty})
     except:
         status = 'FAIL'
         return {'status': status, 'msg': '옷 목록을 가져오는데 실패했습니다.'}
+
 
 # 옷 정보 수정
 @closet.route('/update', methods=['POST'])
 def update():
     status = 'SUCCESS'
     try:
-        clothes_id = request.form['clothes_id'] # 수정하려는 옷 정보
+        clothes_id = request.form['clothes_id']  # 수정하려는 옷 정보
     except:
         status = 'FAIL'
         return {'status': status, 'msg': '옷 정보를 확인하는데 실패했습니다.'}

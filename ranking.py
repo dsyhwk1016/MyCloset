@@ -3,7 +3,6 @@ from pymongo import MongoClient
 from bson.objectid import ObjectId
 from datetime import datetime
 import hashlib
-import os
 from img_set import *
 
 ootd_rank = Blueprint('ootd_rank', __name__)
@@ -32,27 +31,30 @@ def upload():
         ootd_img = request.files['file']
 
         if ootd_img and allowed_file(ootd_img.filename):
-            nameform = f'{user_id}_{date}'  # 파일이름 규칙 정하기
-            extension = ootd_img.filename.split('.')[-1]  # 기존 파일명에서 확장자만 빼서 저장
+            nameform = f'{user_id}_{date}'  # 파일 이름 포맷
+            extension = ootd_img.filename.split('.')[-1]
             file_name = hashlib.sha256(nameform.encode()).hexdigest()  # 파일명 암호화
 
-            save_to = f'{file_name}.{extension}'
-            save_path = os.path.join(app.config['UPLOAD_FOLDER'], save_to)
-            ootd_img.save(save_path)
+            save_to = f'{file_name}.{extension}'    # 파일명.확장자
+            save_path = os.path.join(app.config['UPLOAD_FOLDER'], save_to)  # 로컬 저장 경로
+            ootd_img.save(save_path)    # 로컬에 파일 저장
         else:
-            return {'status': 'FAIL', 'msg': '파일 확인에 실패했습니다.'}
+            status = 'FAIL'
+            return {'status': status, 'msg': '파일 확인에 실패했습니다.'}
 
-        ### aws s3 업로드 오류 ###
-        # s3 = s3_connection()
-        # s3.put_object(
-        #     Bucket = BUCKET_NAME,
-        #     Body = ootd_img,
-        #     Key = save_path,
-        #     ContentType = ootd_img.content_type)
+        s3 = s3_connection()
+        s3.upload_file(
+            Filename=save_path, # 업로드 할 파일의 로컬 경로
+            Bucket=BUCKET_NAME,
+            Key=f'ootd/{save_to}',  # s3 저장 위치 및 파일 명
+            ExtraArgs={"ContentType": 'image/jpg', "ACL": 'public-read'}
+        )
+        s3_path = f'https://whatisinmycloset.s3.ap-northeast-2.amazonaws.com/ootd/{save_to}'
+        os.remove(save_path)    # 로컬에 저장된 파일 삭제
 
         doc = {
             'user_name': user_name,
-            'image_path': '../static/uploads/' + save_to,
+            'image_path': s3_path,
             'upload_date': date,
             'likes': 0
         }
@@ -105,8 +107,8 @@ def sort():
         status = 'FAIL'
         return {'status': status, 'msg': '코디 목록을 가져오는데 실패했습니다.'}
 
-####################### 이 아래로는 수정해야함 ############################
-# 옷 정보 수정
+'''
+# 코디 정보 수정
 @ootd_rank.route('/update', methods=['POST'])
 def update():
     status = 'SUCCESS'
@@ -132,3 +134,4 @@ def update():
     except:
         status = 'FAIL'
         return {'status': status, 'msg': '정보를 수정하는데 실패했습니다.'}
+'''

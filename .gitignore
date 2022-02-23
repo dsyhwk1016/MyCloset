@@ -407,4 +407,8 @@ $RECYCLE.BIN/
 # Auth Key
 .flaskenv
 
+# s3 Access Key
+s3.env
+
 .idea/misc.xml
+.static/uploads/

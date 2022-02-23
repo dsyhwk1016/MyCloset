@@ -23,6 +23,7 @@
   * flask-dance
   * requests
   * flask-mail (version 0.9.0)
+  * boto3
   
  
 <hr>
