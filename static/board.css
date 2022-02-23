@@ -63,6 +63,7 @@ input[type="text"]:disabled {
 
 .container .trade_list {
   padding: 10px;
+
 }
 
 .container .trade_list .newtrade_wrap {
@@ -86,7 +87,12 @@ input[type="text"]:disabled {
   background-color: var(--purple-emp);
   color: var(--white);
 }
-
+.container .trade_list #list_card{
+  /*display: flex;*/
+  /*justify-content: flex-start;*/
+  /*flex-wrap: wrap;*/
+  /*최신순이 첨에와야하는데ㅜㅜ*/
+}
 .container .trade_list #list_card .thumbnail {
   border-radius: 8px;
   background-color: rgba(255, 255, 255, .7);
@@ -101,69 +107,47 @@ input[type="text"]:disabled {
 
 }
 
-/*몰라 어딘가임*/
-.container .wrap{
-  overflow-y:scroll ;
-
+/*trade_write*/
+.container .write_title{
+  font-size: 30px;
+  font-weight: 700;
+  padding: 20px;
 }
-.title {
+.container .sell_form{
+  padding: 20px;
+}
+.container .sell_form .info_clothes{
+  display: flex;
+}
+.container .sell_form .clothes_pic{
   display: flex;
   flex-direction: column;
-
-  border-bottom: 2px solid gray;
 }
-
-.load_btn {
-  color: white;
-  font-family: Pretendard-Regular;
+.container .sell_form .info_clothes img{
+  width:350px;
+  height:350px;
 }
-
-.cloth_load {
-  display: flex;
-  flex-direction: row;
-  margin-top: 30px;
-  flex: 1;
+.container .sell_form .info_clothes button{
+  padding: 10px;
 }
-
-.cloth_info_container {
+.container .sell_form .info_clothes .info_detail{
   display: flex;
   flex-direction: column;
-  flex: 1;
-  height: auto;
-  padding: 0px 10px 0px 10px;
+  justify-content: space-between;
+  font-size: var(--font-large);
+  margin: 50px 10px;
+  /*마진정리 나중예*/
 }
-
-.rows {
-  margin-top: 20px;
+.container .sell_form .info_clothes .info_detail .detail{
+  display: flex;
+  flex-direction: column;
 }
-
-.label_title {
+.container .sell_form .info_clothes .info_detail .detail span:first-child{
   font-size: 20px;
-  color: black;
-  margin-left: 0px;
-  text-align: right;
-  width: 20%;
 }
-
-.cloth_info {
-  font-family: 'Pretendard-Regular';
-  text-align: left;
-  border: 0px;
-  font-size: 15px;
-}
-
-.panel-heading {
-  vertical-align: center;
-}
-
-.panel-body {
-  padding: 0px;
-  height: 5vh;
-}
-
-.sub_title {
-  margin-top: 20px;
-  font-size: 20px;
+.container .sell_form .sell_details{
+  display: flex;
+  flex-direction: column;
 }
 
 /*trade_view*/
@@ -201,6 +185,7 @@ input[type="text"]:disabled {
     font-weight: bold;
     box-sizing: border-box;
     flex:20%;
+    border-bottom: 2px solid var(--black) ;
 
 }
 .container .info_all .status{

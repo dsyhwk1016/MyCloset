@@ -2,249 +2,194 @@
 <link href="../static/board.css" rel="stylesheet">
 
 <script>
-    function load_closet() {
-        $.ajax({
-            type: "GET",
-            url: "/trade/load_closet",
-            data: {},
-            success: function (response) {
-                let rows = response['closet_list'];
-                $('#modal_body_row').empty()
+  function load_closet() {
+    $.ajax({
+      type: "GET",
+      url: "/trade/load_closet",
+      data: {},
+      success: function (response) {
+        let rows = response['closet_list'];
+        $('#modal_body_row').empty()
 
-                for (let i = 0; i < rows.length; i++) {
-                    let img_file = rows[i]['image_path']
-                    let style = rows[i]['clothes_style']
-                    let season = rows[i]['clothes_season']
-                    let kind = rows[i]['clothes_kind']
-                    let color = rows[i]['clothes_color']
-                    let cloth_id = rows[i]['_id']
+        for (let i = 0; i < rows.length; i++) {
+          let img_file = rows[i]['image_path']
+          let style = rows[i]['clothes_style']
+          let season = rows[i]['clothes_season']
+          let kind = rows[i]['clothes_kind']
+          let color = rows[i]['clothes_color']
+          let cloth_id = rows[i]['_id']
 
-                    let tmp_html = `
+          let tmp_html = `
                                   <div class="col-xs-6 col-md-3">
                                     <a href="javascript:cloth_select('${img_file}', '${style}', '${season}', '${kind}', '${color}', '${cloth_id}');" class="thumbnail">
                                       <img src="${img_file}" alt="...">
                                     </a>
                                   </div>
                                   `
-                    $('#modal_body_row').append(tmp_html)
-                }
-            }
-        })
-    }
+          $('#modal_body_row').append(tmp_html)
+        }
+      }
+    })
+  }
 
-    function cloth_select(img_file, style, season, kind, color, cloth_id) {
-        switch (style) {
-            case 'casual' :
-                style = '캐쥬얼';
-                break;
-            case 'date' :
-                style = '데이트';
-                break;
-            case 'office' :
-                style = '오피스';
-                break;
-            case 'training' :
-                style = '트레이닝복';
-                break;
-            case 'style_etc' :
-                style = '기타';
-                break;
-        }
-        switch (season) {
-            case 'spring' :
-                season = '봄';
-                break;
-            case 'summer' :
-                season = '여름';
-                break;
-            case 'fall' :
-                season = '가을';
-                break;
-            case 'winter' :
-                season = '겨울';
-                break;
-        }
-        switch (kind) {
-            case 'outer' :
-                kind = '아우터';
-                break;
-            case 'shirt' :
-                kind = '상의';
-                break;
-            case 'set' :
-                kind = '원피스';
-                break;
-            case 'pants' :
-                kind = '바지';
-                break;
-            case 'skirt' :
-                kind = '스커트';
-                break;
-            case 'etc' :
-                kind = '기타';
-                break;
-        }
-        switch (color) {
-            case 'red' :
-                color = '빨강';
-                break;
-            case 'orange' :
-                color = '주황';
-                break;
-            case 'yellow' :
-                color = '노랑';
-                break;
-            case 'green' :
-                color = '초록';
-                break;
-            case 'blue' :
-                color = '파랑';
-                break;
-            case 'navy' :
-                color = '남색';
-                break;
-            case 'purple' :
-                color = '보라';
-                break;
-            case 'etc' :
-                color = '기타';
-                break;
-        }
-        $('#txtStyle').val(style);
-        $('#txtSeason').val(season);
-        $('#txtKind').val(kind);
-        $('#txtColor').val(color);
-
-        $('#goods_img').attr('src', img_file)
-        $('#img_path').val(img_file)
-        $('#cloth_id').val(cloth_id)
-        $('#myModal').hide()
+  function cloth_select(img_file, style, season, kind, color, cloth_id) {
+    switch (style) {
+      case 'casual' :
+        style = '캐쥬얼';
+        break;
+      case 'date' :
+        style = '데이트';
+        break;
+      case 'office' :
+        style = '오피스';
+        break;
+      case 'training' :
+        style = '트레이닝복';
+        break;
+      case 'style_etc' :
+        style = '기타';
+        break;
     }
+    switch (season) {
+      case 'spring' :
+        season = '봄';
+        break;
+      case 'summer' :
+        season = '여름';
+        break;
+      case 'fall' :
+        season = '가을';
+        break;
+      case 'winter' :
+        season = '겨울';
+        break;
+    }
+    switch (kind) {
+      case 'outer' :
+        kind = '아우터';
+        break;
+      case 'shirt' :
+        kind = '상의';
+        break;
+      case 'set' :
+        kind = '원피스';
+        break;
+      case 'pants' :
+        kind = '바지';
+        break;
+      case 'skirt' :
+        kind = '스커트';
+        break;
+      case 'etc' :
+        kind = '기타';
+        break;
+    }
+    switch (color) {
+      case 'red' :
+        color = '빨강';
+        break;
+      case 'orange' :
+        color = '주황';
+        break;
+      case 'yellow' :
+        color = '노랑';
+        break;
+      case 'green' :
+        color = '초록';
+        break;
+      case 'blue' :
+        color = '파랑';
+        break;
+      case 'navy' :
+        color = '남색';
+        break;
+      case 'purple' :
+        color = '보라';
+        break;
+      case 'etc' :
+        color = '기타';
+        break;
+    }
+    $('#txtStyle').val(style);
+    $('#txtSeason').val(season);
+    $('#txtKind').val(kind);
+    $('#txtColor').val(color);
+
+    $('#goods_img').attr('src', img_file)
+    $('#img_path').val(img_file)
+    $('#cloth_id').val(cloth_id)
+    document.getElementById('myModal').style.display = 'none'
+  }
 </script>
 <body>
 <!-- load_closet Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title" id="myModalLabel">내 옷장에서 선택하기</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row" id="modal_body_row">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-
-            </div>s
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">내 옷장에서 선택하기</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row" id="modal_body_row">
         </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+
+      </div>
     </div>
+  </div>
 </div>
 
 
 <!-- trade main window start -->
-    <div class="container">
-        <div class="header">
+<div class="container">
+  <h2 class="write_title">판매등록</h2>
+  <form action="" class="sell_form">
+    <div class="info_clothes">
+      <div class="clothes_pic">
+        <img src="" alt="불러온 옷 이미지">
+        <button>내 옷 불러오기</button>
+      </div>
+      <div class="info_detail">
+        <div class="detail 1">
+          <span>스타일</span>
+          <span> ddd</span>
         </div>
-        <section class="trade_form">
-            <form class="form-horizontal" method="post" action="/trade/trade_submit">
-                <fieldset>
-                    <div class="title">
-                        <h2 class="text-muted">판매 등록</h2>
-                    </div>
-                    <div class="cloth_load">
-                        <div class="cloth_img">
-                            <div class="row">
-                                <div class="col-xs-12 col-md-12">
-                                    <a href="#" class="thumbnail">
-                                        <img src="../static/img/no_img.png" alt="..." id="goods_img"
-                                             style="width:225px; height:280px;">
-                                    </a>
-                                    <input type="hidden" name="img_path" id="img_path">
-                                    <input type="hidden" name="cloth_id" id="cloth_id">
-                                </div>
-                            </div>
-                            <div class="load">
-                                <button type="button" class="btn btn-primary btn-lg btn-block load_btn"
-                                        data-toggle="modal" data-target="#myModal"
-                                        onclick="load_closet()">
-                                    내 옷 불러오기
-                                </button>
-                            </div>
-                        </div>
+        <div class="detail 2">
+          <span>계절감</span>
+          <span> ddd</span>
+        </div>
+        <div class="detail 3">
+          <span>옷종류</span>
+          <span> ddd</span>
+        </div>
+        <div class="detail 4">
+          <span>색상</span>
+          <span> ddd</span>
+        </div>
 
-                        <div class="cloth_info_container">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title">스타일</h3>
-                                </div>
-                                <div class="panel-body">
-                                    <input class="cloth_info" type="text" id="txtStyle" name="style" disabled>
-                                </div>
-                            </div>
-
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title">계절감</h3>
-                                </div>
-                                <div class="panel-body">
-                                    <input class="cloth_info" type="text" id="txtSeason" name="season" disabled>
-                                </div>
-                            </div>
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title">옷 종류</h3>
-                                </div>
-                                <div class="panel-body">
-                                    <input class="cloth_info" type="text" id="txtKind" name="kind" disabled>
-                                </div>
-                            </div>
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title">색상</h3>
-                                </div>
-                                <div class="panel-body">
-                                    <input class="cloth_info" type="text" id="txtColor" name="color" disabled>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                    <!-- Text input-->
-                    <div class="form-group">
-                        <label class="col-md-12 sub_title" for="txtTitle">제목</label>
-                        <div class="col-md-12">
-                            <input id="txtTitle" name="title" type="text" placeholder="제목을 입력하세요."
-                                   class="form-control input-md" , autofocus required><!--required : 공백입력시 경고-->
-                        </div>
-                        <label class="col-md-12 sub_title" for="txtPrice">판매금액</label>
-                        <div class="col-md-3">
-                            <input id="txtPrice" name="price" type="number" placeholder="판매금액을 입력하세요."
-                                   class="form-control input-md" , autofocus required>
-                        </div>
-                    </div>
-                    <!-- Textarea -->
-                    <div class="form-group">
-                        <label class="col-md-12 sub_title" for="txtPost">상세내용</label>
-                        <div class="col-md-12">
-                            <textarea class="form-control" id="txtPost" name="content" placeholder="내용을 입력하세요."
-                                      style="height:30vh;" required></textarea>
-                        </div>
-                    </div>
-                    <!-- Button -->
-                    <div class="form-group">
-                        <label class="col-md-12 control-label" for="singlebutton"></label>
-                        <div class="col-md-12">
-                            <input id="singlebutton" name="singlebutton" class="btn btn-primary load_btn" type="submit"
-                                   value="작성하기">
-                        </div>
-                    </div>
-                </fieldset>
-            </form>
-        </section>
+      </div>
     </div>
+  <div class="sell_details">
+    <label for="title" >제목</label>
+    <input type="text" placeholder="제목을 입력하세요." required>
+    <label for="pric" >판매금액</label>
+    <input type="number" placeholder="판매금액을 입력하세요." required>
+    <label for="contents" >상세내용</label>
+    <textarea placeholder="내용을 입력하세요." required></textarea>
+    <input type="submit">
+
+
+  </div>
+  </form>
+
+
+
+</div>
 
 
 </body>
