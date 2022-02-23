@@ -1,8 +1,5 @@
+// tradelist
 
-<link rel="stylesheet" href="../static/common.css">
-<link href="../static/board.css" rel="stylesheet">
-{% include 'head.html' %}
-<script>
 	$(document).ready(function () {
 		$.ajax({
 			type: "GET",
@@ -20,12 +17,14 @@
 					let price_s = parseInt(price).toLocaleString()
 
 					let tmp_html = `<div class="col-sm-6 col-md-3">
-									<div class="thumbnail" onclick="location.href='/trade/view?goods_id=${trade_id}'">
+									<div class="thumbnail">
 										<img src="${img_path}" alt="..." style="width:225px; height:260px;">
 										<div class="caption">
 										<h4>${title}</h4>
 										<p class="list_cost"><span class="format-money">${price_s}</span>원</p>
 										<p class="list_status">${status}</p>
+										<p><a href="/trade/view?goods_id=${trade_id}" class="btn btn-default" role="button">상세보기</a>
+										</p>
 										</div>
 									</div>
 								</div>`
@@ -35,23 +34,3 @@
 			}
 		})
 	})
-
-</script>
-<body>
-<div class="container">
-    <nav class="nav">
-        <a class="nav-link " target-content="rank-content" href="/community">코디 랭킹</a>
-        <a class="nav-link active" target-content="transaction-content" href="#">중고 거래</a>
-    </nav>
-    <section class="trade_list">
-		<div class="newtrade_wrap"><button class="new_trade" onclick="location.href='/trade/write'">등록하기</button></div>
-
-		<div class="row" id="list_card">
-
-		</div>
-     </section>
-	</div>
-</div>
-</body>
-</html>
-
