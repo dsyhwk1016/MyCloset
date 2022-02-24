@@ -62,7 +62,7 @@ def trade_submit():
     write_price = request.form['price']
     write_content = request.form['content']
     now = datetime.now()
-    current_time = now.strftime("%Y-%M-%D %H:%M:%S")
+    current_time = now.strftime("%Y-%m-%d %H:%M:%S")
 
     doc = {
         'user_id' : user_id,
