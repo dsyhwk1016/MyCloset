@@ -128,7 +128,8 @@ def trade_modify_submit():
         'image_path' : img_path,
         'title' : title,
         'price' : price,
-        'content' : content
+        'content' : content,
+        'last_datetime' : last_datetime
     }
 
     db.trade.update_one({'_id' : ObjectId(trade_id)}, {'$set' : doc})
