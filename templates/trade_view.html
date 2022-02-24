@@ -29,17 +29,26 @@
                     let comment_userName = com_rows[i]['user_name']
                     let comment_contents = com_rows[i]['contents']
                     let comment_datetime = com_rows[i]['datetime']
+                    let comment_userId = com_rows[i]['user_id']
 
                     let com_html =`
                     <div class = "comment_out">
-                        <div class = "com_username">${comment_userName}  ${comment_datetime}</div>
+                        <div class = "com_username">${comment_userName}  ${comment_datetime}
+                        <span id="comment_auth"></span></div>
                         <div class = "com_contents">${comment_contents}</div>
                     </div>
                     `
 
-                    $('#comment_view').append(com_html)
-                }
+                    if(user_id == comment_userId){
+                        let com_auth_html = `
+                            <a href='#'>수정</a>
+                            <a href='#'>삭제</a>
+                        `
+                    }
 
+                    $('#comment_view').append(com_html)
+                    $('#comment_auth').append(com_auth_html)
+                }
 
                 let tmp_html=`<li class="title">${title}</li>
                               <li class ="status">${status}</li>
@@ -47,7 +56,6 @@
                               <li class = "desc"> ${content}</li>
 
                 `
-
 
                 $('#goods_img').attr('src', img_path)
                 $('#goods_info').prepend(tmp_html)
@@ -63,12 +71,7 @@
       }">삭제하기</span>
                                `
                 $('#auth').append(auth_html)
-
-
                 }
-
-
-
             }
         })
     });

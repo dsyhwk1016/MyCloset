@@ -83,7 +83,9 @@ def trade_view():
 
     if 'user_id' in session:
         logged = True
-    return render_template('trade_view.html', logged=logged)
+        return render_template('trade_view.html', logged=logged)
+    else :
+        return redirect(url_for('login.login_page'))
 
 @trade_bp.route('/view/detail', methods=['GET'])
 def trade_view_detail():
