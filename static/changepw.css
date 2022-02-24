@@ -24,6 +24,10 @@
   color:var(--white);
 
 }
+.wrap .container .form span{
+  font-size: var(--font-medium);
+  padding-bottom: 3px;
+}
 .wrap .container input{
   margin-bottom:10px;
   padding:7px;

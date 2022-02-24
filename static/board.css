@@ -8,12 +8,15 @@
 /*common*/
 body {
   font-family: Pretendard-Regular;
+  overflow-y: scroll;
 }
-a{
-    list-style: none;
-}
+
 input[type="text"]:disabled {
   background-color: white;
+}
+
+.modal{
+  overflow-y: scroll;
 }
 
 .container {
@@ -23,20 +26,10 @@ input[type="text"]:disabled {
   padding: 20px;
   box-sizing: border-box;
 
-
 }
 
-/*write쪽*/
-/*.container{*/
-/*  width:80%;*/
-/*  height:80vh;*/
-/*  */
-/*  border-radius: 20px;*/
-/*  padding:20px;*/
-/*  display: block;*/
-/*  position:fixed;*/
-/*  top:100px;*/
-/*}*/
+
+
 /*nav bar*/
 
 .container .nav {
@@ -48,7 +41,9 @@ input[type="text"]:disabled {
   font-size: 18px;
   padding: 5px 10px;
 }
-
+.container .nav a{
+   text-decoration: none;
+}
 .container .nav a.active {
   color: #61237f;
   font-weight: bold;
@@ -63,6 +58,7 @@ input[type="text"]:disabled {
 
 .container .trade_list {
   padding: 10px;
+
 }
 
 .container .trade_list .newtrade_wrap {
@@ -72,22 +68,30 @@ input[type="text"]:disabled {
 }
 
 .container .trade_list .new_trade {
+  text-decoration: none;
   display: block;
-  font-size: var(--font-large);
-  padding: 5px;
-  border-radius: 12px;
-  border: none;
+  font-size: var(--font-medium-large);
+  margin-right: 5px;
   background-color: transparent;
-  transition: background-color .5s,
+  font-weight: 700;
+  border-bottom: 2px solid transparent;
+  transition:border-bottom .5s,
   color .5s;
+
 }
 
 .container .trade_list .new_trade:hover {
-  background-color: var(--purple-emp);
-  color: var(--white);
+  border-bottom: 2px solid var(--purple-emp);
+  color:var(--black);
 }
-
+.container .trade_list #list_card{
+  /*display: flex;*/
+  /*justify-content: flex-start;*/
+  /*flex-wrap: wrap;*/
+  /*최신순이 첨에와야하는데ㅜㅜ*/
+}
 .container .trade_list #list_card .thumbnail {
+  padding-top: 10px;
   border-radius: 8px;
   background-color: rgba(255, 255, 255, .7);
   transition: transform .5s,
@@ -101,74 +105,200 @@ input[type="text"]:disabled {
 
 }
 
-/*몰라 어딘가임*/
-.container .wrap{
-  overflow-y:scroll ;
+/*trade_write*/
+
+/*modal*/
+.modal-bg{
+  display: none;
+  position:fixed;
+  content:"";
+  width:100%;
+  height:calc(100% - 70px);
+  top:70px;
+  left:0;
+  background-color:rgba(0,0,0,.5);
+}
+
+.modal-wrap{
+  display: none;
+  position:absolute;
+  width:700px;
+  height:500px;
+  overflow-y: auto;
+  box-sizing: border-box;
+  top:200px;
+  left:calc(50% - 350px);
+  border-radius:12px;
+  background-color:var(--white);
 
 }
-.title {
+.modal-wrap .xbtn-bar{
+  width:100%;
+  height:40px;
+  box-sizing: border-box;
+  background-color:var(--purple);
+  color:#fff;
+  border-radius: 12px 12px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding:10px;
+}
+.modal-wrap .xbtn-bar .material-icons{
+  cursor:pointer;
+}
+
+.modal-wrap .modal-pic{
+  padding:20px 10px 10px;
+}
+
+.modal-wrap .modal-pic p{
+  font-size: var(--font-large);
+  font-weight: 700;
+  text-align: center;
+  padding:10px;
+}
+.modal-wrap .modal-pic .img_closet{
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+
+}
+.modal-wrap .modal-pic .img_closet img{
+  width: 200px;
+  height: 200px;
+  padding: 5px;
+}
+
+
+/*Contents*/
+.container .write_title{
+  font-size: 30px;
+  font-weight: 700;
+  padding: 0 20px;
+}
+.container .sell_form{
+  width: 90%;
+  padding: 20px 40px;
+  margin: 0 auto;
+}
+.container .sell_form .info_clothes{
+  display: flex;
+}
+.container .sell_form .clothes_pic{
   display: flex;
   flex-direction: column;
+  margin-right: 100px;
 
-  border-bottom: 2px solid gray;
 }
-
-.load_btn {
-  color: white;
-  font-family: Pretendard-Regular;
+.container .sell_form .clothes_pic .pic_wrap{
+  content:"";
+  background-color:white;
+  background-size: cover;
+  width: 300px;
+  height:300px;
 }
-
-.cloth_load {
-  display: flex;
-  flex-direction: row;
-  margin-top: 30px;
-  flex: 1;
+.container .sell_form .info_clothes #goods_img{
+  display: block;
+  border-radius: 5px;
+  max-width: 300px;
+  max-height: 300px;
 }
+.container .sell_form .info_clothes button{
+  margin: 15px 0;
+  padding: 10px;
+  border: 1px solid var(--gray);
+  border-radius: 5px;
+  font-weight: 700;
+}
+.container .sell_form .info_clothes .info_detail{
 
-.cloth_info_container {
   display: flex;
   flex-direction: column;
-  flex: 1;
-  height: auto;
-  padding: 0px 10px 0px 10px;
+  justify-content: space-between;
+  font-size: var(--font-large);
+  /*margin: 50px 100px;*/
+  /*마진정리 나중예*/
 }
-
-.rows {
-  margin-top: 20px;
+.container .sell_form .info_clothes .info_detail .detail{
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
 }
-
-.label_title {
+.container .sell_form .info_clothes .info_detail .detail span:first-child{
   font-size: 20px;
-  color: black;
-  margin-left: 0px;
-  text-align: right;
-  width: 20%;
+  font-weight: 700;
+  border-bottom: 2px solid var(--gray);
+  margin-bottom:10px;
 }
+.container .sell_form .info_clothes .info_detail .detail .color-wrap{
+  display: flex;
+  justify-content: center;
 
-.cloth_info {
-  font-family: 'Pretendard-Regular';
-  text-align: left;
-  border: 0px;
-  font-size: 15px;
 }
-
-.panel-heading {
-  vertical-align: center;
+.container .sell_form .info_clothes .info_detail .detail #colorShow{
+  content:"";
+  width:16px;
+  height:16px;
+  margin-right: 5px;
+  margin-top: 3px;
 }
-
-.panel-body {
-  padding: 0px;
-  height: 5vh;
+.container .sell_form .sell_details{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
 }
+.container .sell_form .sell_details label{
+  font-size: 18px;
 
-.sub_title {
+}
+.container .sell_form .sell_details input{
+  font-size: var(--font-medium-large);
+  margin-bottom:10px;
+  padding:7px;
+  border-radius: 5px;
+  border:1px solid var(--gray);
+}
+.container .sell_form .sell_details textarea{
+  font-size: var(--font-medium-large);
+  margin-bottom:10px;
+  padding:7px;
+  border-radius: 5px;
+  border:1px solid var(--gray);
+  height:20vh;
+  outline:none;
+}
+.container .sell_form .sell_details input[type="submit"]{
+  width:200px;
+  padding:10px;
   margin-top: 20px;
-  font-size: 20px;
+  font-weight: bold;
+  font-size: var(--font-large);
 }
 
 /*trade_view*/
 
 /*trade_view의 content*/
+.container .auth{
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 20px;
+}
+.container .auth a,
+.container .auth span{
+  cursor:pointer;
+  text-decoration: none;
+  margin-right: 10px;
+  font-weight: 700;
+  border-bottom: 2px solid transparent;
+  transition: border-bottom-color .5s, color .5s;
+
+}
+.container .auth a:hover,
+.container .auth span:hover{
+  color:var(--black);
+  border-bottom-color: var(--purple-emp);
+}
 .container .product_info {
   display: flex;
   justify-content: space-between;
@@ -201,6 +331,7 @@ input[type="text"]:disabled {
     font-weight: bold;
     box-sizing: border-box;
     flex:20%;
+    border-bottom: 2px solid var(--black) ;
 
 }
 .container .info_all .status{
@@ -221,6 +352,7 @@ input[type="text"]:disabled {
     flex:50%;
 }
 
+
 /*trade_view의 comments*/
 .comment_wrap{
   padding: 10px;
@@ -230,12 +362,11 @@ input[type="text"]:disabled {
   padding:10px;
 }
 .comment_view {
-
   padding: 10px;
 }
 
 .comment_out {
-  border-bottom: 1px solid grey;
+  border-bottom: 1px solid var(--gray);
   padding: 15px 0px 15px 0px;
 }
 
@@ -255,13 +386,15 @@ outline:none;
 .comment_btn {
   margin-left: 20px;
   padding:10px;
-  background-color: var(--purple-btn-border);
+  background-color: var(--light-gray);
   border:none;
   border-radius: 5px;
   font-weight: 700;
+  box-sizing: border-box;
   transition: background-color .3s, color .3s;
 }
 .comment_btn:hover{
   background-color: var(--purple-emp);
   color:var(--white);
+
 }

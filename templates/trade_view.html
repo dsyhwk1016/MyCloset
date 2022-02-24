@@ -18,6 +18,7 @@
                 let rows = response['trade_info']
                 let com_rows = response['comment_info']
                 let img_path = rows['image_path']
+                let user_id = response['user_id']
                 let title = rows['title']
                 let price = rows['price']
                 let status = rows['status']
@@ -44,11 +45,27 @@
                               <li class ="status">${status}</li>
                                <li class ="price">${price_s}</li>
                               <li class = "desc"> ${content}</li>
+
                 `
 
 
                 $('#goods_img').attr('src', img_path)
-                $('#goods_info').append(tmp_html)
+                $('#goods_info').prepend(tmp_html)
+
+              if (user_id == rows['user_id']) {
+                let auth_html = `
+                               <a href='/trade/modify?goods_id=${goods_id}'>수정하기</a>
+                               <span class="delete_post"  onclick=" if(confirm('이 게시글을 삭제하시겠습니까?') == true) {
+        alert('삭제되었습니다.')
+        location.href='/trade/delete?goods_id=${goods_id}'
+      } else {
+        return location.href='#'
+      }">삭제하기</span>
+                               `
+                $('#auth').append(auth_html)
+
+
+                }
 
 
 
@@ -71,11 +88,13 @@
             }
         })
     }
+
 </script>
 <body>
     <div class="container">
+      <div class="auth" id="auth"></div>
       <div class="product_info">
-      <img id="goods_img" src="" alt=""  style="width : 425px; height : 480px">
+      <img id="goods_img" src="" alt=""  style="width : 350px; height : 350px">
       <ul class="info_all" id="goods_info">
 
       </ul>

@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title> What's in my closet</title>
+  <title>What's in My Closet! | 로그인</title>
   <!-- google+font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,8 +35,6 @@
     <ul class="left-nav">
       <li><a href="/">홈</a></li>
       <li><a href="/mycloset">내 옷장</a></li>
-      <li><a href="/upload">새 옷 등록</a></li>
-      <li><a href="/cody">코디 추천</a></li>
       <li><a href="/community">커뮤니티</a></li>
     </ul>
     <div class="right-nav">
@@ -45,7 +43,7 @@
   </div>
 </header>
 <div class="wrap">
-  <div class="title">
+  <div class="title" onclick="location.href='/'">
     What's in my closet
   </div>
   <div class="auth">
@@ -78,7 +76,7 @@
         <input type="password" name="pwdcheck" id="pwd-check" onchange="checkPw()" minlength="4" maxlength="8" required>
         <span id="same"></span>
         <label for="nickname">닉네임</label>
-        <input type="text" name="nickname" id="nickname" onchange="checkNickname()" required>
+        <input type="text" name="nickname" id="nickname" placeholder="한글,영문 2자이상 8자이하" onchange="checkNickname()" required>
       </form>
     </div>
   </div>

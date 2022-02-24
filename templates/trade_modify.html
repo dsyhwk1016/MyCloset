@@ -1,0 +1,324 @@
+{% include 'head.html' %}
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="../static/board.css" rel="stylesheet">
+
+<script>
+    function getParameter(name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+            results = regex.exec(location.search);
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+
+    function load_closet() {
+        document.querySelector('.modal-wrap').style.display = 'block';
+        document.querySelector('.modal-bg').style.display = 'block';
+        $.ajax({
+            type: "GET",
+            url: "/trade/load_closet",
+            data: {},
+            success: function (response) {
+                let rows = response['closet_list'];
+                $('#modal_body_row').empty()
+
+                for (let i = 0; i < rows.length; i++) {
+                    let img_file = rows[i]['image_path']
+                    let style = rows[i]['clothes_style']
+                    let season = rows[i]['clothes_season']
+                    let kind = rows[i]['clothes_kind']
+                    let color = rows[i]['clothes_color']
+                    let cloth_id = rows[i]['_id']
+
+                    let tmp_html = `
+                                  <div class="image_all">
+                                    <a href="javascript:cloth_select('${img_file}', '${style}', '${season}', '${kind}', '${color}', '${cloth_id}');" class="thumbnail" style=" max-width: 200px;
+                                    max-height: 200px;">
+                                      <img src="${img_file}" alt="${style}">
+                                    </a>
+                                  </div>
+                                  `
+                    $('#modal_body_row').append(tmp_html)
+                }
+            }
+        })
+    }
+
+    const goods_id = getParameter("goods_id")
+    $(document).ready(function () {
+        $.ajax({
+            type: "GET",
+            url: "/trade/modify/detail?goods_id=" + goods_id,
+            data: {},
+            success: function (response) {
+                let trade_row = response['trade_info']
+                let cloth_row = response['cloth_info']
+                $('#modal_body_row').empty()
+
+                let color = cloth_row['clothes_color']
+                let style = cloth_row['clothes_style'][0]
+                let season = cloth_row['clothes_season'][0]
+                let kind = cloth_row['clothes_kind']
+
+                let colorShow = color;
+                switch (style) {
+                    case 'casual' :
+                        style = '캐쥬얼';
+                        break;
+                    case 'date' :
+                        style = '데이트';
+                        break;
+                    case 'office' :
+                        style = '오피스';
+                        break;
+                    case 'training' :
+                        style = '트레이닝복';
+                        break;
+                    case 'style_etc' :
+                        style = '기타';
+                        break;
+                }
+                switch (season) {
+                    case 'spring' :
+                        season = '봄';
+                        break;
+                    case 'summer' :
+                        season = '여름';
+                        break;
+                    case 'fall' :
+                        season = '가을';
+                        break;
+                    case 'winter' :
+                        season = '겨울';
+                        break;
+                }
+                switch (kind) {
+                    case 'outer' :
+                        kind = '아우터';
+                        break;
+                    case 'shirt' :
+                        kind = '상의';
+                        break;
+                    case 'set' :
+                        kind = '원피스';
+                        break;
+                    case 'pants' :
+                        kind = '바지';
+                        break;
+                    case 'skirt' :
+                        kind = '스커트';
+                        break;
+                    case 'etc' :
+                        kind = '기타';
+                        break;
+                }
+                switch (color) {
+                    case 'red' :
+                        color = '빨강';
+                        break;
+                    case 'orange' :
+                        color = '주황';
+                        break;
+                    case 'yellow' :
+                        color = '노랑';
+                        break;
+                    case 'green' :
+                        color = '초록';
+                        break;
+                    case 'blue' :
+                        color = '파랑';
+                        break;
+                    case 'navy' :
+                        color = '남색';
+                        break;
+                    case 'purple' :
+                        color = '보라';
+                        break;
+                    case 'etc' :
+                        color = '기타';
+                        break;
+                }
+                $('#goods_img').attr('src', cloth_row['image_path'])
+                document.getElementById('colorShow').style.backgroundColor = colorShow;
+                document.getElementById('txtStyle').innerHTML=style;
+                document.getElementById('txtSeason').innerHTML=season;
+                document.getElementById('txtKind').innerHTML=kind;
+                document.getElementById('txtColor').innerHTML=color;
+
+                $('#img_path').val(cloth_row['image_path'])
+                $('#cloth_id').val(trade_row['cloth_id'])
+                $('#trade_id').val(goods_id)
+                $('#txtTitle').val(trade_row['title'])
+                $('#txtPrice').val(trade_row['price'])
+                $('#txtPost').val(trade_row['content'])
+            }
+        })
+    })
+
+    function modalClose() {
+        document.querySelector('.modal-wrap').style.display = 'none';
+        document.querySelector('.modal-bg').style.display = 'none';
+    }
+
+    function cloth_select(img_file, style, season, kind, color, cloth_id) {
+    let colorShow =color;
+    switch (style) {
+      case 'casual' :
+        style = '캐쥬얼';
+        break;
+      case 'date' :
+        style = '데이트';
+        break;
+      case 'office' :
+        style = '오피스';
+        break;
+      case 'training' :
+        style = '트레이닝복';
+        break;
+      case 'style_etc' :
+        style = '기타';
+        break;
+    }
+    switch (season) {
+      case 'spring' :
+        season = '봄';
+        break;
+      case 'summer' :
+        season = '여름';
+        break;
+      case 'fall' :
+        season = '가을';
+        break;
+      case 'winter' :
+        season = '겨울';
+        break;
+    }
+    switch (kind) {
+      case 'outer' :
+        kind = '아우터';
+        break;
+      case 'shirt' :
+        kind = '상의';
+        break;
+      case 'set' :
+        kind = '원피스';
+        break;
+      case 'pants' :
+        kind = '바지';
+        break;
+      case 'skirt' :
+        kind = '스커트';
+        break;
+      case 'etc' :
+        kind = '기타';
+        break;
+    }
+    switch (color) {
+      case 'red' :
+        color = '빨강';
+        break;
+      case 'orange' :
+        color = '주황';
+        break;
+      case 'yellow' :
+        color = '노랑';
+        break;
+      case 'green' :
+        color = '초록';
+        break;
+      case 'blue' :
+        color = '파랑';
+        break;
+      case 'navy' :
+        color = '남색';
+        break;
+      case 'purple' :
+        color = '보라';
+        break;
+      case 'etc' :
+        color = '기타';
+        break;
+    }
+    document.getElementById('colorShow').style.backgroundColor = colorShow;
+    document.getElementById('txtStyle').innerHTML=style;
+    document.getElementById('txtSeason').innerHTML=season;
+    document.getElementById('txtKind').innerHTML=kind;
+    document.getElementById('txtColor').innerHTML=color;
+
+    {#$('#txtStyle').val(style);#}
+    {#$('#txtSeason').val(season);#}
+    {#$('#txtKind').val(kind);#}
+    {#$('#txtColor').val(color);#}
+
+    $('#goods_img').attr('src', img_file)
+    $('#img_path').val(img_file)
+    $('#cloth_id').val(cloth_id)
+    modalClose()
+    document.getElementById('txtTitle').focus();
+  }
+
+
+</script>
+<body>
+<!-- load_closet Modal -->
+<div class="modal-bg"></div>
+  <div class="modal-wrap">
+    <div class="xbtn-bar">
+      <span>옷 찾기</span>
+      <span class="material-icons" onclick="modalClose()">close</span>
+    </div>
+    <div class="modal-pic" >
+      <p> 판매하려는 옷을 선택해 주세요. </p>
+      <div class="img_closet" id='modal_body_row' >
+      </div>
+    </div>
+  </div>
+
+
+<!-- trade main window start -->
+<div class="container">
+  <h2 class="write_title">글 수정</h2>
+  <form method="post" action="/trade/modify" class="sell_form">
+    <div class="info_clothes">
+      <div class="clothes_pic">
+        <div class="pic_wrap">
+        <img src="" alt="불러온 옷 이미지" id="goods_img" style="width:300px; height:300px;">
+        </div>
+        <button type="button" data-toggle="modal" data-target="#myModal"  onclick="load_closet()" >내 옷 불러오기</button>
+        <input type="hidden" name="img_path" id="img_path">
+        <input type="hidden" name="cloth_id" id="cloth_id">
+          <input type="hidden" name="trade_id" id="trade_id">
+      </div>
+      <div class="info_detail">
+        <div class="detail 1">
+          <span>스타일</span>
+          <span id="txtStyle"></span>
+        </div>
+        <div class="detail 2">
+          <span>계절감</span>
+          <span id="txtSeason"></span>
+        </div>
+        <div class="detail 3">
+          <span>옷종류</span>
+          <span id="txtKind"></span>
+        </div>
+        <div class="detail 4">
+          <span>색상</span>
+          <div class="color-wrap"><div id="colorShow"></div><div id="txtColor"></div></div>
+        </div>
+
+      </div>
+    </div>
+  <div class="sell_details">
+    <label for="title" >제목</label>
+    <input input id="txtTitle" name="title" type="text" placeholder="제목을 입력하세요." required>
+    <label for="pric" >판매금액</label>
+    <input id="txtPrice" name="price" type="number" placeholder="판매금액을 입력하세요." required>
+    <label for="contents" >상세내용</label>
+    <textarea id="txtPost" name="content" placeholder="내용을 입력하세요." required></textarea>
+    <input  id="singlebutton" name="singlebutton"  type="submit" value="수정하기">
+  </div>
+  </form>
+</div>
+</body>
+</html>
