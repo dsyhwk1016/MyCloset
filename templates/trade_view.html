@@ -1,4 +1,5 @@
 {% include 'head.html' %}
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link href="../static/board.css" rel="stylesheet">
 <script>
     function getParameter(name) {
@@ -98,9 +99,24 @@
             }
         })
     }
+  window.addEventListener('scroll',function(){
+    let upBtn = document.querySelector('.side_up')
+    if(window.scrollY >300){
+      upBtn.style.display='flex'
+      upBtn.addEventListener('click',function(){
+        window.scrollTo({top:0,behavior:'smooth'})
 
+      })
+
+    }
+    else {
+      upBtn.style.display='none'
+    }})
 </script>
 <body>
+  <div class="side_up">
+  <span class="material-icons">arrow_upward</span>
+  </div>
     <div class="container">
       <div class="auth" id="auth"></div>
       <div class="product_info">
