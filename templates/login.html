@@ -43,7 +43,7 @@
   </div>
 </header>
 <div class="wrap">
-  <div class="title">
+  <div class="title" onclick="location.href='/'">
     What's in my closet
   </div>
   <div class="auth">
@@ -76,7 +76,7 @@
         <input type="password" name="pwdcheck" id="pwd-check" onchange="checkPw()" minlength="4" maxlength="8" required>
         <span id="same"></span>
         <label for="nickname">닉네임</label>
-        <input type="text" name="nickname" id="nickname" onchange="checkNickname()" required>
+        <input type="text" name="nickname" id="nickname" placeholder="한글,영문 2자이상 8자이하" onchange="checkNickname()" required>
       </form>
     </div>
   </div>

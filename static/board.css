@@ -10,9 +10,7 @@ body {
   font-family: Pretendard-Regular;
   overflow-y: scroll;
 }
-a{
-    list-style: none;
-}
+
 input[type="text"]:disabled {
   background-color: white;
 }
@@ -28,21 +26,8 @@ input[type="text"]:disabled {
   padding: 20px;
   box-sizing: border-box;
 
-
-
 }
 
-/*write쪽*/
-/*.container{*/
-/*  width:80%;*/
-/*  height:80vh;*/
-/*  */
-/*  border-radius: 20px;*/
-/*  padding:20px;*/
-/*  display: block;*/
-/*  position:fixed;*/
-/*  top:100px;*/
-/*}*/
 
 
 /*nav bar*/
@@ -56,7 +41,9 @@ input[type="text"]:disabled {
   font-size: 18px;
   padding: 5px 10px;
 }
-
+.container .nav a{
+   text-decoration: none;
+}
 .container .nav a.active {
   color: #61237f;
   font-weight: bold;
@@ -81,19 +68,21 @@ input[type="text"]:disabled {
 }
 
 .container .trade_list .new_trade {
+  text-decoration: none;
   display: block;
-  font-size: var(--font-large);
-  padding: 5px;
-  border-radius: 12px;
-  border: none;
+  font-size: var(--font-medium-large);
+  margin-right: 5px;
   background-color: transparent;
-  transition: background-color .5s,
+  font-weight: 700;
+  border-bottom: 2px solid transparent;
+  transition:border-bottom .5s,
   color .5s;
+
 }
 
 .container .trade_list .new_trade:hover {
-  background-color: var(--purple-emp);
-  color: var(--white);
+  border-bottom: 2px solid var(--purple-emp);
+  color:var(--black);
 }
 .container .trade_list #list_card{
   /*display: flex;*/
@@ -160,7 +149,7 @@ input[type="text"]:disabled {
 }
 
 .modal-wrap .modal-pic{
-  padding-top:20px;
+  padding:20px 10px 10px;
 }
 
 .modal-wrap .modal-pic p{
@@ -171,7 +160,9 @@ input[type="text"]:disabled {
 }
 .modal-wrap .modal-pic .img_closet{
   display: flex;
+  justify-content: space-around;
   flex-wrap: wrap;
+
 }
 .modal-wrap .modal-pic .img_closet img{
   width: 200px;
@@ -288,6 +279,26 @@ input[type="text"]:disabled {
 /*trade_view*/
 
 /*trade_view의 content*/
+.container .auth{
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 20px;
+}
+.container .auth a,
+.container .auth span{
+  cursor:pointer;
+  text-decoration: none;
+  margin-right: 10px;
+  font-weight: 700;
+  border-bottom: 2px solid transparent;
+  transition: border-bottom-color .5s, color .5s;
+
+}
+.container .auth a:hover,
+.container .auth span:hover{
+  color:var(--black);
+  border-bottom-color: var(--purple-emp);
+}
 .container .product_info {
   display: flex;
   justify-content: space-between;

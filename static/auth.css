@@ -13,7 +13,8 @@
   font-weight: 700;
   padding:5px;
   font-family:'Redressed','Nanum Brush Script',cursive;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
+  cursor: pointer;
 }
 .wrap .auth{
 

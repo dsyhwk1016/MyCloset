@@ -43,7 +43,7 @@ body{
 }
 a{
   text-decoration: none;
-  color:var(--white);
+  color:var(--black);
 }
 li{
   list-style: none;
@@ -95,9 +95,9 @@ header .inner{
 
 }
 
-header .inner .left-nav{
-  display: flex;
-  /* padding-top: 10px; */
+header .inner a{
+  color:var(--white);
+  text-decoration: none;
 }
 header .inner .left-nav{
   display: flex;
@@ -115,6 +115,7 @@ header .inner .right-nav{
   margin-right: 10px;
   display: flex;
   align-items: center;
+
 
 }
 header .inner .right-nav a{
