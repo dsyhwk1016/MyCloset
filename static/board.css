@@ -8,6 +8,7 @@
 /*common*/
 body {
   font-family: Pretendard-Regular;
+  overflow-y: scroll;
 }
 a{
     list-style: none;
@@ -16,12 +17,17 @@ input[type="text"]:disabled {
   background-color: white;
 }
 
+.modal{
+  overflow-y: scroll;
+}
+
 .container {
   background-color: #ffebfd;
   background-color: rgba(255, 255, 255, 0.6);
   margin: 120px auto;
   padding: 20px;
   box-sizing: border-box;
+
 
 
 }
@@ -37,6 +43,8 @@ input[type="text"]:disabled {
 /*  position:fixed;*/
 /*  top:100px;*/
 /*}*/
+
+
 /*nav bar*/
 
 .container .nav {
@@ -94,6 +102,7 @@ input[type="text"]:disabled {
   /*최신순이 첨에와야하는데ㅜㅜ*/
 }
 .container .trade_list #list_card .thumbnail {
+  padding-top: 10px;
   border-radius: 8px;
   background-color: rgba(255, 255, 255, .7);
   transition: transform .5s,
@@ -109,6 +118,69 @@ input[type="text"]:disabled {
 
 /*trade_write*/
 
+/*modal*/
+.modal-bg{
+  display: none;
+  position:fixed;
+  content:"";
+  width:100%;
+  height:calc(100% - 70px);
+  top:70px;
+  left:0;
+  background-color:rgba(0,0,0,.5);
+}
+
+.modal-wrap{
+  display: none;
+  position:absolute;
+  width:700px;
+  height:500px;
+  overflow-y: auto;
+  box-sizing: border-box;
+  top:200px;
+  left:calc(50% - 350px);
+  border-radius:12px;
+  background-color:var(--white);
+
+}
+.modal-wrap .xbtn-bar{
+  width:100%;
+  height:40px;
+  box-sizing: border-box;
+  background-color:var(--purple);
+  color:#fff;
+  border-radius: 12px 12px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding:10px;
+}
+.modal-wrap .xbtn-bar .material-icons{
+  cursor:pointer;
+}
+
+.modal-wrap .modal-pic{
+  padding-top:20px;
+}
+
+.modal-wrap .modal-pic p{
+  font-size: var(--font-large);
+  font-weight: 700;
+  text-align: center;
+  padding:10px;
+}
+.modal-wrap .modal-pic .img_closet{
+  display: flex;
+  flex-wrap: wrap;
+}
+.modal-wrap .modal-pic .img_closet img{
+  width: 200px;
+  height: 200px;
+  padding: 5px;
+}
+
+
+/*Contents*/
 .container .write_title{
   font-size: 30px;
   font-weight: 700;
@@ -130,13 +202,16 @@ input[type="text"]:disabled {
 }
 .container .sell_form .clothes_pic .pic_wrap{
   content:"";
-  background-color: white;
+  background-color:white;
+  background-size: cover;
   width: 300px;
   height:300px;
 }
 .container .sell_form .info_clothes #goods_img{
   display: block;
   border-radius: 5px;
+  max-width: 300px;
+  max-height: 300px;
 }
 .container .sell_form .info_clothes button{
   margin: 15px 0;

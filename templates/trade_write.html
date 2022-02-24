@@ -1,8 +1,12 @@
 {% include 'head.html' %}
+<!--  google icons-->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link href="../static/board.css" rel="stylesheet">
 
 <script>
   function load_closet() {
+    document.querySelector('.modal-wrap').style.display ='block';
+    document.querySelector('.modal-bg').style.display ='block';
     $.ajax({
       type: "GET",
       url: "/trade/load_closet",
@@ -20,9 +24,10 @@
           let cloth_id = rows[i]['_id']
 
           let tmp_html = `
-                                  <div class="col-xs-6 col-md-3">
-                                    <a href="javascript:cloth_select('${img_file}', '${style}', '${season}', '${kind}', '${color}', '${cloth_id}');" class="thumbnail">
-                                      <img src="${img_file}" alt="...">
+                                  <div class="image_all">
+                                    <a href="javascript:cloth_select('${img_file}', '${style}', '${season}', '${kind}', '${color}', '${cloth_id}');" class="thumbnail" style=" max-width: 200px;
+ max-height: 200px;">
+                                      <img src="${img_file}" alt="${style}">
                                     </a>
                                   </div>
                                   `
@@ -31,6 +36,11 @@
       }
     })
   }
+
+function modalClose(){
+     document.querySelector('.modal-wrap').style.display ='none';
+     document.querySelector('.modal-bg').style.display ='none';
+}
 
   function cloth_select(img_file, style, season, kind, color, cloth_id) {
     let colorShow =color;
@@ -125,41 +135,39 @@
     $('#goods_img').attr('src', img_file)
     $('#img_path').val(img_file)
     $('#cloth_id').val(cloth_id)
-    $('#myModal').hide()
+    modalClose()
+    document.getElementById('txtTitle').focus();
+
   }
 </script>
 <body>
 <!-- load_closet Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title" id="myModalLabel">내 옷장에서 선택하기</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row" id="modal_body_row">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-          </div>
+<div class="modal-bg"></div>
+  <div class="modal-wrap">
+    <div class="xbtn-bar">
+      <span>옷 찾기</span>
+      <span class="material-icons" onclick="modalClose()">close</span>
+    </div>
+    <div class="modal-pic" >
+      <p> 판매하려는 옷을 선택해 주세요. </p>
+      <div class="img_closet" id='modal_body_row' >
+      </div>
     </div>
   </div>
-</div>
 
 
 <!-- trade main window start -->
+
 <div class="container">
   <h2 class="write_title">판매등록</h2>
   <form method="post" action="/trade/trade_submit" class="sell_form">
     <div class="info_clothes">
       <div class="clothes_pic">
         <div class="pic_wrap">
-        <img src="" alt="불러온 옷 이미지" id="goods_img" style="width:300px; height:300px;">
+        <img src="../static/img/no_img.png" id="goods_img" style="max-width:300px; max-height:300px;">
         </div>
-        <button type="button" data-toggle="modal" data-target="#myModal"  onclick="load_closet()" >내 옷 불러오기</button>
+{#         data-toggle="modal" data-target="#myModal"#}
+        <button type="button" onclick="load_closet()" >내 옷 불러오기</button>
         <input type="hidden" name="img_path" id="img_path">
         <input type="hidden" name="cloth_id" id="cloth_id">
       </div>
@@ -199,7 +207,6 @@
 
 
 </div>
-
 
 </body>
 </html>
