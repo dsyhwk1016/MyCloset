@@ -136,6 +136,14 @@ def trade_modify_submit():
 
     return redirect(url_for('trade.trade'))
 
+@trade_bp.route('/delete', methods = ['GET'])
+def trade_delete():
+    trade_id = request.args.get('goods_id')
+    db.trade.delete_one({'_id' : ObjectId(trade_id)})
+    db.trade_comment.delete_one({'trade_id' : trade_id})
+
+    return redirect(url_for('trade.trade'))
+
 @trade_bp.route('/view/comment_write', methods=['POST'])
 def comment_write():
     user_id = escape(session['user_id'])

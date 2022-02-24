@@ -55,7 +55,8 @@
                 if(user_id == rows['user_id']){
                     let auth_html = `
                                <button onclick="location.href='/trade/modify?goods_id=${goods_id}'">수정하기</button>
-                `
+                               <button onclick="location.href='/trade/delete?goods_id=${goods_id}'">삭제하기</button>
+                               `
                     $('#auth').append(auth_html)
                 }
 
