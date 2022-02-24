@@ -6,21 +6,21 @@
 	$(document).ready(function () {
 		$.ajax({
 			type: "GET",
-            url: "/trade/list",
-            data: {},
-            success: function (response) {
-                let rows = response['lists']
+			url: "/trade/list",
+			data: {},
+			success: function (response) {
+				let rows = response['lists']
 
-                for (let i = 0; i < rows.length; i++) {
-                    let img_path = rows[i]['image_path'];
-                    let title = rows[i]['title'];
-                    let status = rows[i]['status'];
-                    let price = rows[i]['price'];
-                    let trade_id = rows[i]['_id'];
-                    let order = 0
-                    let price_s = parseInt(price).toLocaleString()
+				for(let i=0;i < rows.length;i++) {
+					let img_path = rows[i]['image_path'];
+					let title = rows[i]['title'];
+					let status = rows[i]['status'];
+					let price = rows[i]['price'];
+					let trade_id = rows[i]['_id'];
+          let order = 0
+					let price_s = parseInt(price).toLocaleString()
 
-                    let tmp_html = `<div class="col-sm-6 col-md-3">
+					let tmp_html = `<div class="col-sm-6 col-md-3">
 									<div class="thumbnail" onclick="location.href='/trade/view?goods_id=${trade_id}'">
 										<img src="${img_path}" alt="..." style="width:225px; height:260px;">
 										<div class="caption">
@@ -31,7 +31,7 @@
 									</div>
 								</div>`
 
-                    $('#list_card').append(tmp_html);
+					$('#list_card').append(tmp_html);
 				}
 			}
 		})
