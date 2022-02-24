@@ -52,8 +52,7 @@
             width: 80%;
             display: flex;
             justify-content: space-between;
-            margin-left: 270px;
-            margin-right: 270px;
+            margin: auto;
             flex-wrap: wrap;
         }
 
@@ -336,9 +335,8 @@
     </style>
     <script>
         //            내 옷장 script
-        let style_val, season_val, kind_val, color_val,
-            $
-        (document).ready(function () {
+        let style_val, season_val, kind_val, color_val
+        $(document).ready(function () {
             load()
             $('#style button').click(function () {
                 style_val = $(this).attr('value');
@@ -490,63 +488,35 @@
 
         function cody() {
             let temperature = $('#demo').text();
-            {#console.log(value);#}
-            if (temperature < 10) {
-                season_val = 'winter'
-            } else if (temperature > 11 && temperature < 20) {
-                season_val = ['winter', 'fall', 'spring']
-            } else if (temperature > 22 && temperature < 30) {
-                season_val = ['spring', 'summer']
-            } else (temperature > 31)
-            {
-                season_val = 'summer'
-            }
-            $.ajax({
-                type: 'GET',
-                url: '/mycloset/find',
-                data: {"color": color_val, "style": style_val, "season": season_val, "kind": kind_val},
-                success: function (response) {
-                    if (response['status'] == 'SUCCESS') {
-                        $('#card-box').empty();
-                        let clothes = response['clothes']
-                        let empty = response['empty']
-                        if (empty == true) {
-                            $('#card-box').append('해당하는 옷이 없습니다.')
-                        } else if () {
-                            for (i = 0; i < clothes.length; i++) {
-                                let clothes_id = clothes[i]['_id'];
-                                let path = clothes[i]['image_path']
-                                let style = clothes[i]['clothes_style']
-                                let season = clothes[i]['clothes_season']
-                                let kind = clothes[i]['clothes_kind']
-                                let color = clothes[i]['clothes_color']
-
-                                let temp_html = `<div class="card">
-                                                 <img class="card-img-top" src="${path}"
-                                                      alt="Card image cap">
-                                                 <div class="card-body">
-                                                     <h5 class="card-title">${style}</h5>
-                                                     <h5 class="card-title">${kind}</h5>
-                                                     <h5 class="card-title">${season}</h5>
-                                                     <h5 class="card-title">${color}</h5>
-                                                 </div>
-                                                 <footer class="card-footer">
-                                                    <div class="update">
-                                                        <a href="#" onclick="DeleteCard('${clothes_id}')" class="card-footer-item has-text-danger">
-                                                        삭제
-                                                    </div>
-                                                 </div>`
-                                $('#card-box').append(temp_html)
-                            }
-                        }
-                    } else {
-                        alert(response['msg']);
-                    }
-                }
-            })
+            console.log(temperature);
+            {#if (temperature < 10) {#}
+            {#    season_val = 'winter'} else if (temperature > 11 && temperature < 20) {#}
+            {#    season_val = ['winter', 'fall', 'spring']} else if (temperature > 22 && temperature < 30) {#}
+            {#    season_val = ['spring', 'summer']} else (temperature > 31){#}
+            {#    season_val = 'summer'}#}
+            {#$.ajax({#}
+            {#    type: 'GET',#}
+            {#    url: '/mycloset/find',#}
+            {#    data: {"color": color_val, "style": style_val, "season": season_val, "kind": kind_val},#}
+            {#    success: function (response) {#}
+            {#        if (response['status'] == 'SUCCESS') {#}
+            {#            $('#card-box').empty();#}
+            {#            let clothes = response['clothes']#}
+            {#            let empty = response['empty']#}
+            {#            if (empty == true) {#}
+            {#                $('#card-box').append('해당하는 옷이 없습니다.')} else {#}
+            {#                for (i = 0; i < clothes.length; i++) {#}
+            {#                    let clothes_id = clothes[i]['_id'];#}
+            {#                    let path = clothes[i]['image_path']#}
+            {#                    let style = clothes[i]['clothes_style']#}
+            {#                    let season = clothes[i]['clothes_season']#}
+            {#                    let kind = clothes[i]['clothes_kind']#}
+            {#                    let color = clothes[i]['clothes_color']#}
+            {##}
+            {#                    let temp_html = ``#}
+            {#                    $('#card-box').append(temp_html)}}} else {#}
+            {#            alert(response['msg']);}}})#}
         }
-        }
-
 
 
         // Weather API KEY 가져옴
@@ -565,15 +535,14 @@
                 city.innerText = data.name;
                 weather.innerText = `${data.weather[0].main} / ${data.main.temp}`;
                 // 슬라이더에 현재 온도 할당
-                $('#slider').attr('value', data.main.temp);
+                {#$('#slider').attr('value', data.main.temp);#}
                 // 슬라이더 움직일 때 value 표시
-                let slider = document.getElementById("slider");
-                let output = document.getElementById("demo");
-                output.innerHTML = `${data.main.temp}`
-                slider.oninput = function () {
-                    output.innerHTML = this.value;
-                }
-                console.log(data.name, data.main.temp);
+                {#let slider = document.getElementById("slider");#}
+                {#let output = document.getElementById("demo");#}
+                {#output.innerHTML = `${data.main.temp}`#}
+                {#slider.oninput = function () {#}
+                {#    output.innerHTML = this.value;}#}
+                {#console.log(data.name, data.main.temp);#}
             })
         }
 
@@ -718,20 +687,20 @@
 
 <br>
 <br>
-<div class="all">
-    <div class="slider_wrap">
-        <div class="middle">
-            <div class="slider-container">
-                <span class="bar"><span class="fill"></span></span>
-                <input type="range" id="slider" class="slider" min="-20" max="50" value="">
-            </div>
-        </div>
-        <p class="temp_value">기온: <span id="demo"></span>℃</p>
-        <button onclick="cody()" type="button" id="slider" class="btn btn-light" value="">추천하기</button>
-    </div>
-    <div class="card-list" id="card-box">
-    </div>
-</div>
+{#<div class="all">#}
+{#    <div class="slider_wrap">#}
+{#        <div class="middle">#}
+{#            <div class="slider-container">#}
+{#                <span class="bar"><span class="fill"></span></span>#}
+{#                <input type="range" id="slider" class="slider" min="-20" max="50" value="">#}
+{#            </div>#}
+{#        </div>#}
+{#        <p class="temp_value">기온: <span id="demo"></span>℃</p>#}
+{#        <button onclick="cody()" type="button" id="slider" class="btn btn-light" value="">추천하기</button>#}
+{#    </div>#}
+<div class="card-list" id="card-box">
+{#    </div>#}
+{#</div>#}
 
 <div id="bg">
     <div id="modal">
