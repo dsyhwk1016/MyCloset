@@ -31,7 +31,9 @@
     <title>MY CLOSET | 옷장 살펴보기</title>
 
     <style>
-        /*수정 modal css*/
+        #a.card-footer-item.has-text-danger {
+            margin-left: 30px;
+        }
 
         .modal-content {
             width: 600px;
@@ -68,6 +70,7 @@
         }
 
         .card {
+            margin-top: 15px;
         }
 
         /*<!--온도슬라이더 css-->*/
@@ -89,7 +92,6 @@
         }
 
         div.middle {
-
         }
 
         p.temp_value {
@@ -472,7 +474,7 @@
                     if (response['status'] == 'SUCCESS') {
                         alert('삭제하였습니다.')
                         window.location.reload()
-                        if (satus == 'FAIL') {
+                        if (response['status'] == 'FAIL') {
                             alert(response['msg'])
                             window.location.reload()
                         }
@@ -483,6 +485,20 @@
                 }
             })
         }
+
+        function cody() {
+            let value = $('#demo').text();
+            console.log(value);
+            {#$.ajax({#}
+            {#    type: 'GET',#}
+            {#    url: '/mycloset/cody',#}
+            {#    data: {'current_temp': value},#}
+            {#    success: function (response) {#}
+            {#        if (response['status'] == 'SUCCESS') {#}
+            {#            alert(response['msg'])#}
+            {#            window.location.reload()}}})#}
+        }
+
 
         // Weather API KEY 가져옴
         let API_KEY = "7a9876c881ab70708f327836f2ae2d7b";
@@ -501,6 +517,7 @@
                 weather.innerText = `${data.weather[0].main} / ${data.main.temp}`;
                 // 슬라이더에 현재 온도 할당
                 $('#slider').attr('value', data.main.temp);
+                $('#slider').attr('value', data.main.temp);
                 // 슬라이더 움직일 때 value 표시
                 let slider = document.getElementById("slider");
                 let output = document.getElementById("demo");
@@ -518,20 +535,6 @@
         }
 
         navigator.geolocation.getCurrentPosition(onGeoOK, onGeoError);
-        {#let ustyle, useason, ukind, ucolor#}
-        {#$(document).ready(function () {#}
-        {#    $('#update_style div>input').click(function () {#}
-        {#        ustyle = $(this).attr('value');#}
-        {#    })#}
-        {#    $('#update_season div>input').click(function () {#}
-        {#        useason = $(this).attr('value');#}
-        {#    })#}
-        {#    $('#update_kind div>input').click(function () {#}
-        {#        ukind = $(this).attr('value');#}
-        {#    })#}
-        {#    $('#update_color div>input').click(function () {#}
-        {#        ucolor = $(this).attr('value');#}
-        {#    })})#}
     </script>
 </head>
 
@@ -672,7 +675,7 @@
         <div class="middle">
             <div class="slider-container">
                 <span class="bar"><span class="fill"></span></span>
-                <input type="range" id="slider" class="slider" min="-10" max="40" value="">
+                <input type="range" id="slider" class="slider" min="-20" max="50" value="">
             </div>
         </div>
         <p class="temp_value">기온: <span id="demo"></span>℃</p>
