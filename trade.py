@@ -90,8 +90,50 @@ def trade_view_detail():
     trade_id = request.args.get('goods_id')
     trade_info = db.trade.find_one({'_id' : ObjectId(trade_id)}, {'_id' : False})
     comment_info = objectIdDecoder(list(db.trade_comment.find({'trade_id' : trade_id})))
+    user_id = escape(session['user_id'])
 
-    return jsonify({'msg' : '연결완료', 'trade_info' : trade_info, 'comment_info' : comment_info})
+    return jsonify({'trade_info' : trade_info, 'comment_info' : comment_info, 'user_id' : user_id})
+
+@trade_bp.route('/modify')
+def trade_modify():
+    logged = False
+
+    if 'user_id' in session:
+        logged = True
+    return render_template('trade_modify.html', logged=logged)
+
+@trade_bp.route('/modify/detail', methods = ['GET'])
+def trade_modify_detail():
+    trade_id = request.args.get('goods_id')
+    trade_info = db.trade.find_one({'_id' : ObjectId(trade_id)}, {'_id' : False})
+    cloth_id = trade_info['cloth_id']
+    cloth_info = db.clothes.find_one({'_id' : ObjectId(cloth_id)}, {'_id' : False})
+
+    return jsonify({'trade_info' : trade_info, 'cloth_info' : cloth_info})
+
+@trade_bp.route('/modify', methods=['POST'])
+def trade_modify_submit():
+    trade_id = request.form['trade_id']
+    cloth_id = request.form['cloth_id']
+    img_path = request.form['img_path']
+    title = request.form['title']
+    price = request.form['price']
+    content = request.form['content']
+
+    now = datetime.now()
+    last_datetime = now.strftime("%Y-%m-%d %H:%M:%S")
+
+    doc = {
+        'cloth_id' : cloth_id,
+        'image_path' : img_path,
+        'title' : title,
+        'price' : price,
+        'content' : content
+    }
+
+    db.trade.update_one({'_id' : ObjectId(trade_id)}, {'$set' : doc})
+
+    return redirect(url_for('trade.trade'))
 
 @trade_bp.route('/view/comment_write', methods=['POST'])
 def comment_write():
