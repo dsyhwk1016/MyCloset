@@ -367,6 +367,13 @@ input[type="text"]:disabled {
   border-bottom: 1px solid var(--gray);
   padding: 15px 0px 15px 0px;
 }
+.comment_out #comment_auth{
+  text-decoration: none;
+   cursor:pointer;
+  text-decoration: none;
+  margin-right: 10px;
+  font-weight: 700;
+}
 
 .com_username {
   padding-bottom: 15px;
