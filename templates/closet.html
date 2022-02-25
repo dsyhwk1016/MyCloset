@@ -489,7 +489,7 @@
 
 
         function DeleteCard(clothes_id) {
-            alert('삭제하시겠습니까?')
+            if(confirm('정말 삭제하시겠습니까?')){
             $.ajax({
                 type: "POST",
                 url: "/mycloset/delete",
@@ -507,7 +507,9 @@
                         window.location.reload()
                     }
                 }
-            })
+            }) }else{
+                return false;
+            }
         }
 
         function cody() {
