@@ -264,8 +264,8 @@
 
         #bg {
             width: 100vw;
-            height: 100vh;
-            position: absolute;
+            height: 100vw;
+            position: fixed;
             z-index: 1;
             top: 0;
             left: 0;
@@ -851,27 +851,27 @@
                             let file, style, season, kind, color;
                             file = document.querySelector("#file");
                             if (!file.files.length) {
-                                alert("이미지 등록 하셈");
+                                alert("이미지를 등록하세요.");
                                 return false;
                             }
                             style = document.querySelectorAll('input[name="style"]:checked');
                             if (!style.length) {
-                                alert("스타일 하나 이상 선택");
+                                alert("스타일을 하나 이상 선택해주세요.");
                                 return false;
                             }
                             season = document.querySelector('input[name="season"]:checked');
                             if (season == null) {
-                                alert("계절감 선택");
+                                alert("계절을 선택해주세요.");
                                 return false;
                             }
                             kind = document.querySelector('#kind_select');
                             if (kind.options[kind.selectedIndex].value == "none") {
-                                alert("종류 선택");
+                                alert("종류를 선택해주세요.");
                                 return false;
                             }
                             color = document.querySelector('#color_select');
                             if (color.options[color.selectedIndex].value == "none") {
-                                alert("색상 선택");
+                                alert("색상을 선택해주세요.");
                                 return false;
                             }
                         }
