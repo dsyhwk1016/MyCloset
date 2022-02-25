@@ -83,7 +83,9 @@ def trade_view():
 
     if 'user_id' in session:
         logged = True
-    return render_template('trade_view.html', logged=logged)
+        return render_template('trade_view.html', logged=logged)
+    else :
+        return redirect(url_for('login.login_page'))
 
 @trade_bp.route('/view/detail', methods=['GET'])
 def trade_view_detail():
@@ -166,3 +168,30 @@ def comment_write():
     db.trade_comment.insert_one(doc)
 
     return jsonify({'msg' : '댓글이 등록되었습니다'})
+
+# @trade_bp.route('/view/comment_update', methods=['POST'])
+# def comment_update():
+#     comment_id = request.form['comment_id']
+#     contents = request.form['contents']
+#
+#     now = datetime.now()
+#     current_time = now.strftime("%Y-%m-%d %H:%M:%S")
+#
+#     doc = {
+#         'contents' : contents,
+#         'datetime' : current_time
+#     }
+#
+#     db.trade_comment.update_one({'_id' : ObjectId(comment_id)}, {'$set:' : doc})
+#
+#     return redirect(url_for(''))
+
+@trade_bp.route('/view/comment_del', methods=['GET'])
+def comment_del():
+    comment_id = request.args.get('com_id')
+    print(comment_id)
+
+    db.trade_comment.delete_one({'_id' : ObjectId(comment_id)})
+    return redirect(url_for('trade.trade'))
+
+
