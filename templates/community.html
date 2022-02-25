@@ -26,7 +26,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&family=Festive&family=Do+Hyeon&family=Nanum+Brush+Script&display=swap"
           rel="stylesheet">
 
-    <title>What's in My Closet! | 코디 자랑</title>
+    <title>What's in My Closet!</title>
 
     <!-- CSS -->
     <link href="../static/common.css" rel="stylesheet">
@@ -118,6 +118,16 @@
                 $('#' + tab_id).addClass('active');
             })
         })
+
+        if ($('.active').attr('target-content') == 'rank-content'){
+            $.ajax({
+            type: "GET",
+            url: "/ootd",
+            data: {},
+            success: function (response) {
+            }
+        })
+        }
     </script>
 </head>
 
@@ -127,7 +137,7 @@
         <ul class="left-nav">
             <li><a href="/">홈</a></li>
             <li><a href="/mycloset">내 옷장</a></li>
-            <li><a href="/community">커뮤니티</a></li>
+            <li><a href="/ootd">커뮤니티</a></li>
         </ul>
         <div class="right-nav">
             {% if logged %}
@@ -136,137 +146,15 @@
             {% else %}
             <a href="/login/login_page">회원가입/로그인</a>
             {% endif %}
-
         </div>
     </div>
 </header>
 <div class="container">
     <nav class="nav">
-        <a class="nav-link active" target-content="rank-content" href="#">코디 랭킹</a>
+        <a class="nav-link active" href="/ootd">코디 랭킹</a>
         <a class="nav-link"  href="/trade">중고 거래</a>
     </nav>
     <div class="tab-content">
-        <div class="tab-pane active" id="rank-content">
-            <div class="top-3">
-                <h3>Top 3</h3>
-                <div class="card" style="width: 35%">
-                    <img class="card-img-top" src="../static/uploads/test.jpg" alt="Card image cap">
-                    <div class="card-body">
-                        <div class="card-text user">어쩔코딩 - 2022/02/20</div>
-                        <div class="card-text">💖 2,022</div>
-                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                    </div>
-                </div>
-                <div class="card">
-                    <img class="card-img-top" src="../static/uploads/test.jpg" alt="Card image cap">
-                    <div class="card-body">
-                        <div class="card-text user">어쩔코딩 - 2022/02/20</div>
-                        <div class="card-text">💖 2,022</div>
-                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                    </div>
-                </div>
-                <div class="card">
-                    <img class="card-img-top" src="../static/uploads/test.jpg" alt="Card image cap">
-                    <div class="card-body">
-                        <div class="card-text user">어쩔코딩 - 2022/02/20</div>
-                        <div class="card-text">💖 2,022</div>
-                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                    </div>
-                </div>
-            </div>
-            <hr style="height: 2px; background-color: #b081c5;">
-            <div class="ootd-list">
-                <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        정렬 기준
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#">인기순</a>
-                        <a class="dropdown-item" href="#">최신순</a>
-                        <a class="dropdown-item" href="#">오래된순</a>
-                    </div>
-                </div>
-                <div class="card-columns">
-                    <div class="card">
-                        <img class="card-img-top" src="../static/uploads/test.jpg" alt="Card image cap">
-                        <div class="card-body">
-                            <div class="card-text user">1번 - 2022/02/20</div>
-                            <div class="card-text">💖 2,022</div>
-                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <img class="card-img-top" src="../static/uploads/test.jpg" alt="Card image cap">
-                        <div class="card-body">
-                            <div class="card-text user">2번 - 2022/02/20</div>
-                            <div class="card-text">💖 2,022</div>
-                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <img class="card-img-top" src="../static/uploads/test.jpg" alt="Card image cap">
-                        <div class="card-body">
-                            <div class="card-text user">3번 - 2022/02/20</div>
-                            <div class="card-text">💖 2,022</div>
-                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <img class="card-img-top" src="../static/uploads/test.jpg" alt="Card image cap">
-                        <div class="card-body">
-                            <div class="card-text user">4번 - 2022/02/20</div>
-                            <div class="card-text">💖 2,022</div>
-                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <img class="card-img-top" src="../static/uploads/test.jpg" alt="Card image cap">
-                        <div class="card-body">
-                            <div class="card-text user">5번 - 2022/02/20</div>
-                            <div class="card-text">💖 2,022</div>
-                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <img class="card-img-top" src="../static/uploads/test.jpg" alt="Card image cap">
-                        <div class="card-body">
-                            <div class="card-text user">6번 - 2022/02/20</div>
-                            <div class="card-text">💖 2,022</div>
-                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <img class="card-img-top" src="../static/uploads/test.jpg" alt="Card image cap">
-                        <div class="card-body">
-                            <div class="card-text user">7번 - 2022/02/20</div>
-                            <div class="card-text">💖 2,022</div>
-                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                            <span class="sr-only">Next</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-
     </div>
 </div>
 </body>

@@ -487,7 +487,6 @@
             })
         }
 
-
         function DeleteCard(clothes_id) {
             if(confirm('정말 삭제하시겠습니까?')){
             $.ajax({
@@ -543,7 +542,6 @@
             {#                    $('#card-box').append(temp_html)}}} else {#}
             {#            alert(response['msg']);}}})#}
         }
-
 
         // Weather API KEY 가져옴
         let API_KEY = "7a9876c881ab70708f327836f2ae2d7b";
@@ -610,7 +608,7 @@
                 <a class="nav-link" href="/mycloset">내 옷장 <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/community">커뮤니티</a>
+                <a class="nav-link" href="/ootd">커뮤니티</a>
             </li>
 
         </ul>
@@ -696,8 +694,8 @@
         <div onclick="find()" class="dropdown-menu dropdown-menu-right" id="kind">
             <button class="dropdown-item btn-sm" type="button" value="outer">아우터</button>
             <button class="dropdown-item btn-sm" type="button" value="top">상의</button>
-            <button class="dropdown-item btn-sm" type="button" value="one_piece">원피스/세트</button>
-            <button class="dropdown-item btn-sm" type="button" value="Pants">바지</button>
+            <button class="dropdown-item btn-sm" type="button" value="set">원피스/세트</button>
+            <button class="dropdown-item btn-sm" type="button" value="pants">바지</button>
             <button class="dropdown-item btn-sm" type="button" value="skirt">스커트</button>
             <button class="dropdown-item btn-sm" type="button" value="etc">기타</button>
         </div>
@@ -711,7 +709,7 @@
         <div onclick="find()" class="dropdown-menu dropdown-menu-right" id="season">
             <button class="dropdown-item btn-sm" type="button" value="spring">봄</button>
             <button class="dropdown-item btn-sm" type="button" value="summer">여름</button>
-            <button class="dropdown-item btn-sm" type="button" value="autumn">가을</button>
+            <button class="dropdown-item btn-sm" type="button" value="fall">가을</button>
             <button class="dropdown-item btn-sm" type="button" value="winter">겨울</button>
         </div>
     </div>
@@ -787,9 +785,9 @@
                             <label class="form-check-label" for="training">트레이닝복</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="style_etc" name="style"
+                            <input class="form-check-input" type="checkbox" id="etc" name="style"
                                    value="etc">
-                            <label class="form-check-label" for="style_etc">기타</label>
+                            <label class="form-check-label" for="etc">기타</label>
                         </div>
                     </div>
                     <label for="uniform_season">계절감</label>
@@ -820,7 +818,7 @@
                             <select id="kind_select" name="kind" required>
                                 <option value="none">선택</option>
                                 <option value="outer">아우터</option>
-                                <option value="shirt">상의</option>
+                                <option value="top">상의</option>
                                 <option value="set">원피스/세트</option>
                                 <option value="pants">바지</option>
                                 <option value="skirt">스커트</option>
@@ -840,6 +838,9 @@
                                 <option value="blue">파랑</option>
                                 <option value="navy">남색</option>
                                 <option value="purple">보라</option>
+                                <option value="black">검정</option>
+                                <option value="white">흰색</option>
+                                <option value="gray">회색</option>
                                 <option value="etc">기타</option>
                             </select>
                         </div>

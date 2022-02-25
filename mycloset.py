@@ -138,16 +138,17 @@ def delete():
 
     try:
         # s3에서 이미지 삭제
-        img_path = db.clothes.find_one({'_id': ObjectId(clothes_id)})['image_path']
-        img = '/'.join(img_path.split('/')[-2:])
-
-        s3 = s3_connection()
-        my_bucket = s3.Bucket(BUCKET_NAME)
-        my_bucket.delete_objects(
-            Delete={
-                'Objects':[{'Key': img}]
-            }
-        )
+        # img_path = db.clothes.find_one({'_id': ObjectId(clothes_id)})['image_path']
+        # img = '/'.join(img_path.split('/')[-2:])
+        #
+        # s3 = s3_connection()
+        # my_bucket = s3.Bucket(BUCKET_NAME)
+        # my_bucket.delete_objects(
+        #     Delete={
+        #         'objects':[{'Key': img}]
+        #     }
+        # )
+        # s3.delete_object(Bucket=BUCKET_NAME, Key=img)
 
         # DB에서 정보 삭제
         db.clothes.delete_one({'_id': ObjectId(clothes_id)})

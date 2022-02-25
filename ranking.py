@@ -1,4 +1,4 @@
-from flask import render_template, request, jsonify, session, Blueprint, flash
+from flask import render_template, request, jsonify, session, Blueprint, flash, redirect
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 from datetime import datetime
@@ -10,6 +10,10 @@ ootd_rank = Blueprint('ootd_rank', __name__)
 # MongoDB Setup
 client = MongoClient('localhost', 27017)
 db = client.mycloset
+
+@ootd_rank.route('/')
+def ootd():
+    return render_template('ootd_rank.html')
 
 # 코디 업로드
 @ootd_rank.route('/upload', methods=['POST'])
@@ -27,8 +31,9 @@ def upload():
         return {'status': status, 'msg': '사용자 정보를 확인하는데 실패했습니다.'}
 
     try:
-        date = datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
+        date = datetime.now().strftime('%Y%m%d%H%M%S')
         ootd_img = request.files['file']
+        comment = request.form['comment']
 
         if ootd_img and allowed_file(ootd_img.filename):
             nameform = f'{user_id}_{date}'  # 파일 이름 포맷
@@ -44,9 +49,9 @@ def upload():
 
         s3 = s3_connection()
         s3.upload_file(
-            Filename=save_path, # 업로드 할 파일의 로컬 경로
+            Filename=save_path, # 업로드 할 파일의 위치
             Bucket=BUCKET_NAME,
-            Key=f'ootd/{save_to}',  # s3 저장 위치 및 파일 명
+            Key=f'ootd/{save_to}',   # s3 저장 위치 및 파일명
             ExtraArgs={"ContentType": 'image/jpg', "ACL": 'public-read'}
         )
         s3_path = f'https://whatisinmycloset.s3.ap-northeast-2.amazonaws.com/ootd/{save_to}'
@@ -55,12 +60,13 @@ def upload():
         doc = {
             'user_name': user_name,
             'image_path': s3_path,
+            'comment': comment,
             'upload_date': date,
             'likes': 0
         }
         db.rank.insert_one(doc)
 
-        return {'status': status}
+        return redirect('load')
     except:
         status = 'FAIL'
         return {'status': status, 'msg': '코디를 등록하는 데 실패했습니다.'}
@@ -72,12 +78,13 @@ def load():
     try:
         empty = True   # 코디 데이터 여부
 
-        # 전체 코디 데이터를 가져오고, 데이터가 있다면 empty를 False로 설정
-        ootds = list(db.rank.find({}, {'_id': False}))
-        if ootds:
+        # 전체 코디 데이터 가져오기
+        top3 = list(db.rank.find({}, {'_id': False}).sort('likes', -1))[:3]  # 좋아요 내림차순 상위 3개 데이터
+        recent_ootd = list(db.rank.find({}, {'_id': False}).sort('upload_date', -1))   # 전체 최신순 정렬
+        if recent_ootd:
             empty = False
 
-        return jsonify({'status': status, 'ootds': ootds, 'empty': empty})
+        return jsonify({'status': status,'top3': top3, 'ootds': recent_ootd, 'empty': empty})
     except:
         status = 'FAIL'
         return {'status': status, 'msg': '전체 코디 목록을 가져오는데 실패했습니다.'}
