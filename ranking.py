@@ -66,7 +66,7 @@ def upload():
         }
         db.rank.insert_one(doc)
 
-        return redirect('load')
+        return render_template('ootd_rank.html')
     except:
         status = 'FAIL'
         return {'status': status, 'msg': '코디를 등록하는 데 실패했습니다.'}
