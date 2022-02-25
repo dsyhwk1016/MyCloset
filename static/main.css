@@ -6,21 +6,24 @@
   cursor: pointer;
 }
 .main-wrap .wrap-closet{
-  width: 300px;
+  width:19vw;
+  min-width: 300px;
   position:absolute;
   bottom: 5vh;
-  left:calc(50% - 150px);
+  left:calc(50% - 9.5vw);
 }
 .main-wrap #main-closet{
   display: block;
   margin: auto;
-  width:300px;
+  width:19vw;
+  min-width: 300px;
 
 }
 .main-wrap #opencloset{
   text-align: center;
   color:var(--white);
-  width:200px;
+  width:12.5vw;
+  min-width: 200px;
   box-sizing: border-box;
   font-size:30px;
   letter-spacing: 5px;
@@ -30,7 +33,7 @@
   background-color: var(--purple-rgba);
   position:absolute;
   top:calc(50%);
-  left:calc(50% - 100px);
+  left:calc(50% - 6.25vw);
   display: none;
   cursor:pointer;
   z-index: 10;

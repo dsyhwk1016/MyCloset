@@ -9,11 +9,13 @@
 body {
   font-family: Pretendard-Regular;
 }
-a{
-    list-style: none;
-}
+
 input[type="text"]:disabled {
   background-color: white;
+}
+
+.modal{
+  overflow-y: scroll;
 }
 
 .container {
@@ -23,22 +25,11 @@ input[type="text"]:disabled {
   padding: 20px;
   box-sizing: border-box;
 
-
 }
 
-/*write쪽*/
-/*.container{*/
-/*  width:80%;*/
-/*  height:80vh;*/
-/*  */
-/*  border-radius: 20px;*/
-/*  padding:20px;*/
-/*  display: block;*/
-/*  position:fixed;*/
-/*  top:100px;*/
-/*}*/
-/*nav bar*/
 
+
+/*nav bar*/
 .container .nav {
   padding: 10px;
 }
@@ -48,7 +39,9 @@ input[type="text"]:disabled {
   font-size: 18px;
   padding: 5px 10px;
 }
-
+.container .nav a{
+   text-decoration: none;
+}
 .container .nav a.active {
   color: #61237f;
   font-weight: bold;
@@ -73,19 +66,21 @@ input[type="text"]:disabled {
 }
 
 .container .trade_list .new_trade {
+  text-decoration: none;
   display: block;
-  font-size: var(--font-large);
-  padding: 5px;
-  border-radius: 12px;
-  border: none;
+  font-size: var(--font-medium-large);
+  margin-right: 5px;
   background-color: transparent;
-  transition: background-color .5s,
+  font-weight: 700;
+  border-bottom: 2px solid transparent;
+  transition:border-bottom .5s,
   color .5s;
+
 }
 
 .container .trade_list .new_trade:hover {
-  background-color: var(--purple-emp);
-  color: var(--white);
+  border-bottom: 2px solid var(--purple-emp);
+  color:var(--black);
 }
 .container .trade_list #list_card{
   /*display: flex;*/
@@ -94,6 +89,7 @@ input[type="text"]:disabled {
   /*최신순이 첨에와야하는데ㅜㅜ*/
 }
 .container .trade_list #list_card .thumbnail {
+  padding-top: 10px;
   border-radius: 8px;
   background-color: rgba(255, 255, 255, .7);
   transition: transform .5s,
@@ -109,6 +105,71 @@ input[type="text"]:disabled {
 
 /*trade_write*/
 
+/*modal*/
+.modal-bg{
+  display: none;
+  position:fixed;
+  content:"";
+  width:100%;
+  height:calc(100% - 70px);
+  top:70px;
+  left:0;
+  background-color:rgba(0,0,0,.5);
+}
+
+.modal-wrap{
+  display: none;
+  position:absolute;
+  width:700px;
+  height:500px;
+  overflow-y: auto;
+  box-sizing: border-box;
+  top:200px;
+  left:calc(50% - 350px);
+  border-radius:12px;
+  background-color:var(--white);
+
+}
+.modal-wrap .xbtn-bar{
+  width:100%;
+  height:40px;
+  box-sizing: border-box;
+  background-color:var(--purple);
+  color:#fff;
+  border-radius: 12px 12px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding:10px;
+}
+.modal-wrap .xbtn-bar .material-icons{
+  cursor:pointer;
+}
+
+.modal-wrap .modal-pic{
+  padding:20px 10px 10px;
+}
+
+.modal-wrap .modal-pic p{
+  font-size: var(--font-large);
+  font-weight: 700;
+  text-align: center;
+  padding:10px;
+}
+.modal-wrap .modal-pic .img_closet{
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+
+}
+.modal-wrap .modal-pic .img_closet img{
+  width: 200px;
+  height: 200px;
+  padding: 5px;
+}
+
+
+/*Contents*/
 .container .write_title{
   font-size: 30px;
   font-weight: 700;
@@ -130,13 +191,16 @@ input[type="text"]:disabled {
 }
 .container .sell_form .clothes_pic .pic_wrap{
   content:"";
-  background-color: white;
+  background-color:white;
+  background-size: cover;
   width: 300px;
   height:300px;
 }
 .container .sell_form .info_clothes #goods_img{
   display: block;
   border-radius: 5px;
+  max-width: 300px;
+  max-height: 300px;
 }
 .container .sell_form .info_clothes button{
   margin: 15px 0;
@@ -213,6 +277,26 @@ input[type="text"]:disabled {
 /*trade_view*/
 
 /*trade_view의 content*/
+.container .auth{
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 20px;
+}
+.container .auth a,
+.container .auth span{
+  cursor:pointer;
+  text-decoration: none;
+  margin-right: 10px;
+  font-weight: 700;
+  border-bottom: 2px solid transparent;
+  transition: border-bottom-color .5s, color .5s;
+
+}
+.container .auth a:hover,
+.container .auth span:hover{
+  color:var(--black);
+  border-bottom-color: var(--purple-emp);
+}
 .container .product_info {
   display: flex;
   justify-content: space-between;
@@ -282,6 +366,13 @@ input[type="text"]:disabled {
 .comment_out {
   border-bottom: 1px solid var(--gray);
   padding: 15px 0px 15px 0px;
+}
+.comment_out #comment_auth{
+  text-decoration: none;
+   cursor:pointer;
+  text-decoration: none;
+  margin-right: 10px;
+  font-weight: 700;
 }
 
 .com_username {

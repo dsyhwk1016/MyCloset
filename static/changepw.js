@@ -12,8 +12,9 @@ function currentPw() {
       data: {cur_pw: curPw.value},
       success: function (response) {
         if (response['status'] == true) {
-          curPw.disabled = false;
+          curPw.disabled = true;
           document.getElementById('checkpw-now').innerHTML = '비밀번호 확인 완료';
+          document.getElementById('checkpw-now').style.color = 'white';
 
         } else {
           document.getElementById('checkpw-now').innerHTML = '현재 비밀번호와 일치하지 않습니다.';
@@ -45,7 +46,11 @@ function comparePw() {
         if (newPw.value === curPw.value) {
             document.getElementById('comparepw').innerHTML = '현재 비밀번호와 동일합니다.';
             document.getElementById('comparepw').style.color = 'red';
-            curPw.focus();
+            newPw.value=''
+            newPw.focus();
+        }
+        else{
+          document.getElementById('comparepw').innerHTML = '';
         }
     }
 }

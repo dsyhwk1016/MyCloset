@@ -1,3 +1,5 @@
+{#google icons#}
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link rel="stylesheet" href="../static/common.css">
 <link href="../static/board.css" rel="stylesheet">
 {% include 'head.html' %}
@@ -30,21 +32,37 @@
 									</div>
 								</div>`
 
-					$('#list_card').append(tmp_html);
+					$('#list_card').prepend(tmp_html);
 				}
 			}
 		})
 	})
+window.addEventListener('scroll',function(){
+    let upBtn = document.querySelector('.side_up')
+    if(window.scrollY >300){
+      upBtn.style.display='flex'
+      upBtn.addEventListener('click',function(){
+        window.scrollTo({top:0,behavior:'smooth'})
 
+      })
+
+    }
+    else {
+      upBtn.style.display='none'
+    }})
 </script>
 <body>
+{#위로올라가기 버튼#}
+  <div class="side_up">
+  <span class="material-icons">arrow_upward</span>
+  </div>
 <div class="container">
     <nav class="nav">
-        <a class="nav-link " target-content="rank-content" href="/community">코디 랭킹</a>
-        <a class="nav-link active" target-content="transaction-content" href="#">중고 거래</a>
+        <a class="nav-link active" href="/ootd">코디 랭킹</a>
+        <a class="nav-link" href="/trade">중고 거래</a>
     </nav>
     <section class="trade_list">
-		<div class="newtrade_wrap"><button class="new_trade" onclick="location.href='/trade/write'">등록하기</button></div>
+		<div class="newtrade_wrap"><a class="new_trade" href='/trade/write'>등록하기</a></div>
 
 		<div class="row" id="list_card">
 

@@ -50,6 +50,7 @@ function validId() {
 
                 if (validid == true) {
                     document.getElementById('already').innerHTML = '사용 가능한 아이디입니다.';
+                    document.getElementById('already').style.color = 'white';
                     checkid = userid.value
                     pw.focus()
                 } else {
@@ -96,16 +97,17 @@ function checkPw() {
 function checkNickname() {
     if (nickname.value === '') {
         alert('닉네임을 입력해주세요')
-        nickname.focus();
+        nickname.focus()
     } else if (nickname.value < 2 || nickname.value > 8) {
         alert('닉네임은 2~8자 까지 가능합니다.')
-
+        nickname.value=''
+         nickname.focus()
     }
 }
 
 //    회원가입 버튼
 function submitSignUp() { //수정필요해요 switch문 사용할까 고민중
-    if (validid === true && (pw.value.length >= 4 && pw.value.length <= 8) && pw.value === pwCheck.value && nickname.value != '') {
+    if (validid === true && (pw.value.length >= 4 && pw.value.length <= 8) && pw.value === pwCheck.value && nickname.value != '' && nickname.value.length >= 2 && nickname.value.length <= 8 ) {
         if (checkid !== userid.value) {
             alert('아이디를 다시 확인해주세요')
             return false
@@ -139,7 +141,7 @@ function submitSignUp() { //수정필요해요 switch문 사용할까 고민중
         alert('닉네임을 설정해주세요')
         return false
     } else {
-        alert('회원가입 폼을 기입해주세요')
+        alert('회원가입 폼을 제대로 기입해주세요')
         return false
     }
 }
@@ -187,6 +189,7 @@ function fPwWindow(){
      document.getElementById('findpw-id').focus()
 }
 function fPwClose(){
+    document.getElementById('findpw-id').value = ''
      document.querySelector('.modal-wrap').style.display ='none';
      document.querySelector('.modal-bg').style.display ='none';
 }
