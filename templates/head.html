@@ -23,9 +23,10 @@
             crossorigin="anonymous"></script>
     <!-- Bootstrap -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-
+</head>
+<body>
     <header>
-        <div class="inner">
+        <div class="inner" style="height:100%; align-items: center;">
             <ul class="left-nav">
                 <li><a href="/">홈</a></li>
                 <li><a href="/mycloset">내 옷장</a></li>
@@ -33,14 +34,11 @@
             </ul>
             <div class="right-nav">
                 {% if logged %}
-                <a href="/login/change_pw_page">비밀번호변경</a>
-                <a href="/login/logout">로그아웃</a>
-            {% else %}
-                <a href="/login/login_page">회원가입/로그인</a>
-            {% endif %}
+                    <a href="/login/change_pw_page">비밀번호변경</a>
+                    <a href="/login/logout">로그아웃</a>
+                {% else %}
+                    <a href="/login/login_page">회원가입/로그인</a>
+                {% endif %}
+            </div>
         </div>
-    </div>
-</header>
-</head>
-</body>
-</html>
+    </header>
