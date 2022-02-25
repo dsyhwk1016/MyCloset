@@ -31,15 +31,20 @@
                     let comment_contents = com_rows[i]['contents']
                     let comment_datetime = com_rows[i]['datetime']
                     let comment_userId = com_rows[i]['user_id']
-
-
+                    let comment_id = com_rows[i]['_id']
 
                     if(user_id == comment_userId){
                         let com_html =`
                             <div class = "comment_out">
                                 <div class = "com_username">${comment_userName}  ${comment_datetime}
                                 <span id="comment_auth">
-                                    <a href='#'>수정</a><a href='#'>삭제</a>
+                                    <a href='#'>수정</a>
+                                    <span class="delete_post"  onclick=" if(confirm('이 게시글을 삭제하시겠습니까?') == true) {
+                                        alert('삭제되었습니다.')
+                                        location.href='/trade/view/comment_del?com_id=${comment_id}'
+                                      } else {
+                                        return location.href='#'
+                                      }">삭제하기</span>
                                 </span></div>
                                 <div class = "com_contents">${comment_contents}</div>
                             </div>
