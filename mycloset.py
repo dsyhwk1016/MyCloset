@@ -1,6 +1,7 @@
 from flask import render_template, request, jsonify, session, Blueprint
 from pymongo import MongoClient
 from bson.objectid import ObjectId
+from img_set import *
 
 closet = Blueprint('closet', __name__)
 
@@ -124,3 +125,35 @@ def update():
     except:
         status = 'FAIL'
         return {'status': status, 'msg': '정보를 수정하는데 실패했습니다.'}
+
+# 옷 정보 삭제
+@closet.route('/delete', methods=['POST'])
+def delete():
+    status = 'SUCCESS'
+    try:
+        clothes_id = request.form['clothes_id']  # 수정하려는 옷 정보
+    except:
+        status = 'FAIL'
+        return {'status': status, 'msg': '옷 정보를 확인하는데 실패했습니다.'}
+
+    try:
+        # s3에서 이미지 삭제
+        # img_path = db.clothes.find_one({'_id': ObjectId(clothes_id)})['image_path']
+        # img = '/'.join(img_path.split('/')[-2:])
+        #
+        # s3 = s3_connection()
+        # my_bucket = s3.Bucket(BUCKET_NAME)
+        # my_bucket.delete_objects(
+        #     Delete={
+        #         'objects':[{'Key': img}]
+        #     }
+        # )
+        # s3.delete_object(Bucket=BUCKET_NAME, Key=img)
+
+        # DB에서 정보 삭제
+        db.clothes.delete_one({'_id': ObjectId(clothes_id)})
+
+        return {'status': status}
+    except:
+        status = 'FAIL'
+        return {'status': status, 'msg': '정보를 삭제하는데 실패했습니다.'}

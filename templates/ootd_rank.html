@@ -1,0 +1,490 @@
+<link rel="stylesheet" href="../static/common.css">
+<link href="../static/board.css" rel="stylesheet">
+{% include 'head.html' %}
+<style>
+    .container {
+        background-color: #ffebfd;
+        background-color: rgba(255, 255, 255, 0.6);
+        margin: 120px auto;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .nav {
+        padding: 10px;
+    }
+
+    .nav .nav-link {
+        color: #b081c5;
+        font-size: 18px;
+        padding: 5px 10px;
+    }
+
+    .nav a.active {
+        color: #61237f;
+        font-weight: bold;
+        background-color: var(--purple-emp);
+        border-radius: 12px;
+        color: var(--white);
+    }
+
+    .tab-pane {
+        color: #61237f;
+        padding: 12px;
+    }
+
+    .card-img-top {
+        border-radius: 10px;
+        width: 90%;
+        object-fit: fill;
+    }
+
+    .top-3 {
+        text-align: center;
+    }
+
+    .top-3 > .card {
+        display: inline-block;
+        width: 30%;
+    }
+
+    .btn {
+        position: absolute;
+        right: 0;
+        background-color: white;
+        font-weight: normal;
+        padding: 5px;
+    }
+
+    .card-columns {
+        display: flex;
+        flex-wrap: wrap;
+        padding-top: 50px;
+        text-align: center;
+    }
+
+    .card-columns > .card {
+        max-width: 23%;
+        min-width: 200px;
+        margin-bottom: 15px;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        padding-bottom: 15px;
+    }
+
+    /*modal css*/
+    * {
+        font-family: 'Noto Sans KR', sans-serif;
+    }
+
+    .nav-link {
+        font-size: 14px;
+    }
+
+    .menu-all {
+        position: relative;
+        left: 30px;
+    }
+
+    .card-columns {
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .btn {
+        border-radius: 40px;
+    }
+
+    .pagination {
+        margin: auto;
+        display: inline-block;
+    }
+
+    #bg {
+        width: 100vw;
+        height: 100vh;
+        position: absolute;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        display: none;
+        background-color: rgba(0, 0, 0, 0.3);
+    }
+
+    #modal {
+        display: none;
+        width: 50%;
+        margin: 0 auto;
+        z-index: 10;
+        position: relative;
+    }
+
+    #modal .formArea {
+        background-color: white;
+        padding: 20px;
+        border-radius: 15px;
+    }
+
+    #modal .formArea .title {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+    }
+
+    #modal .formArea .title .modal_close {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        cursor: pointer;
+    }
+
+    #modal .formArea #uniform_style,
+    #modal .formArea #uniform_season,
+    #modal .formArea #file_box,
+    #modal .formArea .for_select {
+        margin-bottom: 1rem;
+    }
+
+    #modal .formArea #uniform_kind,
+    #modal .formArea #uniform_color {
+        display: inline;
+    }
+
+    #modal .formArea #file_box .upload-name {
+        display: inline-block;
+        height: 40px;
+        padding: 0 10px;
+        vertical-align: middle;
+        border: 1px solid #dddddd;
+        width: 60%;
+        color: #999999;
+    }
+
+    #modal .formArea #file_box label {
+        display: inline-block;
+        padding: 10px 20px;
+        color: #fff;
+        vertical-align: middle;
+        background-color: #999999;
+        cursor: pointer;
+        height: 40px;
+        margin-left: 10px;
+        margin-bottom: 0px;
+    }
+
+    #modal .formArea #file_box input[type="file"] {
+        position: absolute;
+        width: 0;
+        height: 0;
+        padding: 0;
+        overflow: hidden;
+        border: 0;
+    }
+
+    #modal .formArea button[type="submit"] {
+        padding: 10px 20px;
+        color: #fff;
+        background-color: #999999;
+        height: 40px;
+        border: none;
+        cursor: pointer;
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+        load()  // 페이지 로드되면 코디 정보 가져오기
+
+        // 파일 선택 시 이미지 출력(미리보기)
+        $('#file').addEventListener("change", () => {
+            $('#ootd_img').attr('src', $(this).files[0].name);
+        })
+    })
+
+    // 전체 코디 및 top 3 정보 로드
+    function load() {
+        $.ajax({
+            type: "GET",
+            url: "/ootd/load",
+            data: {},
+            success: function (response) {
+                if (response['status'] == 'SUCCESS') {
+                    let ootds = response['ootds']
+                    let top3 = response['top3']
+                    let empty = response['empty']
+                    if (empty == true) {
+                        $('.top-3').append('랭킹 1위에 도전해보세요!')
+                        $('.card-columns').append('나만의 코디를 자랑해 보세요:)')
+                    } else {
+                        $('.card-columns').empty();
+                        $('.top-3').empty();
+                        for (i = 0; i < ootds.length; i++) {
+                            let user = ootds[i]['user_name']
+                            let path = ootds[i]['image_path']
+                            let upload_date = ootds[i]['upload_date']
+                            let likes = ootds[i]['likes']
+
+                            let date = upload_date.substr(0,4)+'-'+upload_date.substr(4,2)+'-'+upload_date.substr(6,2)
+
+                            let ootd_html = `<div class="card">
+                                                     <img class="card-img-top" src="${path}" alt="Card image cap">
+                                                     <div class="card-body">
+                                                         <div class="card-text user">${user}님</div>
+                                                         <div class="card-text">💖 ${likes}</div>
+                                                         <p class="card-text"><small class="text-muted">${date}</small></p>
+                                                     </div>
+                                                 </div>`
+                            $('.card-columns').append(ootd_html)
+                        }
+                        for (i = 0; i < 3; i++) {
+                            let user = top3[i]['user_name']
+                            let path = top3[i]['image_path']
+                            let upload_date = top3[i]['upload_date']
+                            let likes = top3[i]['likes']
+
+                            let date = upload_date.substr(0,4)+'-'+upload_date.substr(4,2)+'-'+upload_date.substr(6,2)
+
+                            let temp_html = `<div class="card">
+                                                     <img class="card-img-top" src="${path}" alt="Card image cap">
+                                                     <div class="card-body">
+                                                         <div class="card-text user">${user}님</div>
+                                                         <div class="card-text">💖 ${likes}</div>
+                                                         <p class="card-text"><small class="text-muted">${date}</small></p>
+                                                     </div>
+                                                 </div>`
+                            $('.top-3').append(temp_html)
+                        }
+                    }
+                } else {
+                    alert(response['msg']);
+                }
+            }
+        })
+    }
+
+    // 전체 코디 정렬
+    $(".dropdown-item:selected").change(() => {
+        let sort = $(this).attr('value')
+        $.ajax({
+            type: "GET",
+            url: "/ootd/sort",
+            data: {'sort': sort},
+            success: function (response) {
+                if (response['status'] == 'SUCCESS') {
+                    let ootds = response['ootds']
+                    let empty = response['empty']
+                    if (empty == true) {
+                        $('.card-columns').append('나만의 코디를 자랑해 보세요:)')
+                    } else {
+                        $('.card-columns').empty();
+                        for (i = 0; i < ootds.length; i++) {
+                            let user = ootds[i]['user_name']
+                            let path = ootds[i]['image_path']
+                            let upload_date = ootds[i]['upload_date']
+                            let likes = ootds[i]['likes']
+
+                            let tody = new Date()
+                            let date = upload_date.year + '-' + upload_date.month + '-' + upload_date.day
+
+                            let ootd_html = `<div class="card">
+                                                     <img class="card-img-top" src="${path}" alt="Card image cap">
+                                                     <div class="card-body">
+                                                         <div class="card-text user">${user}님 - ${date}</div>
+                                                         <div class="card-text">💖 ${likes}</div>
+                                                         <p class="card-text"><small class="text-muted">${tody - upload_date}</small></p>
+                                                     </div>
+                                                 </div>`
+                            $('.card-columns').append(ootd_html)
+                        }
+                    }
+                } else {
+                    alert(response['msg']);
+                }
+            }
+        })
+    })
+
+    // 모달 창 열기
+    function open_modal() {
+        document.querySelector("#bg").style.display = "block";
+        document.querySelector("#modal").style.display = "block";
+    }
+
+    // 모달 창 닫기
+    function close_modal() {
+        document.querySelector("#bg").style.display = "none";
+        document.querySelector("#modal").style.display = "none";
+    }
+
+    // 파일 업로드 확인
+    function checkForm() {
+        if (!$('#file').val()) {
+            alert("사진을 등록해 주세요.");
+            return false;
+        }
+    }
+</script>
+
+<body>
+<div class="container">
+    <nav class="nav">
+        <a class="nav-link active" href="/community">코디 랭킹</a>
+        <a class="nav-link" href="/trade">중고 거래</a>
+    </nav>
+    <div class="tab-pane active" id="rank-content">
+        <div class="top-3">
+            <h3>Top 3</h3>
+            <div class="card" style="width: 35%">
+                <img class="card-img-top" src="../static/uploads/test.jpg" alt="Card image cap">
+                <div class="card-body">
+                    <div class="card-text user">어쩔코딩 - 2022/02/20</div>
+                    <div class="card-text">💖 2,022</div>
+                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                </div>
+            </div>
+            <div class="card">
+                <img class="card-img-top" src="../static/uploads/test.jpg" alt="Card image cap">
+                <div class="card-body">
+                    <div class="card-text user">어쩔코딩 - 2022/02/20</div>
+                    <div class="card-text">💖 2,022</div>
+                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                </div>
+            </div>
+            <div class="card">
+                <img class="card-img-top" src="../static/uploads/test.jpg" alt="Card image cap">
+                <div class="card-body">
+                    <div class="card-text user">어쩔코딩 - 2022/02/20</div>
+                    <div class="card-text">💖 2,022</div>
+                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                </div>
+            </div>
+        </div>
+        <hr style="height: 2px; background-color: #b081c5;">
+        <div class="ootd-list">
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    정렬 기준
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <button class="dropdown-item" value="like_desc">인기순</button>
+                    <button class="dropdown-item" value="date_desc">최신순</button>
+                    <button class="dropdown-item" value="date_asc">오래된순</button>
+                </div>
+            </div>
+            <img id="add" src="../static/img/plus.png" style="width: 50px" alt="add" onclick="open_modal()">
+            <div class="card-columns">
+                <div class="card">
+                    <img class="card-img-top" src="../static/uploads/test.jpg" alt="Card image cap">
+                    <div class="card-body">
+                        <div class="card-text user">1번 - 2022/02/20</div>
+                        <div class="card-text">💖 2,022</div>
+                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img class="card-img-top" src="../static/uploads/test.jpg" alt="Card image cap">
+                    <div class="card-body">
+                        <div class="card-text user">2번 - 2022/02/20</div>
+                        <div class="card-text">💖 2,022</div>
+                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img class="card-img-top" src="../static/uploads/test.jpg" alt="Card image cap">
+                    <div class="card-body">
+                        <div class="card-text user">3번 - 2022/02/20</div>
+                        <div class="card-text">💖 2,022</div>
+                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img class="card-img-top" src="../static/uploads/test.jpg" alt="Card image cap">
+                    <div class="card-body">
+                        <div class="card-text user">4번 - 2022/02/20</div>
+                        <div class="card-text">💖 2,022</div>
+                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img class="card-img-top" src="../static/uploads/test.jpg" alt="Card image cap">
+                    <div class="card-body">
+                        <div class="card-text user">5번 - 2022/02/20</div>
+                        <div class="card-text">💖 2,022</div>
+                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img class="card-img-top" src="../static/uploads/test.jpg" alt="Card image cap">
+                    <div class="card-body">
+                        <div class="card-text user">6번 - 2022/02/20</div>
+                        <div class="card-text">💖 2,022</div>
+                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img class="card-img-top" src="../static/uploads/test.jpg" alt="Card image cap">
+                    <div class="card-body">
+                        <div class="card-text user">7번 - 2022/02/20</div>
+                        <div class="card-text">💖 2,022</div>
+                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<div id="bg">
+    <div id="modal">
+        <div class="formDiv mt-5">
+            <div class="formArea">
+                <form action="/ootd/upload" method="POST" enctype="multipart/form-data" onsubmit="return checkForm()"
+                      id="add-form">
+                    <label class="title" for="file_box">
+                        <h2>내 코디 등록</h2>
+                        <span class="modal_close" onclick="close_modal()">X</span>
+                    </label>
+                    <div id="file_box">
+                        <img src="" alt="my ootd" id="ootd_img" style="width:150px; height:150px;">
+                        <br>
+                        <label for="file">파일찾기</label>
+                        <input type="file" id="file" name="file" accept="image/*">
+                    </div>
+                    <label for="comment">코멘트</label>
+                    <textarea id="txtPost" name="comment" placeholder="내 코디를 간단하게 설명해 주세요." style="resize: none"
+                              maxlength="50" required></textarea>
+                    <button type="submit">등록하기</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -49,7 +49,7 @@ def upload_file():
         Filename=save_path,  # 업로드할 파일의 경로
         Bucket=BUCKET_NAME,
         Key=f'clothes/{save_to}',  # 파일명
-        ExtraArgs={"ContentType": 'image/jpg', "ACL": 'public-read'}
+        ExtraArgs={"ContentType": 'image/jpg', "ACL": 'public-read-write'}
     )
     s3_path = f'https://whatisinmycloset.s3.ap-northeast-2.amazonaws.com/clothes/{save_to}'
     os.remove(save_path)

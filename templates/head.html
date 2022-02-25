@@ -19,28 +19,30 @@
     <!-- JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
     <!-- Bootstrap -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-
-    <header>
-        <div class="inner">
-            <ul class="left-nav">
-                <li><a href="/">홈</a></li>
-                <li><a href="/mycloset">내 옷장</a></li>
-                <li><a href="/upload">새 옷 등록</a></li>
-                <li><a href="/cody">코디 추천</a></li>
-                <li><a href="/trade">커뮤니티</a></li>
-            </ul>
-            <div class="right-nav">
-                {% if logged %}
+</head>
+<body>
+<header>
+    <div class="inner">
+        <ul class="left-nav">
+            <li><a href="/">홈</a></li>
+            <li><a href="/mycloset">내 옷장</a></li>
+            <li><a href="/upload">새 옷 등록</a></li>
+            <li><a href="/cody">코디 추천</a></li>
+            <li><a href="/community">커뮤니티</a></li>
+        </ul>
+        <div class="right-nav">
+            {% if logged %}
                 <a href="/login/change_pw_page">비밀번호변경</a>
                 <a href="/login/logout">로그아웃</a>
-                {% else %}
+            {% else %}
                 <a href="/login/login_page">회원가입/로그인</a>
-                {% endif %}
-            </div>
+            {% endif %}
         </div>
-    </header>
-</head>
+    </div>
+</header>
+</body>
+</html>
