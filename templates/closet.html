@@ -27,10 +27,31 @@
             crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    {#google icons#}
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <title>MY CLOSET | 옷장 살펴보기</title>
 
     <style>
+        {#올라가기 버튼#}
+        .side_up {
+            position: fixed;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            bottom: 15vh;
+            right: 200px;
+            width: 50px;
+            height: 50px;
+            font-weight: 700;
+            font-size: var(--font-large-medium);
+            color: white;
+            background-color: dimgray;
+            border: 3px solid var(--black);
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
         #a.card-footer-item.has-text-danger {
             margin-left: 30px;
         }
@@ -47,11 +68,10 @@
             padding-top: 3px;
             padding-bottom: 3px;
         }
-
+        {#카드박스 css#}
         div.card-list {
-            width: 80%;
+            width: 1026px;
             display: flex;
-            justify-content: space-between;
             margin: auto;
             flex-wrap: wrap;
         }
@@ -69,7 +89,10 @@
         }
 
         .card {
-            margin-top: 15px;
+            padding: 20px;
+        }
+        .update{
+            margin-left: 230px;
         }
 
         /*<!--온도슬라이더 css-->*/
@@ -399,7 +422,7 @@
                                                      <h5 class="card-title">${season}</h5>
                                                      <h5 class="card-title">${color}</h5>
                                                  </div>
-                                                 <footer class="card-footer">
+                                                 <footer class="card-footer" >
                                                     <div class="update">
                                                         <a href="#" onclick="DeleteCard('${clothes_id}')" class="card-footer-item has-text-danger">
                                                         삭제
@@ -552,11 +575,26 @@
         }
 
         navigator.geolocation.getCurrentPosition(onGeoOK, onGeoError);
+
+        {#   올라가기 버튼 js #}
+        window.addEventListener('scroll', function () {
+            let upBtn = document.querySelector('.side_up')
+            if (window.scrollY > 300) {
+                upBtn.style.display = 'flex'
+                upBtn.addEventListener('click', function () {
+                    window.scrollTo({top: 0, behavior: 'smooth'})
+                })
+            } else {
+                upBtn.style.display = 'none'
+            }
+        })
+
+        js
     </script>
 </head>
 
 <body>
-
+<div class="side_up"><span class="material-icons">arrow_upward</span></div>
 <nav class="navbar navbar-expand-lg navbar navbar-light" style="background-color: #f3e8f8;">
     <a class="navbar-brand" href="/">MY Closet</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
@@ -575,9 +613,6 @@
         </ul>
         <span class="navbar-text">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">마이페이지</a>
-                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/login/logout">로그아웃</a>
                     </li>
@@ -693,8 +728,8 @@
 {#        <button onclick="cody()" type="button" id="slider" class="btn btn-light" value="">추천하기</button>#}
 {#    </div>#}
 <div class="card-list" id="card-box">
-{#    </div>#}
-{#</div>#}
+</div>
+</div>
 
 <div id="bg">
     <div id="modal">
@@ -757,11 +792,13 @@
                     <label for="uniform_season">계절감</label>
                     <div id="uniform_season">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" name="season" id="spring" value="spring">
+                            <input class="form-check-input" type="checkbox" name="season" id="spring"
+                                   value="spring">
                             <label class="form-check-label" for="spring">봄</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" name="season" id="summer" value="summer">
+                            <input class="form-check-input" type="checkbox" name="season" id="summer"
+                                   value="summer">
                             <label class="form-check-label" for="summer">여름</label>
                         </div>
                         <div class="form-check form-check-inline">
@@ -769,7 +806,8 @@
                             <label class="form-check-label" for="fall">가을</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" name="season" id="winter" value="winter">
+                            <input class="form-check-input" type="checkbox" name="season" id="winter"
+                                   value="winter">
                             <label class="form-check-label" for="winter">겨울</label>
                         </div>
                     </div>
@@ -849,6 +887,7 @@
         }
     })
 </script>
+
 
 <!-- 수정하기 모달 영역 -->
 
