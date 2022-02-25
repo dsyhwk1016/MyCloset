@@ -124,3 +124,20 @@ header .inner .right-nav a{
 header .inner a:hover{
   color: var(--black);
 }
+.side_up{
+  position:fixed;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  bottom: 15vh;
+  right: 200px;
+  width:50px;
+  height: 50px;
+  font-weight: 700;
+  font-size: var(--font-large-medium);
+  color:var(--black);
+  background-color: var(--white);
+  border: 3px solid var(--black);
+  border-radius: 12px;
+  cursor:pointer;
+}
