@@ -1,8 +1,0 @@
-GOOGLE_CLIENT_ID = '394376551777-aal6bi33dtbu3t1hu09nm240mju398pf.apps.googleusercontent.com'
-GOOGLE_CLIENT_SECRET='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'
-
-NAVER_CLIENT_ID = 'VEfrmX5WW6UgWW8AJOzI'
-NAVER_CLIENT_SECRET = 'ZpUYF1kGmN'
-
-MAIL_USERNAME = 'inmyblue0922@gmail.com'
-MAIL_PASSWORD = 'juscqknmjdtpsvoj'

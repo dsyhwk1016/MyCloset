@@ -6,8 +6,8 @@ from dotenv import load_dotenv
 app = Flask(__name__)
 
 # s3 환경 변수 설정
-load_dotenv('s3.env')
-AWS_ACCESS_KEY = os.getenv('AWS_ACCESS_KEY')
+load_dotenv()
+AWS_ACCESS_KEY = os.environ.get('AWS_ACCESS_KEY')
 AWS_SECRET_KEY = os.environ.get('AWS_SECRET_KEY')
 BUCKET_NAME = os.environ.get('BUCKET_NAME')
 
